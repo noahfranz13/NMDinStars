@@ -1,8 +1,8 @@
 mesa_mod/*
-!mesa_mod/mesa
-mesa_mod/mesa/*
-!mesa_mod/mesa/star
-mesa_mod/mesa/star/*
-!mesa_mod/mesa/star/test_suite
-mesa_mod/mesa/star/test_suite/*
-!mesa_mod/mesa/star/test_suite/NuetrinoMagneticDipoleMesa
+!mesa_mod/mesa-r12778
+mesa_mod/mesa-r12778/*
+!mesa_mod/mesa-r12778/star
+mesa_mod/mesa-r12778/star/*
+!mesa_mod/mesa-r12778/star/test_suite
+mesa_mod/mesa-r12778/star/test_suite/*
+!mesa_mod/mesa-r12778/star/test_suite/NuetrinoMagneticDipoleMesa
