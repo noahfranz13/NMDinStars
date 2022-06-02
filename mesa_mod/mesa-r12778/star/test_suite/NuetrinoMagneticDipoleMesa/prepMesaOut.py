@@ -21,7 +21,7 @@ def convert(filepath):
     # These are from wikipedia, cite them later!!
     molarMassFE = 55.845
     molarMassH = 1.00784
-
+    print(molarMassH/molarMassFE)
     # from: gs98
     solarFEH = -4.5
     

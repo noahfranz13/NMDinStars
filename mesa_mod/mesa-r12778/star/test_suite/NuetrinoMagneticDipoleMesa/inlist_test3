@@ -14,7 +14,7 @@
 &controls
       !JS says: this section comes with the test_suite examples. Do not change things unless you know what you are doing.
       use_gold_tolerances = .false. !JS says, generally you should turn these off unless your results are crazy.
-      use_other_neu = .true.
+      use_other_neu = .false.
       use_eps_mdot = .true.
       use_dedt_form_of_energy_eqn = .true.
       min_cell_energy_fraction_for_dedt_form = 0
