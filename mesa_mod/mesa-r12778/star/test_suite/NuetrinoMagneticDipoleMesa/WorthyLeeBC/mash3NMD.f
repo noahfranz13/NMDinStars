@@ -10,7 +10,7 @@ C     The 9th nind is BC_v
       real         grav,feh,teff,theta,logL,clrs(nind),cerr(nind)
       real         ete(8),eterr(8),cpres(9),bcefloor(8)
 C     out-of-bounds flag. Nominal is zero.
-      integer      error,iflag
+      integer      iflag,error
       real         solarMag,magConst
       real         BCi,Mbol,Mi,Mierr
 
@@ -64,7 +64,8 @@ C     print*, 'enter Teff '
 C     read*, teff
 C     print*, ' '
 C     switch Teff to THETA
-         read(42, *) error, grav, teff, feh, logL
+         read(42, *) error, grav,
+     &        teff, feh, logL
          theta = 5040./teff
          if ( error .ne. 1 ) then
 C     get colors for these parameters

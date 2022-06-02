@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# set necessary environment variables
+export MESASDK_ROOT=/home/nfranz/mesasdk
+source $MESASDK_ROOT/bin/mesasdk_init.sh
+
+export MESA_DIR=/home/nfranz/mesa-r12778
+export OMP_NUM_THREADS=8
+
 function check_okay {
 	if [ $? -ne 0 ]
 	then

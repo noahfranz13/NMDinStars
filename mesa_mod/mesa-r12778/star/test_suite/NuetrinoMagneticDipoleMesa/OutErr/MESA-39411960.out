@@ -1,0 +1,618 @@
+ version_number 12778
+ create pre-main-sequence model
+                                          species  mass          10    1.0000000000000000D+00
+
+                                        relax_num_steps         100
+
+
+                               finished relax_num_steps
+
+ do_star_job_controls_after
+ change to "fe_and_zn.net"
+ number of species          10
+ net name fe_and_zn.net
+ kappa_file_prefix gs98
+ kappa_lowT_prefix lowT_fa05_gs98
+                                        OMP_NUM_THREADS           8
+
+
+        867   7.183865   7165.910   0.245976   0.245976   0.999997   0.999997   0.754275   0.000020   0.245000   0.754796  -1.598150   3905      0
+   5.697353   2.017156  -0.066517 -44.717706  -1.381742 -13.214906   0.000000   0.245623   0.000047   0.000100   0.245104   0.078060      4      0
+ 1.5428E+07  17.350029   0.241533   4.570923   4.357376  -7.321320   0.000000   0.000004   0.000010  1.021E-04  1.002E-04  0.000E+00  max increase
+
+                                 WARNING: rel_run_E_err         901    2.1162630292796424D-02
+                                 WARNING: rel_run_E_err         902    2.2477896706261182D-02
+                                 WARNING: rel_run_E_err         903    2.3047365734733028D-02
+                                 WARNING: rel_run_E_err         904    2.3565552109415213D-02
+                                 WARNING: rel_run_E_err         905    2.3993786785703068D-02
+                                 WARNING: rel_run_E_err         906    2.4344491664637823D-02
+                                 WARNING: rel_run_E_err         907    2.4627459956523556D-02
+                                 WARNING: rel_run_E_err         908    2.4865896015764360D-02
+                                 WARNING: rel_run_E_err         909    2.5028215876385929D-02
+                                 WARNING: rel_run_E_err         910    2.5008707460493624D-02
+                                 WARNING: rel_run_E_err         911    2.4989530796992555D-02
+                                 WARNING: rel_run_E_err         912    2.4970664475441811D-02
+                                 WARNING: rel_run_E_err         913    2.4955358816843510D-02
+                                 WARNING: rel_run_E_err         914    2.4937719112985486D-02
+                                 WARNING: rel_run_E_err         915    2.4919765626900431D-02
+                                 WARNING: rel_run_E_err         916    2.4901971665180638D-02
+                                 WARNING: rel_run_E_err         917    2.4884247095214751D-02
+                                 WARNING: rel_run_E_err         918    2.4866538415071450D-02
+                                 WARNING: rel_run_E_err         919    2.4848808682529283D-02
+                                 WARNING: rel_run_E_err         920    2.4831027624804387D-02
+                                 WARNING: rel_run_E_err         921    2.4813166157491719D-02
+                                 WARNING: rel_run_E_err         922    2.4795193763309045D-02
+                                 WARNING: rel_run_E_err         923    2.4777076515713831D-02
+                                 WARNING: rel_run_E_err         924    2.4758768908982497D-02
+                                 WARNING: rel_run_E_err         925    2.4736459553904747D-02
+                                 WARNING: rel_run_E_err         926    2.4709514759626690D-02
+                                 WARNING: rel_run_E_err         927    2.4686265300506115D-02
+                                 WARNING: rel_run_E_err         928    2.4664340606875102D-02
+        929   7.255917   7547.230   0.415891   0.415891   0.999807   0.999807   0.325337   0.000044   0.245000   0.703053  -1.427087   3949      0
+   7.714212   2.314711  -0.024329 -39.562214  -1.150953 -13.011754   0.000000   0.674563   0.000025   0.000100   0.296846   0.113315      6      0
+ 2.5052E+09  17.557015   0.415975   4.486463   4.098560  -7.603917   0.000000   0.000000   0.000010  1.001E-04  1.009E-04  0.000E+00      XHe_cntr
+
+                                 WARNING: rel_run_E_err         929    2.4642698077735833D-02
+                                 WARNING: rel_run_E_err         930    2.4620810018406283D-02
+                                 WARNING: rel_run_E_err         931    2.4598373583990248D-02
+                                 WARNING: rel_run_E_err         932    2.4570566484393035D-02
+                                 WARNING: rel_run_E_err         933    2.4537407333326725D-02
+                                 WARNING: rel_run_E_err         934    2.4507430909967237D-02
+                                 WARNING: rel_run_E_err         935    2.4478160681845777D-02
+                                 WARNING: rel_run_E_err         936    2.4448447875750033D-02
+                                 WARNING: rel_run_E_err         937    2.4411922366427957D-02
+                                 WARNING: rel_run_E_err         938    2.4369937402077300D-02
+                                 WARNING: rel_run_E_err         939    2.4330520968287219D-02
+                                 WARNING: rel_run_E_err         940    2.4291052456525304D-02
+                                 WARNING: rel_run_E_err         941    2.4245220112263082D-02
+                                 WARNING: rel_run_E_err         942    2.4193871222579478D-02
+                                 WARNING: rel_run_E_err         943    2.4143444339989169D-02
+                                 WARNING: rel_run_E_err         944    2.4091580273737895D-02
+                                 WARNING: rel_run_E_err         945    2.4034121123815130D-02
+                                 WARNING: rel_run_E_err         946    2.3968954351922173D-02
+                                 WARNING: rel_run_E_err         947    2.3900158281508863D-02
+                                 WARNING: rel_run_E_err         948    2.3829267673989629D-02
+                                 WARNING: rel_run_E_err         949    2.3756141701261477D-02
+                                 WARNING: rel_run_E_err         950    2.3681949183621837D-02
+                                 WARNING: rel_run_E_err         951    2.3607450326597005D-02
+                                 WARNING: rel_run_E_err         952    2.3533202135463317D-02
+                                 WARNING: rel_run_E_err         953    2.3459700228397027D-02
+                                 WARNING: rel_run_E_err         954    2.3387340876437904D-02
+                                 WARNING: rel_run_E_err         955    2.3316402709792391D-02
+                                 WARNING: rel_run_E_err         956    2.3247208261158656D-02
+                                 WARNING: rel_run_E_err         957    2.3180128184258377D-02
+                                 WARNING: rel_run_E_err         958    2.3115869237761582D-02
+                                 WARNING: rel_run_E_err         959    2.3056981831664179D-02
+                                 WARNING: rel_run_E_err         960    2.3005966078777078D-02
+                                 WARNING: rel_run_E_err         961    2.2962972117956552D-02
+                                 WARNING: rel_run_E_err         962    2.2926914626052411D-02
+                                 WARNING: rel_run_E_err         963    2.2896351427319505D-02
+                                 WARNING: rel_run_E_err         964    2.2869958633047083D-02
+                                 WARNING: rel_run_E_err         965    2.2846684907681401D-02
+                                 WARNING: rel_run_E_err         966    2.2825748926539793D-02
+                                 WARNING: rel_run_E_err         967    2.2806586922839635D-02
+                                 WARNING: rel_run_E_err         968    2.2788796454209569D-02
+                                 WARNING: rel_run_E_err         969    2.2772098243472417D-02
+                                 WARNING: rel_run_E_err         970    2.2756265666893722D-02
+                                 WARNING: rel_run_E_err         971    2.2741155707746551D-02
+                                 WARNING: rel_run_E_err         972    2.2726663295626535D-02
+                                 WARNING: rel_run_E_err         973    2.2712704857241518D-02
+                                 WARNING: rel_run_E_err         974    2.2699220029764870D-02
+                                 WARNING: rel_run_E_err         975    2.2686161228573899D-02
+                                 WARNING: rel_run_E_err         976    2.2673490832274414D-02
+                                 WARNING: rel_run_E_err         977    2.2661178691358141D-02
+                                 WARNING: rel_run_E_err         978    2.2649200279430612D-02
+                                 WARNING: rel_run_E_err         979    2.2637535394097037D-02
+                                 WARNING: rel_run_E_err         980    2.2626167840355142D-02
+                                 WARNING: rel_run_E_err         981    2.2615081884822023D-02
+                                 WARNING: rel_run_E_err         982    2.2604266337800119D-02
+                                 WARNING: rel_run_E_err         983    2.2593710625622040D-02
+                                 WARNING: rel_run_E_err         984    2.2583405041873138D-02
+                                 WARNING: rel_run_E_err         985    2.2573342079760816D-02
+                                 WARNING: rel_run_E_err         986    2.2563513829009663D-02
+                                 WARNING: rel_run_E_err         987    2.2553914029716630D-02
+                                 WARNING: rel_run_E_err         988    2.2544536973240031D-02
+                                 WARNING: rel_run_E_err         989    2.2535376831991843D-02
+                                 WARNING: rel_run_E_err         990    2.2526428737315897D-02
+                                 WARNING: rel_run_E_err         991    2.2517688021739594D-02
+                                 WARNING: rel_run_E_err         992    2.2509150137745071D-02
+                                 WARNING: rel_run_E_err         993    2.2500810944374179D-02
+                                 WARNING: rel_run_E_err         994    2.2492666616033285D-02
+                                 WARNING: rel_run_E_err         995    2.2484713017051374D-02
+                                 WARNING: rel_run_E_err         996    2.2476946675938733D-02
+                                 WARNING: rel_run_E_err         997    2.2469364077544719D-02
+                                 WARNING: rel_run_E_err         998    2.2461961845119154D-02
+                                 WARNING: rel_run_E_err         999    2.2454736725923862D-02
+                                 WARNING: rel_run_E_err        1000    2.2447685564407592D-02
+                                 WARNING: rel_run_E_err        1001    2.2440805271442977D-02
+                                 WARNING: rel_run_E_err        1002    2.2434092817611224D-02
+                                 WARNING: rel_run_E_err        1003    2.2427545302454249D-02
+                                 WARNING: rel_run_E_err        1004    2.2421159582295361D-02
+                                 WARNING: rel_run_E_err        1005    2.2414932784886106D-02
+                                 WARNING: rel_run_E_err        1006    2.2408861974735596D-02
+                                 WARNING: rel_run_E_err        1007    2.2402944209934064D-02
+                                 WARNING: rel_run_E_err        1008    2.2397176571420006D-02
+                                 WARNING: rel_run_E_err        1009    2.2391556158253050D-02
+                                 WARNING: rel_run_E_err        1010    2.2386080088995636D-02
+                                 WARNING: rel_run_E_err        1011    2.2380745519031492D-02
+                                 WARNING: rel_run_E_err        1012    2.2375549621134982D-02
+                                 WARNING: rel_run_E_err        1013    2.2370489612210248D-02
+                                 WARNING: rel_run_E_err        1014    2.2365562741400537D-02
+                                 WARNING: rel_run_E_err        1015    2.2360766548238563D-02
+                                 WARNING: rel_run_E_err        1016    2.2356097965684871D-02
+                                 WARNING: rel_run_E_err        1017    2.2351554342660101D-02
+                                 WARNING: rel_run_E_err        1018    2.2347133221520800D-02
+                                 WARNING: rel_run_E_err        1019    2.2342832115054608D-02
+                                 WARNING: rel_run_E_err        1020    2.2338648545813255D-02
+                                 WARNING: rel_run_E_err        1021    2.2334580103054114D-02
+                                 WARNING: rel_run_E_err        1022    2.2330624421626668D-02
+                                 WARNING: rel_run_E_err        1023    2.2326779194353150D-02
+                                 WARNING: rel_run_E_err        1024    2.2323042157929074D-02
+                                 WARNING: rel_run_E_err        1025    2.2319411109233887D-02
+                                 WARNING: rel_run_E_err        1026    2.2315883898632486D-02
+                                 WARNING: rel_run_E_err        1027    2.2312458426270249D-02
+                                 WARNING: rel_run_E_err        1028    2.2309132643805046D-02
+                                 WARNING: rel_run_E_err        1029    2.2305904535037505D-02
+                                 WARNING: rel_run_E_err        1030    2.2302772121492509D-02
+                                 WARNING: rel_run_E_err        1031    2.2299733476733009D-02
+                                 WARNING: rel_run_E_err        1032    2.2296786701641442D-02
+                                 WARNING: rel_run_E_err        1033    2.2293929925372363D-02
+                                 WARNING: rel_run_E_err        1034    2.2291161316668005D-02
+                                 WARNING: rel_run_E_err        1035    2.2288479064379231D-02
+                                 WARNING: rel_run_E_err        1036    2.2285881422640656D-02
+                                 WARNING: rel_run_E_err        1037    2.2283366628242648D-02
+                                 WARNING: rel_run_E_err        1038    2.2280932978518502D-02
+                                 WARNING: rel_run_E_err        1039    2.2278578812429513D-02
+                                 WARNING: rel_run_E_err        1040    2.2276302584587165D-02
+                                 WARNING: rel_run_E_err        1041    2.2274102481158870D-02
+                                 WARNING: rel_run_E_err        1042    2.2271977035684471D-02
+                                 WARNING: rel_run_E_err        1043    2.2269924710670817D-02
+                                 WARNING: rel_run_E_err        1044    2.2267513358157295D-02
+                                 WARNING: rel_run_E_err        1045    2.2264686014843639D-02
+                                 WARNING: rel_run_E_err        1046    2.2261386982613564D-02
+                                 WARNING: rel_run_E_err        1047    2.2257644569284935D-02
+                                 WARNING: rel_run_E_err        1048    2.2253286711487706D-02
+                                 WARNING: rel_run_E_err        1049    2.2248360848989027D-02
+                                 WARNING: rel_run_E_err        1050    2.2243016226820636D-02
+                                 WARNING: rel_run_E_err        1051    2.2237503488269608D-02
+                                 WARNING: rel_run_E_err        1052    2.2232809654516791D-02
+                                 WARNING: rel_run_E_err        1053    2.2229458727022363D-02
+                                 WARNING: rel_run_E_err        1054    2.2227774861618824D-02
+                                 WARNING: rel_run_E_err        1055    2.2227895829296667D-02
+                                 WARNING: rel_run_E_err        1056    2.2229827591630547D-02
+                                 WARNING: rel_run_E_err        1057    2.2233424522103119D-02
+                                 WARNING: rel_run_E_err        1058    2.2238510514489253D-02
+                                 WARNING: rel_run_E_err        1059    2.2245029258687155D-02
+                                 WARNING: rel_run_E_err        1060    2.2252947601538339D-02
+                                 WARNING: rel_run_E_err        1061    2.2262202440003809D-02
+                                 WARNING: rel_run_E_err        1062    2.2272715645125882D-02
+                                 WARNING: rel_run_E_err        1063    2.2284416679384016D-02
+                                 WARNING: rel_run_E_err        1064    2.2297236600618178D-02
+                                 WARNING: rel_run_E_err        1065    2.2311100878328133D-02
+                                 WARNING: rel_run_E_err        1066    2.2325946238516640D-02
+                                 WARNING: rel_run_E_err        1067    2.2341714424776487D-02
+                                 WARNING: rel_run_E_err        1068    2.2358334730773931D-02
+                                 WARNING: rel_run_E_err        1069    2.2375741038419616D-02
+                                 WARNING: rel_run_E_err        1070    2.2393890534216261D-02
+                                 WARNING: rel_run_E_err        1071    2.2412750690525125D-02
+                                 WARNING: rel_run_E_err        1072    2.2432253693620372D-02
+                                 WARNING: rel_run_E_err        1073    2.2452331612573082D-02
+                                 WARNING: rel_run_E_err        1074    2.2472976434313247D-02
+                                 WARNING: rel_run_E_err        1075    2.2494151667902088D-02
+                                 WARNING: rel_run_E_err        1076    2.2515807378292143D-02
+                                 WARNING: rel_run_E_err        1077    2.2537950608099180D-02
+                                 WARNING: rel_run_E_err        1078    2.2560559648699900D-02
+                                 WARNING: rel_run_E_err        1079    2.2583555722675945D-02
+                                 WARNING: rel_run_E_err        1080    2.2606908786401501D-02
+                                 WARNING: rel_run_E_err        1081    2.2630576441901046D-02
+                                 WARNING: rel_run_E_err        1082    2.2654541811921631D-02
+                                 WARNING: rel_run_E_err        1083    2.2678792539165625D-02
+                                 WARNING: rel_run_E_err        1084    2.2703270369173533D-02
+                                 WARNING: rel_run_E_err        1085    2.2727990092222972D-02
+                                 WARNING: rel_run_E_err        1086    2.2752939289717996D-02
+                                 WARNING: rel_run_E_err        1087    2.2778080479385853D-02
+                                 WARNING: rel_run_E_err        1088    2.2803435755476349D-02
+                                 WARNING: rel_run_E_err        1089    2.2828960961856264D-02
+                                 WARNING: rel_run_E_err        1090    2.2854605724043436D-02
+                                 WARNING: rel_run_E_err        1091    2.2880367526642770D-02
+                                 WARNING: rel_run_E_err        1092    2.2906318074082336D-02
+                                 WARNING: rel_run_E_err        1093    2.2932432183303812D-02
+                                 WARNING: rel_run_E_err        1094    2.2958633013943519D-02
+                                 WARNING: rel_run_E_err        1095    2.2985001536011105D-02
+                                 WARNING: rel_run_E_err        1096    2.3011447542634005D-02
+                                 WARNING: rel_run_E_err        1097    2.3037937056571596D-02
+                                 WARNING: rel_run_E_err        1098    2.3064513242394547D-02
+                                 WARNING: rel_run_E_err        1099    2.3091150329933995D-02
+                                 WARNING: rel_run_E_err        1100    2.3117864169176765D-02
+                                 WARNING: rel_run_E_err        1101    2.3144625246407473D-02
+                                 WARNING: rel_run_E_err        1102    2.3171406085003531D-02
+                                 WARNING: rel_run_E_err        1103    2.3198225312235116D-02
+                                 WARNING: rel_run_E_err        1104    2.3225090253749150D-02
+                                 WARNING: rel_run_E_err        1105    2.3251914664702798D-02
+       1106   7.488880   6899.042   1.025106   1.025106   0.999190   0.868814   0.000000   0.000063   0.245000   0.570591   2.778424   3939      0
+   6.114820   4.056817   0.357671 -23.869061  -0.103831 -12.020746   0.130376   0.999903   0.000003   0.000100   0.429309   0.418606      6      0
+ 5.4952E+09  19.494718   1.023979   3.722196   3.874178  -7.794563   0.000000   0.000001   0.000010  9.732E-05  1.001E-04  0.000E+00    varcontrol
+
+                                 WARNING: rel_run_E_err        1106    2.3278758212059266D-02
+                                 WARNING: rel_run_E_err        1107    2.3305672405160210D-02
+                                 WARNING: rel_run_E_err        1108    2.3332635130935302D-02
+                                 WARNING: rel_run_E_err        1109    2.3359628396025987D-02
+                                 WARNING: rel_run_E_err        1110    2.3386612891893255D-02
+                                 WARNING: rel_run_E_err        1111    2.3413611843170361D-02
+                                 WARNING: rel_run_E_err        1112    2.3440620475436557D-02
+                                 WARNING: rel_run_E_err        1113    2.3467624681730598D-02
+                                 WARNING: rel_run_E_err        1114    2.3494608678871001D-02
+                                 WARNING: rel_run_E_err        1115    2.3521582034674016D-02
+                                 WARNING: rel_run_E_err        1116    2.3548524334930730D-02
+                                 WARNING: rel_run_E_err        1117    2.3575367857143793D-02
+                                 WARNING: rel_run_E_err        1118    2.3602089541674903D-02
+                                 WARNING: rel_run_E_err        1119    2.3628699964307429D-02
+                                 WARNING: rel_run_E_err        1120    2.3655215532992872D-02
+                                 WARNING: rel_run_E_err        1121    2.3681616641354878D-02
+                                 WARNING: rel_run_E_err        1122    2.3707919169852737D-02
+                                 WARNING: rel_run_E_err        1123    2.3734154478611477D-02
+                                 WARNING: rel_run_E_err        1124    2.3760297516375418D-02
+                                 WARNING: rel_run_E_err        1125    2.3786274517755373D-02
+                                 WARNING: rel_run_E_err        1126    2.3812044218350696D-02
+                                 WARNING: rel_run_E_err        1127    2.3837683341783180D-02
+                                 WARNING: rel_run_E_err        1128    2.3863275766911225D-02
+                                 WARNING: rel_run_E_err        1129    2.3888852085868151D-02
+                                 WARNING: rel_run_E_err        1130    2.3914414647006488D-02
+                                 WARNING: rel_run_E_err        1131    2.3940003112854127D-02
+                                 WARNING: rel_run_E_err        1132    2.3965682448898379D-02
+                                 WARNING: rel_run_E_err        1133    2.3991477217150892D-02
+                                 WARNING: rel_run_E_err        1134    2.4017363296744795D-02
+                                 WARNING: rel_run_E_err        1135    2.4043328282006123D-02
+                                 WARNING: rel_run_E_err        1136    2.4069376740622789D-02
+                                 WARNING: rel_run_E_err        1137    2.4095518263712389D-02
+                                 WARNING: rel_run_E_err        1138    2.4121756908842974D-02
+                                 WARNING: rel_run_E_err        1139    2.4148090571331049D-02
+                                 WARNING: rel_run_E_err        1140    2.4174525218261661D-02
+                                 WARNING: rel_run_E_err        1141    2.4201060012297541D-02
+                                 WARNING: rel_run_E_err        1142    2.4227703374535073D-02
+                                 WARNING: rel_run_E_err        1143    2.4254467672837177D-02
+                                 WARNING: rel_run_E_err        1144    2.4281369654382358D-02
+                                 WARNING: rel_run_E_err        1145    2.4308413003674451D-02
+                                 WARNING: rel_run_E_err        1146    2.4335594452046215D-02
+                                 WARNING: rel_run_E_err        1147    2.4362901304742689D-02
+                                 WARNING: rel_run_E_err        1148    2.4390329589604465D-02
+                                 WARNING: rel_run_E_err        1149    2.4417881573801228D-02
+                                 WARNING: rel_run_E_err        1150    2.4445559298640066D-02
+                                 WARNING: rel_run_E_err        1151    2.4473352442594083D-02
+                                 WARNING: rel_run_E_err        1152    2.4501256235785474D-02
+                                 WARNING: rel_run_E_err        1153    2.4529266229428841D-02
+                                 WARNING: rel_run_E_err        1154    2.4557379794169543D-02
+                                 WARNING: rel_run_E_err        1155    2.4585593463814878D-02
+                                 WARNING: rel_run_E_err        1156    2.4613911164005728D-02
+                                 WARNING: rel_run_E_err        1157    2.4642344949120664D-02
+                                 WARNING: rel_run_E_err        1158    2.4670897717353899D-02
+                                 WARNING: rel_run_E_err        1159    2.4699565244849099D-02
+                                 WARNING: rel_run_E_err        1160    2.4728343045442868D-02
+                                 WARNING: rel_run_E_err        1161    2.4757239133092235D-02
+                                 WARNING: rel_run_E_err        1162    2.4786247698193969D-02
+                                 WARNING: rel_run_E_err        1163    2.4815362788041251D-02
+                                 WARNING: rel_run_E_err        1164    2.4844594318863825D-02
+                                 WARNING: rel_run_E_err        1165    2.4873952123712829D-02
+                                 WARNING: rel_run_E_err        1166    2.4903430070781402D-02
+                                 WARNING: rel_run_E_err        1167    2.4933027019010703D-02
+                                 WARNING: rel_run_E_err        1168    2.4962740329251672D-02
+                                 WARNING: rel_run_E_err        1169    2.4992587444592023D-02
+                                 WARNING: rel_run_E_err        1170    2.5022562812131416D-02
+                                 WARNING: rel_run_E_err        1171    2.5052653525880875D-02
+                                 WARNING: rel_run_E_err        1172    2.5082869182018585D-02
+                                 WARNING: rel_run_E_err        1173    2.5113211733301413D-02
+                                 WARNING: rel_run_E_err        1174    2.5143695137308443D-02
+                                 WARNING: rel_run_E_err        1175    2.5174308612569196D-02
+                                 WARNING: rel_run_E_err        1176    2.5205044407118543D-02
+                                 WARNING: rel_run_E_err        1177    2.5235909812240252D-02
+                                 WARNING: rel_run_E_err        1178    2.5266893711862491D-02
+                                 WARNING: rel_run_E_err        1179    2.5298010272849954D-02
+                                 WARNING: rel_run_E_err        1180    2.5329255933655721D-02
+                                 WARNING: rel_run_E_err        1181    2.5360623710972665D-02
+                                 WARNING: rel_run_E_err        1182    2.5392122159182354D-02
+                                 WARNING: rel_run_E_err        1183    2.5423744772766321D-02
+                                 WARNING: rel_run_E_err        1184    2.5455497391263765D-02
+                                 WARNING: rel_run_E_err        1185    2.5487369096404779D-02
+                                 WARNING: rel_run_E_err        1186    2.5519357997083693D-02
+                                 WARNING: rel_run_E_err        1187    2.5551451542884795D-02
+                                 WARNING: rel_run_E_err        1188    2.5583666870010218D-02
+                                 WARNING: rel_run_E_err        1189    2.5615999945435165D-02
+                                 WARNING: rel_run_E_err        1190    2.5648441073242590D-02
+                                 WARNING: rel_run_E_err        1191    2.5680995466631537D-02
+                                 WARNING: rel_run_E_err        1192    2.5713675569605642D-02
+                                 WARNING: rel_run_E_err        1193    2.5746471136700019D-02
+                                 WARNING: rel_run_E_err        1194    2.5779367510306395D-02
+                                 WARNING: rel_run_E_err        1195    2.5812374746072106D-02
+                                 WARNING: rel_run_E_err        1196    2.5845487819852946D-02
+                                 WARNING: rel_run_E_err        1197    2.5878696318430476D-02
+                                 WARNING: rel_run_E_err        1198    2.5912000702516411D-02
+                                 WARNING: rel_run_E_err        1199    2.5945400885629934D-02
+                                 WARNING: rel_run_E_err        1200    2.5978885285613759D-02
+                                 WARNING: rel_run_E_err        1201    2.6012463824810522D-02
+                                 WARNING: rel_run_E_err        1202    2.6046131336534481D-02
+                                 WARNING: rel_run_E_err        1203    2.6079876674166343D-02
+                                 WARNING: rel_run_E_err        1204    2.6113699157273990D-02
+                                 WARNING: rel_run_E_err        1205    2.6147596071906878D-02
+                                 WARNING: rel_run_E_err        1206    2.6181557492038848D-02
+                                 WARNING: rel_run_E_err        1207    2.6215583544602208D-02
+                                 WARNING: rel_run_E_err        1208    2.6249665513086298D-02
+                                 WARNING: rel_run_E_err        1209    2.6283799404975994D-02
+                                 WARNING: rel_run_E_err        1210    2.6317989712641869D-02
+                                 WARNING: rel_run_E_err        1211    2.6352230818304678D-02
+                                 WARNING: rel_run_E_err        1212    2.6386506711594395D-02
+                                 WARNING: rel_run_E_err        1213    2.6420797275085388D-02
+                                 WARNING: rel_run_E_err        1214    2.6455128087111219D-02
+                                 WARNING: rel_run_E_err        1215    2.6489488143164347D-02
+                                 WARNING: rel_run_E_err        1216    2.6523860295451243D-02
+                                 WARNING: rel_run_E_err        1217    2.6558226594904866D-02
+                                 WARNING: rel_run_E_err        1218    2.6592587903415860D-02
+                                 WARNING: rel_run_E_err        1219    2.6626928966520250D-02
+                                 WARNING: rel_run_E_err        1220    2.6661260005985149D-02
+                                 WARNING: rel_run_E_err        1221    2.6695565157564848D-02
+                                 WARNING: rel_run_E_err        1222    2.6729833047646943D-02
+                                 WARNING: rel_run_E_err        1223    2.6764057778616134D-02
+                                 WARNING: rel_run_E_err        1224    2.6798228512262837D-02
+                                 WARNING: rel_run_E_err        1225    2.6832346426959770D-02
+                                 WARNING: rel_run_E_err        1226    2.6866396895880496D-02
+                                 WARNING: rel_run_E_err        1227    2.6900367602106869D-02
+                                 WARNING: rel_run_E_err        1228    2.6934259287551676D-02
+                                 WARNING: rel_run_E_err        1229    2.6968063837466558D-02
+                                 WARNING: rel_run_E_err        1230    2.7001764515998141D-02
+                                 WARNING: rel_run_E_err        1231    2.7035344538126418D-02
+                                 WARNING: rel_run_E_err        1232    2.7068803716960469D-02
+                                 WARNING: rel_run_E_err        1233    2.7102120945727084D-02
+                                 WARNING: rel_run_E_err        1234    2.7135293934551049D-02
+                                 WARNING: rel_run_E_err        1235    2.7168313567046923D-02
+                                 WARNING: rel_run_E_err        1236    2.7201167224097964D-02
+                                 WARNING: rel_run_E_err        1237    2.7233828683743497D-02
+                                 WARNING: rel_run_E_err        1238    2.7266291519267516D-02
+                                 WARNING: rel_run_E_err        1239    2.7298537625569368D-02
+                                 WARNING: rel_run_E_err        1240    2.7330566770780489D-02
+                                 WARNING: rel_run_E_err        1241    2.7362357630642212D-02
+                                 WARNING: rel_run_E_err        1242    2.7393905490603158D-02
+                                 WARNING: rel_run_E_err        1243    2.7425204336076557D-02
+                                 WARNING: rel_run_E_err        1244    2.7456231983808463D-02
+                                 WARNING: rel_run_E_err        1245    2.7486973058488330D-02
+                                 WARNING: rel_run_E_err        1246    2.7517421304985537D-02
+                                 WARNING: rel_run_E_err        1247    2.7547565850425577D-02
+                                 WARNING: rel_run_E_err        1248    2.7577398346933450D-02
+                                 WARNING: rel_run_E_err        1249    2.7606905679606032D-02
+                                 WARNING: rel_run_E_err        1250    2.7636081799254079D-02
+                                 WARNING: rel_run_E_err        1251    2.7664890006429292D-02
+                                 WARNING: rel_run_E_err        1252    2.7693315790900966D-02
+                                 WARNING: rel_run_E_err        1253    2.7721361172472835D-02
+                                 WARNING: rel_run_E_err        1254    2.7749015525473840D-02
+                                 WARNING: rel_run_E_err        1255    2.7776266188826972D-02
+                                 WARNING: rel_run_E_err        1256    2.7803085895485458D-02
+                                 WARNING: rel_run_E_err        1257    2.7829462586944076D-02
+                                 WARNING: rel_run_E_err        1258    2.7855381014309597D-02
+                                 WARNING: rel_run_E_err        1259    2.7880850714231544D-02
+                                 WARNING: rel_run_E_err        1260    2.7905817707578058D-02
+                                 WARNING: rel_run_E_err        1261    2.7930272434960619D-02
+                                 WARNING: rel_run_E_err        1262    2.7954232767632137D-02
+                                 WARNING: rel_run_E_err        1263    2.7977659542596511D-02
+                                 WARNING: rel_run_E_err        1264    2.8000541690062622D-02
+                                 WARNING: rel_run_E_err        1265    2.8022857626259785D-02
+                                 WARNING: rel_run_E_err        1266    2.8044613124796659D-02
+                                 WARNING: rel_run_E_err        1267    2.8065787855928215D-02
+                                 WARNING: rel_run_E_err        1268    2.8086348694632574D-02
+                                 WARNING: rel_run_E_err        1269    2.8106283814923839D-02
+                                 WARNING: rel_run_E_err        1270    2.8125599747600850D-02
+                                 WARNING: rel_run_E_err        1271    2.8144251293596802D-02
+                                 WARNING: rel_run_E_err        1272    2.8162222970180791D-02
+                                 WARNING: rel_run_E_err        1273    2.8179549898752539D-02
+                                 WARNING: rel_run_E_err        1274    2.8196213423726635D-02
+                                 WARNING: rel_run_E_err        1275    2.8212190861906346D-02
+                                 WARNING: rel_run_E_err        1276    2.8227489954861268D-02
+                                 WARNING: rel_run_E_err        1277    2.8242055358237175D-02
+                                 WARNING: rel_run_E_err        1278    2.8255877683569065D-02
+                                 WARNING: rel_run_E_err        1279    2.8268944437972936D-02
+                                 WARNING: rel_run_E_err        1280    2.8281246488881456D-02
+                                 WARNING: rel_run_E_err        1281    2.8292757622443925D-02
+                                 WARNING: rel_run_E_err        1282    2.8303449557046723D-02
+                                 WARNING: rel_run_E_err        1283    2.8313361719817649D-02
+                                 WARNING: rel_run_E_err        1284    2.8322457014338370D-02
+                                 WARNING: rel_run_E_err        1285    2.8330706139323612D-02
+                                 WARNING: rel_run_E_err        1286    2.8338087250440010D-02
+                                 WARNING: rel_run_E_err        1287    2.8344636272923666D-02
+                                 WARNING: rel_run_E_err        1288    2.8350299038764334D-02
+                                 WARNING: rel_run_E_err        1289    2.8355090221806125D-02
+                                 WARNING: rel_run_E_err        1290    2.8358950819956784D-02
+                                 WARNING: rel_run_E_err        1291    2.8361904305129519D-02
+                                 WARNING: rel_run_E_err        1292    2.8363936253701753D-02
+                                 WARNING: rel_run_E_err        1293    2.8365067141146033D-02
+                                 WARNING: rel_run_E_err        1294    2.8365214242293598D-02
+                                 WARNING: rel_run_E_err        1295    2.8364402975451768D-02
+                                 WARNING: rel_run_E_err        1296    2.8362647597932330D-02
+                                 WARNING: rel_run_E_err        1297    2.8359867027168521D-02
+                                 WARNING: rel_run_E_err        1298    2.8356150605978632D-02
+                                 WARNING: rel_run_E_err        1299    2.8351422334653213D-02
+                                 WARNING: rel_run_E_err        1300    2.8345703836168946D-02
+                                 WARNING: rel_run_E_err        1301    2.8338928890444520D-02
+                                 WARNING: rel_run_E_err        1302    2.8331141258059880D-02
+                                 WARNING: rel_run_E_err        1303    2.8322287014821909D-02
+                                 WARNING: rel_run_E_err        1304    2.8312408447852516D-02
+                                 WARNING: rel_run_E_err        1305    2.8301477487960525D-02
+                                 WARNING: rel_run_E_err        1306    2.8289497517088213D-02
+                                 WARNING: rel_run_E_err        1307    2.8276372982344918D-02
+                                 WARNING: rel_run_E_err        1308    2.8262249301008926D-02
+                                 WARNING: rel_run_E_err        1309    2.8247075552591511D-02
+                                 WARNING: rel_run_E_err        1310    2.8230835348102432D-02
+                                 WARNING: rel_run_E_err        1311    2.8213574344603521D-02
+                                 WARNING: rel_run_E_err        1312    2.8195183198960843D-02
+                                 WARNING: rel_run_E_err        1313    2.8175770793768332D-02
+                                 WARNING: rel_run_E_err        1314    2.8155226927535595D-02
+                                 WARNING: rel_run_E_err        1315    2.8133534321080757D-02
+                                 WARNING: rel_run_E_err        1316    2.8110884709838812D-02
+                                 WARNING: rel_run_E_err        1317    2.8087057723910906D-02
+                                 WARNING: rel_run_E_err        1318    2.8062096898650257D-02
+                                 WARNING: rel_run_E_err        1319    2.8036069180152445D-02
+                                 WARNING: rel_run_E_err        1320    2.8008934239383807D-02
+                                 WARNING: rel_run_E_err        1321    2.7980649221655534D-02
+                                 WARNING: rel_run_E_err        1322    2.7951304926603686D-02
+                                 WARNING: rel_run_E_err        1323    2.7920835118937382D-02
+                                 WARNING: rel_run_E_err        1324    2.7889301801389557D-02
+                                 WARNING: rel_run_E_err        1325    2.7856706365897779D-02
+                                 WARNING: rel_run_E_err        1326    2.7822978611811877D-02
+                                 WARNING: rel_run_E_err        1327    2.7788186471253341D-02
+                                 WARNING: rel_run_E_err        1328    2.7752272068838298D-02
+                                 WARNING: rel_run_E_err        1329    2.7715383561858296D-02
+                                 WARNING: rel_run_E_err        1330    2.7677303472383879D-02
+                                 WARNING: rel_run_E_err        1331    2.7638277032242489D-02
+                                 WARNING: rel_run_E_err        1332    2.7598150593773955D-02
+                                 WARNING: rel_run_E_err        1333    2.7557009709938768D-02
+                                 WARNING: rel_run_E_err        1334    2.7514809435706774D-02
+                                 WARNING: rel_run_E_err        1335    2.7471583262056568D-02
+                                 WARNING: rel_run_E_err        1336    2.7427374799820457D-02
+                                 WARNING: rel_run_E_err        1337    2.7382175715398280D-02
+                                 WARNING: rel_run_E_err        1338    2.7335979624771030D-02
+                                 WARNING: rel_run_E_err        1339    2.7288831693560299D-02
+                                 WARNING: rel_run_E_err        1340    2.7240661804663585D-02
+                                 WARNING: rel_run_E_err        1341    2.7191518272787641D-02
+                                 WARNING: rel_run_E_err        1342    2.7141422437925784D-02
+                                 WARNING: rel_run_E_err        1343    2.7090393047132524D-02
+                                 WARNING: rel_run_E_err        1344    2.7038459906439542D-02
+                                 WARNING: rel_run_E_err        1345    2.6985655917281900D-02
+                                 WARNING: rel_run_E_err        1346    2.6931946687283034D-02
+                                 WARNING: rel_run_E_err        1347    2.6877340748613060D-02
+                                 WARNING: rel_run_E_err        1348    2.6821828375183661D-02
+                                 WARNING: rel_run_E_err        1349    2.6765541387660297D-02
+                                 WARNING: rel_run_E_err        1350    2.6708392964980922D-02
+                                 WARNING: rel_run_E_err        1351    2.6650409651789012D-02
+                                 WARNING: rel_run_E_err        1352    2.6591745590076668D-02
+                                 WARNING: rel_run_E_err        1353    2.6532340628796176D-02
+                                 WARNING: rel_run_E_err        1354    2.6472208065912328D-02
+                                 WARNING: rel_run_E_err        1355    2.6411397536665372D-02
+                                 WARNING: rel_run_E_err        1356    2.6349882090561765D-02
+                                 WARNING: rel_run_E_err        1357    2.6287729095588942D-02
+                                 WARNING: rel_run_E_err        1358    2.6224899912894305D-02
+                                 WARNING: rel_run_E_err        1359    2.6161497683074537D-02
+                                 WARNING: rel_run_E_err        1360    2.6097471803297870D-02
+                                 WARNING: rel_run_E_err        1361    2.6032848021539590D-02
+                                 WARNING: rel_run_E_err        1362    2.5967677559464900D-02
+                                 WARNING: rel_run_E_err        1363    2.5901918600121598D-02
+                                 WARNING: rel_run_E_err        1364    2.5835639847023542D-02
+                                 WARNING: rel_run_E_err        1365    2.5768831947557854D-02
+                                 WARNING: rel_run_E_err        1366    2.5701455269411356D-02
+                                 WARNING: rel_run_E_err        1367    2.5633694911640432D-02
+                                 WARNING: rel_run_E_err        1368    2.5565476960364611D-02
+                                 WARNING: rel_run_E_err        1369    2.5496902661287606D-02
+                                 WARNING: rel_run_E_err        1370    2.5427937836320851D-02
+                                 WARNING: rel_run_E_err        1371    2.5358618581948083D-02
+                                 WARNING: rel_run_E_err        1372    2.5288939887849190D-02
+                                 WARNING: rel_run_E_err        1373    2.5218862610062030D-02
+                                 WARNING: rel_run_E_err        1374    2.5148465050622765D-02
+                                 WARNING: rel_run_E_err        1375    2.5077841185464515D-02
+                                 WARNING: rel_run_E_err        1376    2.5006955622107443D-02
+                                 WARNING: rel_run_E_err        1377    2.4935896196969169D-02
+                                 WARNING: rel_run_E_err        1378    2.4864624869059958D-02
+                                 WARNING: rel_run_E_err        1379    2.4793070638224158D-02
+                                 WARNING: rel_run_E_err        1380    2.4721347653571431D-02
+                                 WARNING: rel_run_E_err        1381    2.4649651018989582D-02
+                                 WARNING: rel_run_E_err        1382    2.4577784019245246D-02
+                                 WARNING: rel_run_E_err        1383    2.4505872343842560D-02
+                                 WARNING: rel_run_E_err        1384    2.4433895735033739D-02
+                                 WARNING: rel_run_E_err        1385    2.4361854355073639D-02
+                                 WARNING: rel_run_E_err        1386    2.4289701989843621D-02
+                                 WARNING: rel_run_E_err        1387    2.4217614775076654D-02
+                                 WARNING: rel_run_E_err        1388    2.4145417107356688D-02
+                                 WARNING: rel_run_E_err        1389    2.4073172939446420D-02
+                                 WARNING: rel_run_E_err        1390    2.4000780110032986D-02
+                                 WARNING: rel_run_E_err        1391    2.3928431406361857D-02
+                                 WARNING: rel_run_E_err        1392    2.3856080751257738D-02
+                                 WARNING: rel_run_E_err        1393    2.3783680401448376D-02
+                                 WARNING: rel_run_E_err        1394    2.3711361516074128D-02
+                                 WARNING: rel_run_E_err        1395    2.3639103282571315D-02
+                                 WARNING: rel_run_E_err        1396    2.3566878314828003D-02
+                                 WARNING: rel_run_E_err        1397    2.3494752090291761D-02
+                                 WARNING: rel_run_E_err        1398    2.3422750980473403D-02
+                                 WARNING: rel_run_E_err        1399    2.3350859629893687D-02
+                                 WARNING: rel_run_E_err        1400    2.3279120307091353D-02
+                                 WARNING: rel_run_E_err        1401    2.3207585689183095D-02
+                                 WARNING: rel_run_E_err        1402    2.3136064970529353D-02
+                                 WARNING: rel_run_E_err        1403    2.3064698221087691D-02
+                                 WARNING: rel_run_E_err        1404    2.2993538537028894D-02
+                                 WARNING: rel_run_E_err        1405    2.2922427529111215D-02
+                                 WARNING: rel_run_E_err        1406    2.2851596140017728D-02
+                                 WARNING: rel_run_E_err        1407    2.2780849991684147D-02
+                                 WARNING: rel_run_E_err        1408    2.2710295026598486D-02
+                                 WARNING: rel_run_E_err        1409    2.2639926848528474D-02
+                                 WARNING: rel_run_E_err        1410    2.2569881991830045D-02
+                                 WARNING: rel_run_E_err        1411    2.2499936292439498D-02
+                                 WARNING: rel_run_E_err        1412    2.2430156007932453D-02
+                                 WARNING: rel_run_E_err        1413    2.2360575002136632D-02
+                                 WARNING: rel_run_E_err        1414    2.2291367723070634D-02
+                                 WARNING: rel_run_E_err        1415    2.2222362099165609D-02
+                                 WARNING: rel_run_E_err        1416    2.2153593662762705D-02
+                                 WARNING: rel_run_E_err        1417    2.2085116886748864D-02
+                                 WARNING: rel_run_E_err        1418    2.2016927682385581D-02
+                                 WARNING: rel_run_E_err        1419    2.1949038433268203D-02
+                                 WARNING: rel_run_E_err        1420    2.1881535451968411D-02
+                                 WARNING: rel_run_E_err        1421    2.1814299504914671D-02
+                                 WARNING: rel_run_E_err        1422    2.1747302084101038D-02
+                                 WARNING: rel_run_E_err        1423    2.1680572454943977D-02
+                                 WARNING: rel_run_E_err        1424    2.1614179997656031D-02
+                                 WARNING: rel_run_E_err        1425    2.1548099901358295D-02
+                                 WARNING: rel_run_E_err        1426    2.1482342033162592D-02
+                                 WARNING: rel_run_E_err        1427    2.1417051653521216D-02
+                                 WARNING: rel_run_E_err        1428    2.1352042633403769D-02
+                                 WARNING: rel_run_E_err        1429    2.1287361023005796D-02
+                                 WARNING: rel_run_E_err        1430    2.1223114364379236D-02
+                                 WARNING: rel_run_E_err        1431    2.1159390703365689D-02
+                                 WARNING: rel_run_E_err        1432    2.1096098845907126D-02
+                                 WARNING: rel_run_E_err        1433    2.1033366806272061D-02
+                                 WARNING: rel_run_E_err        1434    2.0971234159848307D-02
+                                 WARNING: rel_run_E_err        1435    2.0909610245522656D-02
+                                 WARNING: rel_run_E_err        1436    2.0848487472299681D-02
+                                 WARNING: rel_run_E_err        1437    2.0787856866853964D-02
+                                 WARNING: rel_run_E_err        1438    2.0727939044819281D-02
+                                 WARNING: rel_run_E_err        1439    2.0668454475744221D-02
+                                 WARNING: rel_run_E_err        1440    2.0609417057900366D-02
+                                 WARNING: rel_run_E_err        1441    2.0550977948625638D-02
+                                 WARNING: rel_run_E_err        1442    2.0492953607343236D-02
+                                 WARNING: rel_run_E_err        1443    2.0435326807287511D-02
+                                 WARNING: rel_run_E_err        1444    2.0378288180083151D-02
+                                 WARNING: rel_run_E_err        1445    2.0321673755959647D-02
+                                 WARNING: rel_run_E_err        1446    2.0265511550297342D-02
+                                 WARNING: rel_run_E_err        1447    2.0209808222360175D-02
+                                 WARNING: rel_run_E_err        1448    2.0154534240026965D-02
+                                 WARNING: rel_run_E_err        1449    2.0099733293826146D-02
+                                 WARNING: rel_run_E_err        1450    2.0045367095593673D-02
+ retry    3296
+ retry    3297
+       3299   7.995279   4388.169   2.834322   2.878012   0.987470   0.559717   0.000000   0.000063   0.260096   0.418980  13.022172   5550      2
+   3.200534   5.818679   1.658474   1.858840   1.667703  -8.893452   0.427753   0.998980   0.000004   0.000100   0.580874   0.505118      6      0
+ 5.7741E+09  22.181056   2.839564   1.115465   3.766301  -7.698792   0.000000   0.000922   0.000011  1.020E-03  1.453E-04  0.000E+00  max increase
+
+ retry    3300
+ retry    3300
+ retry    3302
+ retry    3302
+ retry    3304
+ retry    3311
+ retry    3316
+ retry    3320
+ retry    3322
+
+stop because power_he_burn >= power_he_burn_upper_limit
+    0.1018817295E+07    0.1000000000E+07
+
+       3332   8.114678   4388.685   2.723064   6.008342   0.987468   0.559697   0.000000   0.000063   0.260096   0.418968   9.029793   5588     11
+  -0.834740   5.758770   1.657850   6.008096   1.556551  -8.896092   0.427771   0.997387   0.000003   0.000100   0.580498   0.367479      9      0
+ 5.7741E+09  22.111201   2.838521   1.116712   3.766620  -7.698525   0.000000   0.002516   0.000011  2.613E-03  5.340E-04  0.000E+00       Lnuc_He
+
+save photos/x332 for model 3332
+termination code: power_he_burn_upper_limit
+
+        runtime (minutes), retries, backups, steps       33.54        11         0      3332
+__________________________________________________________________________________________________________________________________________________
+
+       step    lg_Tcntr    Teff     lg_LH       lg_Lnuc     Mass       H_rich     H_cntr     N_cntr     Y_surf     X_avg     eta_cntr  zones retry
+   lg_dt_yr    lg_Dcntr    lg_R     lg_L3a      lg_Lneu     lg_Mdot    He_core    He_cntr    O_cntr     Z_surf     Y_avg     gam_cntr  iters bckup
+     age_yr    lg_Pcntr    lg_L     lg_gsurf    lg_Psurf    lg_Dsurf   C_core     C_cntr     Ne_cntr    Z_cntr     Z_avg     v_div_cs     dt_limit
+__________________________________________________________________________________________________________________________________________________
+
+       3332   8.114678   4388.685   2.723064   6.008342   0.987468   0.559697   0.000000   0.000063   0.260096   0.418968   9.029793   5588     11
+  -0.834740   5.758770   1.657850   6.008096   1.556551  -8.896092   0.427771   0.997387   0.000003   0.000100   0.580498   0.367479      9      0
+ 5.7741E+09  22.111201   2.838521   1.116712   3.766620  -7.698525   0.000000   0.002516   0.000011  2.613E-03  5.340E-04  0.000E+00  newton iters
+
