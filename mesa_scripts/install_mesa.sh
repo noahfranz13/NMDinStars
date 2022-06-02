@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 # set necessary environment variables
 export MESASDK_ROOT=~/mesasdk

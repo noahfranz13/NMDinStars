@@ -1,0 +1,35 @@
+Instructions for Worthy and Lee Bolometric Correction code.
+Compiling: gfortran /path/to/source_code.f -o /path/to/target_executable.exe
+Running the base version: ./path/to/executable.exe
+Follow on screen prompts: (Units are Kelvin, log10(Surface Gravity), [Fe/H])
+Output: List of colours +/- errors and the correction for the V band. Use algebra and error propogation to calculate the I Band correction.
+
+Running my version: /path/to/executable number_of_lines_in_input_file /path/to/inputfile /path/to/output_file
+Note: the output file must not already exist.
+input file columns:
+Flag  	   Mass		Helium		Metallicity	Surface Gravity		Teff	[Fe/H]		Luminosity
+
+Units:
+Flag: We use four different flags values.
+0 means no issues.
+1 means MESA could not converge and no IBand values are to be calculated.
+2 means these models are "Shell Flashing" (not a true He flash at the TRGB. These are higher mass stars). We still calculate the IBand values for these models.
+3 means these models are too old to be observable in the current age of the universe (Lowest mass models and sometimes lower mass and high metallicity models). We still calculate the IBand values for these models.
+M, Y, Z (These are the same as the values you used in your inlist. The code does not use them, but they should be in the file.)
+The four values you will need for the calculations:
+Surface gravity: log10(Surface Gravity)
+Teff: Effective Temperature (Kelvin)
+[Fe/H]: This is a bit technical. It is essentially log10(Fe_star/H_star) - log10(Fe_sun / H_sun). 
+Note: There are different [Fe/H] values in different parts of a star. You will need to decide which part of the star to get values from.
+Luminosity: This is log10(Luminosity) in LSun units.
+
+You can retrieve or calculate all of these values using MESA. In "extending MESA" there is a tutorial on how to add column outputs if there doesn't already exist a history column output. 
+
+Output File Columns:
+Flag   iFlag	IBand	Ierr
+
+Units:
+Flag: This is the same flag from the input file.
+iFlag: This is a flag from the Worthy and Lee code indicating if you've exceeded the bounds of the interpolation.
+IBand: The magnitude of the IBand
+Ierr: The error in th IBand

@@ -1,0 +1,8 @@
+mesa_mod/*
+!mesa_mod/mesa
+mesa_mod/mesa/*
+!mesa_mod/mesa/star
+mesa_mod/mesa/star/*
+!mesa_mod/mesa/star/test_suite
+mesa_mod/mesa/star/test_suite/*
+!mesa_mod/mesa/star/test_suite/NuetrinoMagneticDipoleMesa

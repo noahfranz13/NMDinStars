@@ -1,0 +1,7 @@
+#!/bin/bash
+
+python3 prepMesaOut.py
+cd WorthyLeeBC/
+rm -f colorCorrections.txt
+gfortran -o mash3NMD mash3NMD.f
+./mash3NMD 1 iBandOutput.txt colorCorrections.txt
