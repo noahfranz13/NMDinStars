@@ -46,7 +46,7 @@
 
 !         write(*,*) 'hello I just started'
 
-         s% other_neu => JS_other_neu
+         s% other_neu => nuetrino_NMD
          s% extras_startup => extras_startup
          s% extras_check_model => extras_check_model
          s% extras_finish_step => extras_finish_step
@@ -158,7 +158,7 @@
 
       end function extras_finish_step
 
-      subroutine JS_other_neu(  &
+      subroutine nuetrino_MDM(  &
             id, k, T, log10_T, Rho, log10_Rho, abar, zbar, z2bar, log10_Tlim, flags, &
             loss, sources, ierr)
          use neu_lib, only: neu_get
@@ -178,7 +178,13 @@
          real(dp), intent(inout) :: loss(num_neu_rvs) ! total from all sources
          real(dp), intent(inout) :: sources(num_neu_types, num_neu_rvs)
          integer, intent(out) :: ierr
-         !real(dp) :: neutrino_factor
+
+         ! variables for introducing neutrino loss rates due to MDM
+         real :: n_e ! electron number density
+         real :: w_pl ! plasma frequency
+         real :: m_e            ! electron mass
+         real :: E_pl ! energy loss due to nuetrino magnetic dipole moment
+         real :: mu12 = x_ctrl(1)
 
          type (star_info), pointer :: s
          ierr = 0
@@ -189,11 +195,19 @@
             T, log10_T, Rho, log10_Rho, abar, zbar, z2bar, log10_Tlim, flags, &
             loss, sources, ierr)
 
-         !neutrino_factor = 5.0
-         !loss(ineu) = neutrino_factor*loss(ineu)
+!     get electron number
+         n_e = 0             ! set to 0 for now
 
-         loss(ineu) = s% x_ctrl(1)* loss(ineu)
+!     get plasma frequency
+         w_pl = (4*pi*fine*hbar*clight*n_e) / m_e  
 
-      end subroutine JS_other_neu
+
+!     now compute plasma energy loss from nuetrino dipole moment
+!     Note: x_ctrl(1) is the mu_12 input parameter and is given from the inlist
+         E_pl = 31.8d6 * (ev2erg*ev2erg) * (mu12*mu12) / (hbar*hbar * w_pl*w_pl)
+         
+         loss(ineu) = s% E_pl + loss(ineu)
+
+      end subroutine neutrino_MDM
 
       end module run_star_extras
