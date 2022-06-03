@@ -21,10 +21,10 @@
 ##module load compiler/GCCcore/9.2.0
 ##module load lib/zlib/1.2.11-GCCcore-6.4.0
 
-export MESASDK_ROOT=/home/nfranz/StellarEvolutionNeutrinoTests/mesa_mod/mesasdk
+export MESASDK_ROOT=/home/nfranz/NMDinStars/mesa_mod/mesasdk
 source $MESASDK_ROOT/bin/mesasdk_init.sh
 
-export MESA_DIR=/home/nfranz/StellarEvolutionNeutrinoTests/mesa_mod/mesa-r12778
+export MESA_DIR=/home/nfranz/NMDinStars/mesa_mod/mesa-r12778
 
 export OMP_NUM_THREADS=$([[ -v SLURM_CPUS_PER_TASK ]] && echo ${SLURM_CPUS_PER_TASK} || echo "1")
 
