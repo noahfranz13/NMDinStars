@@ -183,8 +183,12 @@
          real :: n_e ! electron number density
          real :: w_pl ! plasma frequency
          real :: m_e            ! electron mass
-         real :: E_pl ! energy loss due to nuetrino magnetic dipole moment
-         real :: mu12 ! mu_12
+         real :: E_pl ! energy loss due to nuetrino magnetic dipole moment in plasma
+         real :: E_pair ! energy loss due to pair interactions
+         real :: mu12           ! mu_12
+         real :: rho_4          ! density/10^4
+         real :: T_8            ! T/10^8
+         real :: mu10 ! mu_nu / 10^-10 mu_B
          
          type (star_info), pointer :: s
          ierr = 0
@@ -206,8 +210,15 @@
 !     now compute plasma energy loss from nuetrino dipole moment
 !     Note: x_ctrl(1) is the mu_12 input parameter and is given from the inlist
          E_pl = 31.8d6 * (ev2erg*ev2erg) * (mu12*mu12) / (hbar*hbar * w_pl*w_pl)
+
+!     Compute the pair energy loss
+         T_8 = T / 1d8
+         rho_4 = Rho / 1d4
+         mu10 = mu12 / 1d2
+
+         E_pair = 1.6d11 * ((mu10*mu10)/rho_4) * exp(-118.5/T_8) 
          
-         loss(ineu) = E_pl + loss(ineu)
+         loss(ineu) = E_pair + E_pl + loss(ineu)
 
       end subroutine neutrino_MDM
 
