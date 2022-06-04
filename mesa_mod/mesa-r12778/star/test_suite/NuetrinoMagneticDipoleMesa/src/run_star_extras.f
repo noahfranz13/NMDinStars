@@ -209,7 +209,7 @@
 
 !     now compute plasma energy loss from nuetrino dipole moment
 !     Note: x_ctrl(1) is the mu_12 input parameter and is given from the inlist
-         E_pl = 31.8d6 * (ev2erg*ev2erg) * (mu12*mu12) / (hbar*hbar * w_pl*w_pl)
+         E_pl = sources(2,1) * 31.8d6 * (ev2erg*ev2erg) * (mu12*mu12) / (hbar*hbar * w_pl*w_pl)
 
 !     Compute the pair energy loss
          T_8 = T / 1d8
