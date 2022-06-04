@@ -46,7 +46,7 @@
 
 !         write(*,*) 'hello I just started'
 
-         s% other_neu => nuetrino_NMD
+         s% other_neu => neutrino_MDM
          s% extras_startup => extras_startup
          s% extras_check_model => extras_check_model
          s% extras_finish_step => extras_finish_step
@@ -158,7 +158,7 @@
 
       end function extras_finish_step
 
-      subroutine nuetrino_MDM(  &
+      subroutine neutrino_MDM(  &
             id, k, T, log10_T, Rho, log10_Rho, abar, zbar, z2bar, log10_Tlim, flags, &
             loss, sources, ierr)
          use neu_lib, only: neu_get
@@ -179,17 +179,18 @@
          real(dp), intent(inout) :: sources(num_neu_types, num_neu_rvs)
          integer, intent(out) :: ierr
 
-         ! variables for introducing neutrino loss rates due to MDM
+         !     variables for introducing neutrino loss rates due to MDM
          real :: n_e ! electron number density
          real :: w_pl ! plasma frequency
          real :: m_e            ! electron mass
          real :: E_pl ! energy loss due to nuetrino magnetic dipole moment
-         real :: mu12 = x_ctrl(1)
-
+         real :: mu12 ! mu_12
+         
          type (star_info), pointer :: s
          ierr = 0
          call star_ptr(id, s, ierr)
          if (ierr /= 0) return
+         mu12 = s% x_ctrl(1)
 
          call neu_get(  &
             T, log10_T, Rho, log10_Rho, abar, zbar, z2bar, log10_Tlim, flags, &
@@ -206,7 +207,7 @@
 !     Note: x_ctrl(1) is the mu_12 input parameter and is given from the inlist
          E_pl = 31.8d6 * (ev2erg*ev2erg) * (mu12*mu12) / (hbar*hbar * w_pl*w_pl)
          
-         loss(ineu) = s% E_pl + loss(ineu)
+         loss(ineu) = E_pl + loss(ineu)
 
       end subroutine neutrino_MDM
 
