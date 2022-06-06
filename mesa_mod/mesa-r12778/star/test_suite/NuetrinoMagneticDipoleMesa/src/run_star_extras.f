@@ -164,6 +164,8 @@
          use neu_lib, only: neu_get
          use neu_def
          use const_def
+         use chem_def
+         
          integer, intent(in) :: id ! id for star
          integer, intent(in) :: k ! cell number or 0 if not for a particular cell
          real(dp), intent(in) :: T ! temperature
@@ -188,20 +190,35 @@
          real :: mu12           ! mu_12
          real :: rho_4          ! density/10^4
          real :: T_8            ! T/10^8
-         real :: mu10 ! mu_nu / 10^-10 mu_B
-         
+         real :: mu10           ! mu_nu / 10^-10 mu_B
+         real :: x_i            ! mass fraction of each isotope
+         integer :: chemID         ! chem id for a certain isotope
+         integer :: i           ! iterator
          type (star_info), pointer :: s
+         
          ierr = 0
          call star_ptr(id, s, ierr)
          if (ierr /= 0) return
+
+         
          mu12 = s% x_ctrl(1)
 
          call neu_get(  &
             T, log10_T, Rho, log10_Rho, abar, zbar, z2bar, log10_Tlim, flags, &
             loss, sources, ierr)
 
-!     get electron number
-         n_e = 0             ! set to 0 for now
+!     get electron number density
+
+            n_e = 0
+            
+            do i=1, s% species, 1
+               
+               x_i = s% xa(i, k)
+
+               chemId = chem_isos% chem_id(i)
+               n_e = n_e + ((Rho* chem_isos% Z(chemID) *x_i)/(chem_isos% Z_plus_N(chemID)*amu))
+
+            end do
 
 !     get plasma frequency
          w_pl = (4*pi*fine*hbar*clight*n_e) / m_e  
@@ -209,7 +226,7 @@
 
 !     now compute plasma energy loss from nuetrino dipole moment
 !     Note: x_ctrl(1) is the mu_12 input parameter and is given from the inlist
-         E_pl = sources(2,1) * 31.8d6 * (ev2erg*ev2erg) * (mu12*mu12) / (hbar*hbar * w_pl*w_pl)
+         E_pl = sources(plas_neu_type,ineu) * 31.8d6 * (ev2erg*ev2erg) * (mu12*mu12) / (hbar*hbar * w_pl*w_pl)
 
 !     Compute the pair energy loss
          T_8 = T / 1d8
