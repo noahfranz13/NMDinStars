@@ -215,7 +215,7 @@
                
                x_i = s% xa(i, k)
 
-               chemId = chem_isos% chem_id(i)
+               chemId = s% chem_id(i)
                n_e = n_e + ((Rho* chem_isos% Z(chemID) *x_i)/(chem_isos% Z_plus_N(chemID)*amu))
 
             end do
