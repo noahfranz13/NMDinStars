@@ -195,11 +195,9 @@
          integer :: chemID         ! chem id for a certain isotope
          integer :: i           ! iterator
          type (star_info), pointer :: s
-         type (nuclide_data) :: d
          
          ierr = 0
          call star_ptr(id, s, ierr)
-         call allocate_nuclide_data(d, s% species, ierr)
          if (ierr /= 0) return
 
          
@@ -217,8 +215,8 @@
                
                x_i = s% xa(i, k)
 
-               chemId = d% chem_id(i)
-               n_e = n_e + ((Rho* d% Z(chemID) *x_i)/(d% Z_plus_N(chemID)*amu))
+               chemId = s% chem_id(i)
+               n_e = n_e + ((Rho* chem_isos% Z(chemID) *x_i)/(chem_isos% Z_plus_N(chemID)*amu))
 
             end do
 

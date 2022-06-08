@@ -183,7 +183,7 @@
 
          !     variables for introducing neutrino loss rates due to MDM
          real :: n_e ! electron number density
-         real :: w_pl ! plasma frequency
+         real :: w_pl_2 ! plasma frequency
          real :: m_e            ! electron mass
          real :: E_pl ! energy loss due to nuetrino magnetic dipole moment in plasma
          real :: E_pair ! energy loss due to pair interactions
@@ -221,12 +221,12 @@
             end do
 
 !     get plasma frequency
-         w_pl = (4*pi*fine*hbar*clight*n_e) / m_e  
+         w_pl_2 = (4*pi*fine*hbar*clight*n_e) / m_e  
 
 
 !     now compute plasma energy loss from nuetrino dipole moment
 !     Note: x_ctrl(1) is the mu_12 input parameter and is given from the inlist
-         E_pl = sources(plas_neu_type,ineu) * 31.8d6 * (ev2erg*ev2erg) * (mu12*mu12) / (hbar*hbar * w_pl*w_pl)
+         E_pl = sources(plas_neu_type,ineu) * 31.8d6 * (ev2erg*ev2erg) * (mu12*mu12) / (hbar*hbar * w_pl_2)
 
 !     Compute the pair energy loss
          T_8 = T / 1d8

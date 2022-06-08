@@ -20,9 +20,9 @@
 
 &controls
 
-      use_other_neu = .false. !JS says: make sure you don't forget to turn this on.
+      use_other_neu = .true. !JS says: make sure you don't forget to turn this on.
 
-      x_ctrl(1) = 5.0d0
+      x_ctrl(1) = 1.5d0
 
 
       !JS says: this section comes with the test_suite examples. Do not change things unless you know what you are doing.
@@ -43,9 +43,9 @@
 
          retry_limit = -1! 90
 
-      max_model_number = 120000 !20000! JS says: this is the maximum model number before the code terminates.
+      max_model_number = -1 !20000! JS says: this is the maximum model number before the code terminates.
 
-      initial_mass = 0.9 !JS says: initial mass
+      initial_mass = 1.5 !JS says: initial mass
       initial_z = 0.004d0 !JS says: initial metallicity
       initial_y = 0.24      
 
@@ -82,7 +82,7 @@
       write_profiles_flag = .false.! JS says: this turns off profiles. I won't use them today but you may be interested in them in the future.
       log_directory = 'LOGS' !JS says: this is where MESA will output.
       !star_history_header_name = 'TRGB' !If you don't set this then MESA will put the column headings into the data files. This can make it hard for some programs to read so I set this to be a separate file for convenience.
-      star_history_name = 'trgb_LossRate5.data' !JS says, this is the name of your output history file.      
+      star_history_name = 'nmdm_test_wOtherNeu.data' !JS says, this is the name of your output history file.      
 
 
 / ! end of controls namelist
