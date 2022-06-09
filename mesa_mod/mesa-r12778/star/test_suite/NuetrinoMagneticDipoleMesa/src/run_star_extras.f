@@ -35,7 +35,10 @@
 
       include "test_suite_extras.inc"
 
+      real :: mu12           ! mu_12
+      mu12 = s% x_ctrl(1)
 
+      
       subroutine extras_controls(id, ierr)!JS says: use this to tell MESA which extra routines to use. A useful one not included as standard is extras_start_step
          integer, intent(in) :: id
          integer, intent(out) :: ierr
@@ -186,7 +189,6 @@
          real :: w_pl_2 ! plasma frequency
          real :: E_pl ! energy loss due to nuetrino magnetic dipole moment in plasma
          real :: E_pair ! energy loss due to pair interactions
-         real :: mu12           ! mu_12
          real :: rho_4          ! density/10^4
          real :: T_8            ! T/10^8
          real :: mu10           ! mu_nu / 10^-10 mu_B
@@ -198,9 +200,6 @@
          ierr = 0
          call star_ptr(id, s, ierr)
          if (ierr /= 0) return
-
-         
-         mu12 = s% x_ctrl(1)
 
          call neu_get(  &
             T, log10_T, Rho, log10_Rho, abar, zbar, z2bar, log10_Tlim, flags, &
