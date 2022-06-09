@@ -20,9 +20,9 @@ def computeGrids(n, useNMDM):
 
     # create grid
     if not useNMDM:
-        grid = np.array([np.array([mm, yy, zz]) for mm in m for yy in y for zz in z])
+        grid = np.array([np.array([ii, jj, kk, mm, yy, zz]) for ii, mm in enumerate(m) for jj, yy in enumerate(y) for kk, zz in enumerate(z)])
     else:
-        grid = np.array([np.array([mm, yy, zz, mu]) for mm in m for yy in y for zz in z for mu in mu12])
+        grid = np.array([np.array([ii, jj, kk, tt, mm, yy, zz, mu]) for ii, mm in enumerate(m) for jj, yy in enumerate(y) for kk, zz in enumerate(z) for tt, mu in enumerate(mu12)])
 
     # check length and if >25,000 write to separate grids
     if len(grid) > 25000:
