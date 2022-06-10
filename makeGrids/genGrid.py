@@ -16,7 +16,7 @@ def computeGrids(n, useNMDM):
     m = np.linspace(0.7, 2.25, n, endpoint=True) # mass
     y = np.linspace(0.2, 0.3, n, endpoint=True) # helium mass frac
     z = np.logspace(-5, -1.39794000867, n, endpoint=True) # metallicity
-    mu12 = np.logspace(np.log10(4), -2, n, endpoint=True) # mu_12 values
+    mu12 = np.logspace(-2, np.log10(4), n, endpoint=True) # mu_12 values
 
     # create grid
     if not useNMDM:
