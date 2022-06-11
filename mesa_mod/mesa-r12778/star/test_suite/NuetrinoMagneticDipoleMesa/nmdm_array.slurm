@@ -1,11 +1,11 @@
 #!/bin/bash
 ##SBATCH --job-name=testArray
 
-##SBATCH --array=1-16
+##SBATCH --array=1-1296
 
 #SBATCH --partition=kill-shared
 ## 3 day max run time for public partitions, except 4 hour limit  in sandbox
-#SBATCH --time=0-00:01:00 ## time format is DD-HH:MM:SS
+#SBATCH --time=0-05:00:00 ## time format is DD-HH:MM:SS
 
 #SBATCH --nodes=1
 ##SBATCH --tasks-per-node=1
@@ -62,8 +62,8 @@ export OMP_NUM_THREADS=$([[ -v SLURM_CPUS_PER_TASK ]] && echo ${SLURM_CPUS_PER_T
 ## Move some files around
 rm $inlist
 mkdir /home/nfranz/lus_scratch/testing/out_${uqCode}/
-mv LOGS/nmdm_${uqCode}.data /home/nfranz/lus_scratch/testing/out_${uqCode}/
-mv terminal_output_${uqCode}.txt /home/nfranz/lus_scratch/testing/out_${uqCode}/
+mv LOGS/nmdm_${uqCode}.data /home/nfranz/lus_scratch/mesa_1296/out_${uqCode}/
+mv terminal_output_${uqCode}.txt /home/nfranz/lus_scratch/mesa_1296/out_${uqCode}/
 
 
 
