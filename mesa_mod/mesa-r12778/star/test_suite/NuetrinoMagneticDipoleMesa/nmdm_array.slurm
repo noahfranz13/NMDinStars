@@ -40,14 +40,14 @@ inlist=inlist_temp_${uqCode}
 cp inlist_template $inlist
 
 ## write variables to new inlist
-sed -i '' -e "48s/initial_mass =/initial_mass = $mass/g" $inlist
-sed -i '' -e "49s/initial_z =/initial_z = $y/g" $inlist
-sed -i '' -e "50s/initial_y =/initial_y = $z/g" $inlist
-sed -i '' -e "51s/x_ctrl(1) =/x_ctrl(1) = $mu/g" $inlist
-sed -i '' -e "52s/Zbase =/zbase = $z/g" $inlist
+sed -i -e "48s/initial_mass =/initial_mass = $mass/g" $inlist
+sed -i -e "49s/initial_z =/initial_z = $y/g" $inlist
+sed -i -e "50s/initial_y =/initial_y = $z/g" $inlist
+sed -i -e "51s/x_ctrl(1) =/x_ctrl(1) = $mu/g" $inlist
+sed -i -e "52s/Zbase =/zbase = $z/g" $inlist
 
 ## Give inlist a unique output name
-sed -i '' -e "84s/nmdm/nmdm_$uqCode/g" $inlist
+sed -i -e "84s/nmdm/nmdm_$uqCode/g" $inlist
 
 ## Run MESA
 export MESASDK_ROOT=/home/nfranz/NMDinStars/mesa_mod/mesasdk
@@ -57,13 +57,13 @@ export MESA_DIR=/home/nfranz/NMDinStars/mesa_mod/mesa-r12778
 
 export OMP_NUM_THREADS=$([[ -v SLURM_CPUS_PER_TASK ]] && echo ${SLURM_CPUS_PER_TASK} || echo "1")
 
-./star $inlist
+./star $inlist > terminal_output_${uqCode}.txt
 
 ## Move some files around
 rm $inlist
 mkdir /home/nfranz/lus_scratch/testing/out_${uqCode}/
 mv LOGS/nmdm_${uqCode}.data /home/nfranz/lus_scratch/testing/out_${uqCode}/
-
+mv terminal_output_${uqCode}.txt /home/nfranz/lus_scratch/testing/out_${uqCode}/
 
 
 
