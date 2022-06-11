@@ -49,7 +49,7 @@ def main():
 
     # write file(s) with these grids
     for ii, gg in enumerate(grids):
-        np.savetxt(f'gridFile-{ii}.txt', gg)
+        np.savetxt(f'gridFile-{ii}.txt', gg, fmt=' '.join(['%i']*4 + ['%f']*4))
 
 if __name__ == '__main__':
     sys.exit(main())
