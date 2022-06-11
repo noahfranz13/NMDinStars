@@ -1,0 +1,2 @@
+#!/bin/bash
+sbatch --job-name=timingGrid --output=output-%A.out --error=error-%A.err --array=1-16 nmdm_array.slurm /home/nfranz/NMDinStars/makeGrids/gridFile-0.txt  

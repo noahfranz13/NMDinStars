@@ -10,3 +10,7 @@ mesa_mod/mesa-r12778/star/test_suite/*
 mesa_mod_backup/*
 
 *~
+*.data
+*.out
+*.err
+*n.*
