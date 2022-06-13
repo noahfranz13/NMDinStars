@@ -1,0 +1,121 @@
+!JS says: this is a hacked version of the test_suite he_core_flash
+
+&star_job
+      show_log_description_at_start = .false.
+
+      save_model_when_terminate = .false. !JS says: we won't be needing models today
+      save_model_filename = 'trgb.mod'
+
+      load_saved_model = .false.
+      saved_model_name = 'trgb.mod'
+
+      create_pre_main_sequence_model = .true. !JS says: this tells MESA to form a star from protostellar collapse. 99% of the time you want this.
+
+      pgstar_flag = .false.
+
+      change_initial_net = .true.
+      new_net_name = 'fe_and_zn.net'
+
+/ ! end of star_job namelist
+
+&controls
+
+      !JS says: this section comes with the test_suite examples. Do not change things unless you know what you are doing.
+
+      use_gold_tolerances = .false. !JS says, generally you should turn these off unless your results are crazy.
+      use_eps_mdot = .true.
+      use_dedt_form_of_energy_eqn = .true.
+      min_cell_energy_fraction_for_dedt_form = 0
+      use_correction_for_KE_plus_PE_with_eps_grav_in_energy_eqn = .true.
+      warn_when_stop_checking_residuals = .false.! I turned this off to avoid a lot of mess in the terminal. It's only on in the test_suite examples.
+
+      convergence_ignore_equL_residuals = .true. ! needed during flash
+      ! note: can get rid of this if turn on conv_vel's.  just takes more steps.
+
+      ! check for retries and backups as part of test_suite
+         max_number_backups = -1! 0 !JS says -1 means infinity. It's a good idea to use -1 once you are certain your code runs correctly
+         max_number_retries = -1! 90
+
+         retry_limit = -1! 90
+
+      max_model_number = -1 !20000! JS says: this is the maximum model number before the code terminates.
+
+      
+      use_other_neu = .true. !JS says: make sure you don't forget to turn this on.
+      use_Type2_opacities = .true.
+      
+      ! parameters to fill in based on the grid
+      initial_mass = 0.700000  
+      initial_z = 0.000010 
+      initial_y = 0.300000 
+      x_ctrl(1) = 0.010000 
+      zbase = 0.000010 
+
+      !xa_central_lower_limit_species(1) = 'he4'!JS says: this is a control for stopping. It sets a lower limit on species  and defines it to be helium-4
+      !xa_central_lower_limit(1) = 1d-3 !JS says: this is the abundance of he4 below which the code will terminate
+
+      power_he_burn_upper_limit = 1.0d6 !JS says: this tells MESA to stop when the power in helium burning is greater than 10^6. I set it to 10^6 to stop at the helium flash.
+
+      min_timestep_limit = 1d-8 ! (seconds) !JS says: this tells MESA not to take time-steps smaller than this.
+
+      use_ledoux_criterion = .true. !JS says: this tells MESA to include semiconvection. For this example this won't do much. If you want to see loops for heavier stars turn this on!
+
+      !JS says, the controls below control mass loss on the RGB and AGB. We won't change them today but have a look at star/defaults/control.defaults to see what they do.
+
+      cool_wind_RGB_scheme = 'Reimers'
+      cool_wind_AGB_scheme = 'Blocker'
+      RGB_to_AGB_wind_switch = 0.75d0
+      Reimers_scaling_factor = 0.1d0
+      Blocker_scaling_factor = 0.2d0
+
+      !JS says: these control the output of MESA.
+
+      photo_interval = 500000 !JS says: we won't use photos today so I set this to a high number
+      profile_interval = 50 !JS says: this tells MESA how often to write profiles
+      history_interval = 10 !JS syas: this tells MESA how often to write history files
+      terminal_interval = 10 !JS says: this tells MESA how often to write data to the terminal
+      write_header_frequency = 10 !JS syas: this tells MESA how often to write a description of the output to the terminal
+
+      !JS says: these control your output files
+
+      write_profiles_flag = .false.! JS says: this turns off profiles. I won't use them today but you may be interested in them in the future.
+      log_directory = 'LOGS' !JS says: this is where MESA will output.
+      !star_history_header_name = 'TRGB' !If you don't set this then MESA will put the column headings into the data files. This can make it hard for some programs to read so I set this to be a separate file for convenience.
+      star_history_name = 'nmdm_0_1_0_0.data' !JS says, this is the name of your output history file.      
+
+
+/ ! end of controls namelist
+
+
+
+&pgstar
+
+         !pause = .true.
+
+         Profile_Panels4_win_flag = .true. ! Abundance, Power, Mixing_Ds, and Dynamo
+         Profile_Panels4_num_panels = 4
+         Profile_Panels4_title = 'Abundance-Power-Mixing-He'
+
+         Profile_Panels4_yaxis_name(4) = 'log he4'
+         Profile_Panels4_ymin(4) = -1
+         Profile_Panels4_ymax(4) = 0.1
+
+
+         Profile_Panels4_win_width = 10
+         Profile_Panels4_win_aspect_ratio = 0.7 ! aspect_ratio = height/width
+
+         Profile_Panels4_xmin = 0d0 ! only used if /= -101d0
+         Profile_Panels4_xmax = 0.5d0 ! only used if /= -101d0
+
+         !History_Panels1_win_flag = .true. ! logT, logRho, log_L, log_Teff
+         !Grid8_win_flag = .true. ! Summary_Burn, Abundance, HR, TRho, TRho_Profile, Text_Summary1
+
+         Profile_Panels4_xaxis_name = 'mass'
+         Profile_Panels4_xaxis_reversed = .false.
+
+         Profile_Panels4_file_flag = .true.
+         Profile_Panels4_file_dir = 'png'
+         Profile_Panels4_file_prefix = 'he_flash_'
+         Profile_Panels4_file_interval = 10 ! output when mod(model_number,Profile_Panels4_file_interval)==0
+
+/ ! end of pgstar namelist

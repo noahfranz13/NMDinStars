@@ -1,0 +1,8 @@
+#!/bin/bash
+module load lang/Python/3.7.2-intel-2018.5.274
+
+python3 prepMesaOut.py
+cd WorthyLeeBC/
+# rm -f colorCorrections.txt
+gfortran -o mash3NMD mash3NMD.f
+./mash3NMD $1 iBandOutput.txt colorCorrections.txt
