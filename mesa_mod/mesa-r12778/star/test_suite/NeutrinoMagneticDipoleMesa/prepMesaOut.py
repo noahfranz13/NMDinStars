@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 
 from mesa_reader import MesaData
+from MesaOutput import MesaOutput
 
 def convert(filepath):
     '''
@@ -31,18 +32,18 @@ def convert(filepath):
 
 
 def main():
-    '''
+
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--logs', help="mesa output file", default=None)
+    parser.add_argument('--dir', help="mesa output file", default='/media/ubuntu/T7/mesa-1296')
     args = parser.parse_args()
-    '''
-    
-    dataFiles = glob.glob(os.path.join(os.getcwd(), 'LOGS', '*.data'))
 
+    m = MesaOutput(args.dir)
+    badData = m.onlyConverging()
+    
     outDict = {'flag':np.zeros(len(dataFiles), dtype=int), 'log_g': [],
                'Teff': [], '[Fe/H]': [], 'log_L': []}
-    for f in dataFiles:
+    for f in m.dataPaths:
         logg, Teff, feh, logL =  convert(f)
         outDict['log_g'].append(logg)
         outDict['Teff'].append(Teff)
