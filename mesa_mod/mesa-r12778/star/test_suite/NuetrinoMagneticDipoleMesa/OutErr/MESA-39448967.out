@@ -1,5 +1,0 @@
- open failed for /home/nfranz/StellarEvolutionNeutrinoTests/mesa_mod/mesa-r12778/data/version_number
- please check that mesa_dir is set correctly
- failed in stardata_init
- star_init ierr           2
- before_evolve_loop ierr           2

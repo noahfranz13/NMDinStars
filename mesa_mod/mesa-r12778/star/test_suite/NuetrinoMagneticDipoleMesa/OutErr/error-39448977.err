@@ -1,1 +1,0 @@
-/var/spool/slurm/d/job39448977/slurm_script: line 31: 26805 Segmentation fault      (core dumped) ./star inlist_neu_woNeu

@@ -1,1 +1,0 @@
-./star: error while loading shared libraries: libcrmath.so: cannot open shared object file: No such file or directory
