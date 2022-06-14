@@ -24,6 +24,11 @@ def computeGrids(n, useNMDM):
     else:
         grid = np.array([np.array([ii, jj, kk, tt, mm, yy, zz, mu]) for ii, mm in enumerate(m) for jj, yy in enumerate(y) for kk, zz in enumerate(z) for tt, mu in enumerate(mu12)])
 
+    # split grid based on even and odd indices
+    gridDf = pd.DataFrame(grid, columns=['m_idx', 'y_idx', 'z_idx', 'u_idx', 'm', 'y', 'z', 'mu'])
+    print(gridDf)
+    
+
     # check length and if >25,000 write to separate grids
     if len(grid) > 25000:
         grids = []

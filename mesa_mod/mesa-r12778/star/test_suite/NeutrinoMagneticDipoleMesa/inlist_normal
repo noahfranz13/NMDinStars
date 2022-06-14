@@ -45,11 +45,11 @@
       use_Type2_opacities = .true.
       
       ! parameters to fill in based on the grid
-      initial_mass =  
-      initial_z = 
-      initial_y = 
-      x_ctrl(1) = 
-      Zbase =
+      initial_mass = 1.01  
+      initial_z = 0.000276
+      initial_y = 0.24
+      x_ctrl(1) = 0.01
+      Zbase =0.000276
 
       mesh_delta_coeff = 0.5d0
       max_dq = 5.0d-4
@@ -60,7 +60,7 @@
 
       power_he_burn_upper_limit = 1.0d6 !JS says: this tells MESA to stop when the power in helium burning is greater than 10^6. I set it to 10^6 to stop at the helium flash.
 
-      min_timestep_limit = 1d-20 ! (seconds) !JS says: this tells MESA not to take time-steps smaller than this.
+      min_timestep_limit = 1d-8 ! (seconds) !JS says: this tells MESA not to take time-steps smaller than this.
 
       use_ledoux_criterion = .true. !JS says: this tells MESA to include semiconvection. For this example this won't do much. If you want to see loops for heavier stars turn this on!
 
@@ -85,7 +85,7 @@
       write_profiles_flag = .false.! JS says: this turns off profiles. I won't use them today but you may be interested in them in the future.
       log_directory = 'LOGS' !JS says: this is where MESA will output.
       !star_history_header_name = 'TRGB' !If you don't set this then MESA will put the column headings into the data files. This can make it hard for some programs to read so I set this to be a separate file for convenience.
-      star_history_name = 'nmdm.data' !JS says, this is the name of your output history file.      
+      star_history_name = 'nmdm_normal.data' !JS says, this is the name of your output history file.      
 
 
 / ! end of controls namelist
