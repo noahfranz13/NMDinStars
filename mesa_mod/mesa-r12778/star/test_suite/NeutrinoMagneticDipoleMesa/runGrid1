@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for f in /home/nfranz/NMDinStars/makeGrids/first*.txt; do
+    n=$(cat $f | wc -l)
+    
+    echo "sbatch --job-name=timingGrid --output=output-%A.out --error=error-%A.err --array=1-$n --exclude=lmem-00[01-10] nmdm_array1.slurm $f"
+
+    done
