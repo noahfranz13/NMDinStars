@@ -3,6 +3,7 @@ Script to compute a grid given a sidelength and
 if mu_12 should be considered.
 '''
 # imports
+import pandas as pd
 import  numpy as np
 import sys
 
@@ -26,21 +27,29 @@ def computeGrids(n, useNMDM):
 
     # split grid based on even and odd indices
     gridDf = pd.DataFrame(grid, columns=['m_idx', 'y_idx', 'z_idx', 'u_idx', 'm', 'y', 'z', 'mu'])
-    print(gridDf)
-    
+
+    evenGrid = gridDf.iloc[::2]
+    oddGrid = gridDf.iloc[1::2]
+
+    grids = [evenGrid, oddGrid]
 
     # check length and if >25,000 write to separate grids
-    if len(grid) > 25000:
-        grids = []
-        for i in range(0, len(grid), 25000):
-            try:
-                grids.append(grid[i:i+25000])
-            except:
-                grids.append(grid[i:])
-    else:
-        grids = [grid]
+    retGrids = []
+    for grid in grids:
 
-    return grids
+        if len(grid) > 25000:
+            g = []
+            for i in range(0, len(grid), 25000):
+                try:
+                    g.append(grid[i:i+25000])
+                except:
+                    g.append(grid[i:])
+        else:
+            g = [grid]
+
+        retGrids.append(g)
+
+    return retGrids
 
 def main():
 
@@ -51,10 +60,12 @@ def main():
     parser.set_defaults(useNMDM=True)
     args = parser.parse_args()
     grids = computeGrids(args.n, args.useNMDM)
-
-    # write file(s) with these grids
-    for ii, gg in enumerate(grids):
-        np.savetxt(f'gridFile-{ii}.txt', gg, fmt=' '.join(['%i']*4 + ['%f']*4))
+    
+    labels = ['first', 'second']
+    for grid, L in zip(grids, labels):    
+        # write file(s) with these grids
+        for ii, gg in enumerate(grid):         
+            gg.to_csv(f'{L}-gridFile-{ii}.txt', header=None)
 
 if __name__ == '__main__':
     sys.exit(main())
