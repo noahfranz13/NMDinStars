@@ -565,8 +565,8 @@
       !add_log_center_abundances
 
       ! individual central mass fractions (as many as desired)
-      !center h1
-      !center he4
+      center h1
+      center he4
       !center c12
       !center o16
 

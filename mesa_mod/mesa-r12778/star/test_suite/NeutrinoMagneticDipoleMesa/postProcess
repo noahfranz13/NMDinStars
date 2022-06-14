@@ -1,8 +1,15 @@
 #!/bin/bash
 module load lang/Python/3.7.2-intel-2018.5.274
 
-python3 prepMesaOut.py
+# prep MESA's output to be passed into Worthey & Lee
+python3 prepMesaOut.py --dir $1
+
+# get number of files in directory
+# n=$(echo $1 | sed "s@.*/mesa-@@g" | sed "s@/@@g")
 cd WorthyLeeBC/
-# rm -f colorCorrections.txt
-gfortran -o mash3NMD mash3NMD.f
-./mash3NMD $1 iBandOutput.txt colorCorrections.txt
+n=$(cat iBandOutput.txt | wc -l)
+echo "Directory has $n files"
+
+# Run Worthey & Lee conversion code
+# gfortran -o mash3NMD mash3NMD.f
+./mash3NMD $n iBandOutput.txt colorCorrections.txt

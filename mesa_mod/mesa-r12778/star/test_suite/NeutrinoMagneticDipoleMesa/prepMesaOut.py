@@ -41,7 +41,7 @@ def main():
     m = MesaOutput(args.dir)
     badData = m.onlyConverging()
     
-    outDict = {'flag':np.zeros(len(dataFiles), dtype=int), 'log_g': [],
+    outDict = {'flag':np.zeros(len(m.dataPaths), dtype=int), 'log_g': [],
                'Teff': [], '[Fe/H]': [], 'log_L': []}
     for f in m.dataPaths:
         logg, Teff, feh, logL =  convert(f)

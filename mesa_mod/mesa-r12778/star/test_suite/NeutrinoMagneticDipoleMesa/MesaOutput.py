@@ -1,11 +1,12 @@
 # Helpful class for reading in MESA output files
 class MesaOutput():
 
-    def __init__(self, dirPath, n=None):
+    def __init__(self, dirPath, read=False):
         self.dirPath = dirPath
         self.dataPaths = self.getDataFiles()
         self.terminalPaths = self.getTerminalOut()
-        self.data = self.getData(n)
+        if read:
+            self.data = self.getData(n)
 
     def getDataFiles(self):
         '''
@@ -44,7 +45,7 @@ class MesaOutput():
         import subprocess as sp
         import numpy as np
         
-        print(os.path.join(self.dirPath, '*/*'))
+        #print(os.path.join(self.dirPath, '*/*'))
         grep = sp.run([f"grep -r 'terminated evolution: cannot find acceptable model' {os.path.join(self.dirPath, '*/*')}" ], stderr=sp.PIPE, stdout=sp.PIPE, text=True, shell=True)
 
         output = grep.stdout
@@ -58,10 +59,10 @@ class MesaOutput():
     
         indexes = np.array(indexes)
 
-        badData = np.array(self.data)[indexes]
-        oppMask = np.ones(len(self.data), dtype=bool)
+        badData = np.array(self.dataPaths)[indexes]
+        oppMask = np.ones(len(self.dataPaths), dtype=bool)
         oppMask[indexes] = 0
-        self.data = np.array(self.data)[oppMask]
-        self.dataPaths = [m.file_name for m in self.data]
+        self.dataPaths = np.array(self.dataPaths)[oppMask]
+        #self.dataPaths = [m.file_name for m in self.data]
         
         return badData
