@@ -30,7 +30,23 @@ def convert(filepath):
     
     return mesa.log_g[-1], mesa.effective_T[-1], feh, mesa.log_L[-1]
 
+def runChecks(m):
+    # 1) check for time
+    finished = m.checkTime()
+    if not finished:
+        print('Not all models have finished!')
+        print('Exiting, please rerun necessary grid')
+        sys.exit()
+        
+    # 2) flag ones with incorrect termination code
+    m.checkConverging()
 
+    # 3) Check for shell flash
+    m.checkFlash()
+    
+    # 4) Check for age cuts
+    m.checkAge()
+    
 def main():
 
     import argparse
@@ -39,7 +55,7 @@ def main():
     args = parser.parse_args()
 
     m = MesaOutput(args.dir)
-    badData = m.onlyConverging()
+    runChecks(m)
     
     outDict = {'flag':np.zeros(len(m.dataPaths), dtype=int), 'log_g': [],
                'Teff': [], '[Fe/H]': [], 'log_L': []}
