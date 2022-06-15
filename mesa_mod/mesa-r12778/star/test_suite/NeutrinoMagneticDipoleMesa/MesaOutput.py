@@ -66,3 +66,55 @@ class MesaOutput():
         #self.dataPaths = [m.file_name for m in self.data]
         
         return badData
+
+    def checkTime(self):
+        '''
+        Looks for empty directories to see if any process
+        ran out of time
+
+        Return : true if there are models that ran out of time
+                 false if all models finished in time
+        '''
+        import os, glob
+        import pandas as pd
+
+        # get full dataframe of grid
+        gridFiles = glob.glob(os.path.join(os.getenv('HOME'), 'NMDinStars', 'makeGrids', '*.txt'))
+        
+        grid = []
+        for gg in gridFiles:
+             df = pd.read_csv(gg, header=None, index_col=0, sep='\t')
+             grid.append(df)
+             
+        grid = pd.concat(grid)
+                              
+        dirs = glob.glob(os.path.join(self.dirPath, '*'))
+        print(dirs)
+        toRerun = []
+        for dd in dirs:
+            files = glob.glob(os.path.join(dd, '*'))
+            print(files)
+            if len(files) == 0:
+                idx = int(dd.split('/')[-1].split('i')[-1])
+                gridRow = grid.iloc[idx]
+                toRerun.append(gridRow)
+
+        if len(toRerun) > 0:
+            outfile = os.path.join(os.getcwd(), 'rerun_grid.txt')
+            toRerun = pd.concat(toRerun)
+
+            print('Some models ran out of time...')
+            for row in toRerun:
+                print(row)
+            print(f'Writing grid to {outfile}')
+            
+            toRerun.to_csv(outfile, header=None, sep='\t')
+            return True
+        else:
+            print('None of the mdoels ran out of time!')
+
+            return False
+            
+                
+                
+        

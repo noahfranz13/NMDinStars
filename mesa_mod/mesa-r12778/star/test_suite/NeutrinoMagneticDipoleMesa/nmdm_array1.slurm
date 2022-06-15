@@ -24,16 +24,17 @@
 ## All options and environment variables found on schedMD site: http://slurm.schedmd.com/sbatch.html
 ## Read in line of grid and save each as a variable
 line=($(sed -n "$SLURM_ARRAY_TASK_ID p" $1))
-mass_idx=${line[0]}
-y_idx=${line[1]}
-z_idx=${line[2]}
-mu_idx=${line[3]}
-mass=${line[4]}
-y=${line[5]}
-z=${line[6]}
-mu=${line[7]}
+idx=${line[0]}
+mass_idx=${line[1]}
+y_idx=${line[2]}
+z_idx=${line[3]}
+mu_idx=${line[4]}
+mass=${line[5]}
+y=${line[6]}
+z=${line[7]}
+mu=${line[8]}
 
-uqCode="M${mass_idx}_Y${y_idx}_Z${z_idx}_U${mu_idx}"
+uqCode="M${mass_idx}_Y${y_idx}_Z${z_idx}_U${mu_idx}_i${idx}"
 
 ## Make new inlist based on template
 inlist=inlist_temp_${uqCode}
@@ -50,7 +51,7 @@ sed -i -e "52s/Zbase =/zbase = $z/g" $inlist
 sed -i -e "88s/nmdm/nmdm_$uqCode/g" $inlist
 
 ## make output directory
-outpath=/home/nfranz/lus_scratch/mesa-1296/out_${uqCode}/
+outpath=/home/nfranz/lus_scratch/mesa-16/first/out_${uqCode}/
 mkdir $outpath
 
 ## Run MESA

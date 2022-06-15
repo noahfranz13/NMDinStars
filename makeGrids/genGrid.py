@@ -28,6 +28,8 @@ def computeGrids(n, useNMDM):
     # split grid based on even and odd indices
     gridDf = pd.DataFrame(grid, columns=['m_idx', 'y_idx', 'z_idx', 'u_idx', 'm', 'y', 'z', 'mu'])
 
+    gridDf = gridDf.astype({'m_idx': int, 'y_idx': int, 'z_idx': int, 'u_idx': int})
+    
     evenGrid = gridDf.iloc[::2]
     oddGrid = gridDf.iloc[1::2]
 
@@ -65,7 +67,7 @@ def main():
     for grid, L in zip(grids, labels):    
         # write file(s) with these grids
         for ii, gg in enumerate(grid):         
-            gg.to_csv(f'{L}-gridFile-{ii}.txt', header=None)
+            gg.to_csv(f'{L}-gridFile-{ii}.txt', header=None, sep='\t')
 
 if __name__ == '__main__':
     sys.exit(main())
