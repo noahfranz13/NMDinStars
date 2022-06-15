@@ -45,10 +45,10 @@
       use_Type2_opacities = .true.
       
       ! parameters to fill in based on the grid
-      initial_mass = 0.7  
+      initial_mass = 2.25  
       initial_z = 0.04000000000018767 
       initial_y = 0.2 
-      x_ctrl(1) = 0.01 
+      x_ctrl(1) = 4.0 
       zbase = 0.04000000000018767
 
       mesh_delta_coeff = 0.5d0
@@ -77,7 +77,7 @@
       photo_interval = 500000 !JS says: we won't use photos today so I set this to a high number
       profile_interval = 50 !JS says: this tells MESA how often to write profiles
       history_interval = 10 !JS syas: this tells MESA how often to write history files
-      terminal_interval = 10 !JS says: this tells MESA how often to write data to the terminal
+      terminal_interval = 10000 !JS says: this tells MESA how often to write data to the terminal
       write_header_frequency = 10 !JS syas: this tells MESA how often to write a description of the output to the terminal
 
       !JS says: these control your output files
@@ -85,8 +85,10 @@
       write_profiles_flag = .false.! JS says: this turns off profiles. I won't use them today but you may be interested in them in the future.
       log_directory = 'LOGS' !JS says: this is where MESA will output.
       !star_history_header_name = 'TRGB' !If you don't set this then MESA will put the column headings into the data files. This can make it hard for some programs to read so I set this to be a separate file for convenience.
-      star_history_name = 'nmdm_M0_Y0_Z1_U0_i2.data' !JS says, this is the name of your output history file.      
+      star_history_name = 'nmdm_M1_Y0_Z1_U1_i11.data' !JS says, this is the name of your output history file.      
 
+      warn_when_large_rel_run_E_err = 1d99 ! Turn off rel_run_err warning
+      
 
 / ! end of controls namelist
 
