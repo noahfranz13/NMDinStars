@@ -14,3 +14,6 @@ echo "Directory has $n files"
 # Run Worthey & Lee conversion code
 # gfortran -o mash3NMD mash3NMD.f
 ./mash3NMD $n iBandOutput.txt colorCorrections.txt
+
+# merge all output files into one large one with all the data
+python3 ../mergeFiles.py --dir $1

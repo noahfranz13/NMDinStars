@@ -1,6 +1,5 @@
 #!/bin/bash
-for f in /home/nfranz/NMDinStars/makeGrids/second*.txt; do
-    n=$(cat $f | wc -l)   
 
-    sbatch --job-name=timingGrid --output=output-%A.out --error=error-%A.err --array=1-$n --exclude=lmem-00[01-10] nmdm_array2.slurm $f  
-    done
+sbatch --job-name=grid1_1 --array=1-25000 --partition=shared nmdm_array1.slurm /home/nfranz/NMDinStars/makeGrids/second-gridFile-0.txt 
+sbatch --job-name=grid1_2 --array=1-25000 --partition=shared nmdm_array1.slurm /home/nfranz/NMDinStars/makeGrids/second-gridFile-1.txt
+sbatch --job-name=grid1_3 --array=1-6250 --partition=kill-shared nmdm_array1.slurm /home/nfranz/NMDinStars/makeGrids/second-gridFile-2.txt

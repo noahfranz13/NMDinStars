@@ -1,21 +1,21 @@
 #!/bin/bash
-##SBATCH --job-name=timingArray
+##SBATCH --job-name=grid1
 
 ##SBATCH --array=1-1296
 
-#SBATCH --partition=kill-shared
+##SBATCH --partition=kill-shared
 ## 3 day max run time for public partitions, except 4 hour limit  in sandbox
-#SBATCH --time=0-05:00:00 ## time format is DD-HH:MM:SS
+#SBATCH --time=0-04:30:00 ## time format is DD-HH:MM:SS
 
 #SBATCH --nodes=1
 ##SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=4G ## max amount of memory per node you require
 ##SBATCH --core-spec=0 ## Uncomment to allow jobs to request all cores on a node
-##SBATCH --exclude=lmem-00[01-10]   
+#SBATCH --exclude=lmem-00[01-10]   
 
-##SBATCH --error=hello-%A_%a.err ## %A - filled with jobid
-##SBATCH --output=hello-%A_%a.out ## %A - filled with jobid
+##SBATCH --error=error-%A_%a.err ## %A - filled with jobid
+##SBATCH --output=output-%A_%a.out ## %A - filled with jobid
 
 ## Useful for remote notification
 ##SBATCH --mail-type=BEGIN,END,FAIL,REQUEUE,TIME_LIMIT_80
@@ -41,17 +41,17 @@ inlist=inlist_temp_${uqCode}
 cp inlist_template $inlist
 
 ## write variables to new inlist
-sed -i -e "48s/initial_mass =/initial_mass = $mass/g" $inlist
-sed -i -e "49s/initial_z =/initial_z = $z/g" $inlist
-sed -i -e "50s/initial_y =/initial_y = $y/g" $inlist
-sed -i -e "51s/x_ctrl(1) =/x_ctrl(1) = $mu/g" $inlist
-sed -i -e "52s/Zbase =/zbase = $z/g" $inlist
+sed -i -e "48s/initial_mass =/initial_mass = ${mass}d0/g" $inlist
+sed -i -e "49s/initial_z =/initial_z = ${z}d0/g" $inlist
+sed -i -e "50s/initial_y =/initial_y = ${y}d0/g" $inlist
+sed -i -e "51s/x_ctrl(1) =/x_ctrl(1) = ${mu}d0/g" $inlist
+sed -i -e "52s/Zbase =/zbase = ${z}d0/g" $inlist
 
 ## Give inlist a unique output name
 sed -i -e "88s/nmdm/nmdm_$uqCode/g" $inlist
 
 ## make output directory
-outpath=/home/nfranz/lus_scratch/mesa-16/first/out_${uqCode}/
+outpath=/home/nfranz/lus_scratch/mesa-112500/first/out_${uqCode}/
 mkdir $outpath
 
 ## Run MESA

@@ -118,9 +118,9 @@ class MesaOutput():
 
         age = np.array([max(d.star_age) for d in self.data])
         whereOld = np.where((age > 13.77e9) * (self.flags == 0))[0]
-        #print(whereOld)
-        #print(age)
-        self.flags[whereOld] = 2
+        print(whereOld)
+        print(age)
+        self.flags[whereOld] = 3
         print(f'WARNING : {len(whereOld)} models are being flagged for age > 13.77 byo')
 
 

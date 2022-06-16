@@ -55,9 +55,11 @@ def main():
     args = parser.parse_args()
 
     m = MesaOutput(args.dir)
+    # check the output data first!!!
     runChecks(m)
-    
-    outDict = {'flag':np.zeros(len(m.dataPaths), dtype=int), 'log_g': [],
+
+    # Now write the output files
+    outDict = {'flag':m.flags.astype(int), 'log_g': [],
                'Teff': [], '[Fe/H]': [], 'log_L': []}
     for f in m.dataPaths:
         logg, Teff, feh, logL =  convert(f)
@@ -65,7 +67,7 @@ def main():
         outDict['Teff'].append(Teff)
         outDict['[Fe/H]'].append(feh)
         outDict['log_L'].append(logL)
-    #print(outDict)
+    
     df = pd.DataFrame(outDict)
     df.to_csv("WorthyLeeBC/iBandOutput.txt", header=False,
               index=False, sep='\t')

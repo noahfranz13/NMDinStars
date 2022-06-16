@@ -61,7 +61,7 @@
 
    !## mass
 
-      star_mass ! in Msun units
+      !star_mass ! in Msun units
       !log_star_mass
 
       !star_gravitational_mass ! star_mass is baryonic mass
@@ -103,7 +103,7 @@
 
    !## mixing regions
 
-      mass_conv_core ! (Msun) mass coord of top of convective core.  0 if core is not convective
+      !mass_conv_core ! (Msun) mass coord of top of convective core.  0 if core is not convective
 
       !  mx1 refers to the largest (by mass) convective region.
       !  mx2 is the 2nd largest.
@@ -416,7 +416,7 @@
       log_L ! log10 luminosity in Lsun units
       !log_L_ergs_s ! log10 luminosity in cgs units
       !radius ! Rsun
-      log_R ! log10 radius in Rsun units
+      !log_R ! log10 radius in Rsun units
       !radius_cm
       !log_R_cm
 
@@ -508,8 +508,8 @@
 
 !# conditions near center
 
-      log_center_T ! temperature
-      log_center_Rho ! density
+      !log_center_T ! temperature
+      !log_center_Rho ! density
       !log_center_P ! pressure
 
       ! shorter names for above
@@ -565,7 +565,7 @@
       !add_log_center_abundances
 
       ! individual central mass fractions (as many as desired)
-      center h1
+      !center h1
       center he4
       !center c12
       !center o16

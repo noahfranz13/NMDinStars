@@ -14,3 +14,5 @@ mesa_mod_backup/*
 *.out
 *.err
 *n.*
+*inlist*
+*terminal_output*

@@ -7,17 +7,17 @@ import pandas as pd
 import  numpy as np
 import sys
 
-def computeGrids(n, useNMDM):
+def computeGrids(useNMDM):
     '''
     n [int] : edge length of grid
     useNMDM [bool] : true if using mu_12, false otherwise
     '''
     
     # first generate arrays of important info
-    m = np.linspace(0.7, 2.25, n, endpoint=True) # mass
-    y = np.linspace(0.2, 0.3, n, endpoint=True) # helium mass frac
-    z = np.logspace(-5, -1.39794000867, n, endpoint=True) # metallicity
-    mu12 = np.logspace(-2, np.log10(4), n, endpoint=True) # mu_12 values
+    m = np.linspace(0.7, 2.25, 15, endpoint=True) # mass
+    y = np.linspace(0.2, 0.3, 10, endpoint=True) # helium mass frac
+    z = np.logspace(-5, -1.39794000867, 25, endpoint=True) # metallicity
+    mu12 = np.logspace(-2, np.log10(4), 30, endpoint=True) # mu_12 values
 
     # create grid
     if not useNMDM:
@@ -57,17 +57,17 @@ def main():
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--n', help="side length of grid", type=int, default=None)
+    #parser.add_argument('--n', help="side length of grid", type=int, default=None)
     parser.add_argument('--no-NMDM', dest='useNMDM', action='store_false')
     parser.set_defaults(useNMDM=True)
     args = parser.parse_args()
-    grids = computeGrids(args.n, args.useNMDM)
+    grids = computeGrids(args.useNMDM)
     
     labels = ['first', 'second']
     for grid, L in zip(grids, labels):    
         # write file(s) with these grids
         for ii, gg in enumerate(grid):         
-            gg.to_csv(f'{L}-gridFile-{ii}.txt', header=None, sep='\t')
+            gg.to_csv(f'{L}-gridFile-{ii}.txt', header=None, sep='\t', float_format='%.15f')
 
 if __name__ == '__main__':
     sys.exit(main())
