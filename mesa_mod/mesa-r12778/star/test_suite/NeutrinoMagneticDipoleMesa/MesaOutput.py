@@ -3,18 +3,25 @@
 import os, sys, glob
 import numpy as np
 import pandas as pd
+from mesa_reader import MesaData
+from multiprocessing import Pool
+        
 
 class MesaOutput():
 
     def __init__(self, dirPath, read=True):        
+
         self.dirPath = dirPath
         self.dataPaths = self.getDataFiles()
         self.terminalPaths = self.getTerminalOut()
         self.flags = np.zeros(len(self.dataPaths))
+
         if read:
             self.data = self.getData()
         else:
             self.data = None
+
+        self.index = self.getIndex()
 
     def getDataFiles(self):
         '''
@@ -28,15 +35,28 @@ class MesaOutput():
         '''
         return glob.glob(os.path.join(self.dirPath, '*/*.txt'))
 
+    def getIndex(self):
+        '''
+        Get the index from the filepath
+        '''
+        dirs = glob.glob(os.path.join(self.dirPath, '*'))
+        return np.array([dd.split('i')[-1] for dd in dirs])  
+
+    def getDataHelper(self, f): return MesaData(f)
+
     def getData(self):
         '''
         Read in all the .data files using mesa_reader
 
         Returns : MesaData object of each file
         '''
-        from mesa_reader import MesaData
-        return [MesaData(f) for f in self.dataPaths]
+        print('Reading in the data, this may take a while...')
+
+        with Pool() as p:
+            result = p.map(self.getDataHelper, self.dataPaths)
         
+        return result
+
     def checkConverging(self):
         '''
         Seperates files into convering and those that  didn't converge
@@ -46,7 +66,8 @@ class MesaOutput():
         
         import subprocess as sp
 
-        grep = sp.run([f"grep -r 'termination code: power_he_burn_upper_limit' {os.path.join(self.dirPath, '*/*')}" ], stderr=sp.PIPE, stdout=sp.PIPE, text=True, shell=True)
+        cmd = [f"grep -r 'termination code: power_he_burn_upper_limit' {os.path.join(self.dirPath, '*/*')}" ]
+        grep = sp.run(cmd, stderr=sp.PIPE, stdout=sp.PIPE, text=True, shell=True)
 
         output = grep.stdout
         if len(grep.stderr) > 0:
@@ -56,10 +77,11 @@ class MesaOutput():
         
         goodIdxs = []
         tp = np.array(self.terminalPaths)
+        print(f'Length of grep: {len(good)-1}\nLength of terminal paths: {len(tp)}')
+
         for f in good[:-1]: # the last element of stdout is always empty
-            #print('*' + f)
             goodIdxs.append(np.where(f == tp)[0][0])
-    
+            
         indexes = np.array(goodIdxs)
         goodData = np.array(self.dataPaths)[indexes]
         oppMask = np.ones(len(self.dataPaths), dtype=bool)
@@ -118,8 +140,6 @@ class MesaOutput():
 
         age = np.array([max(d.star_age) for d in self.data])
         whereOld = np.where((age > 13.77e9) * (self.flags == 0))[0]
-        print(whereOld)
-        print(age)
         self.flags[whereOld] = 3
         print(f'WARNING : {len(whereOld)} models are being flagged for age > 13.77 byo')
 
@@ -128,6 +148,24 @@ class MesaOutput():
         '''
         Check for unexpected shell flashing
         '''                
-
         
+        goodIdxs = np.where(self.flags == 0)[0]
+        
+        for i, m in zip(goodIdxs, np.array(self.data)[goodIdxs]):
+            
+            he4 = np.array(m.center_he4)
+
+            where1 = np.where(he4 > 0.95)[0]
+            if len(where1) == 0:
+                print('WARNING: Model never has He4=1, skipping check for this model!')
+                continue
+            
+            lastIdx1 = where1[-1]
+            
+            whereLess1 = np.where(he4[lastIdx1:] < 0.9)[0]
+            if len(whereLess1) > 0:
+                self.flags[i] = 2
+                
+                
+        print(f'WARNING : {len(np.where(self.flags == 2)[0])} models He Flashed')
         

@@ -30,21 +30,26 @@ def convert(filepath):
     
     return mesa.log_g[-1], mesa.effective_T[-1], feh, mesa.log_L[-1]
 
-def runChecks(m):
+def runChecks(m, checkTime):
     # 1) check for time
+    print('Checking for files that ran out of time...')
     finished = m.checkTime()
-    if not finished:
-        print('Not all models have finished!')
-        print('Exiting, please rerun necessary grid')
-        sys.exit()
+    if checkTime:
+        if not finished:
+            print('Not all models have finished!')
+            print('Exiting, please rerun necessary grid')
+            sys.exit()
         
     # 2) flag ones with incorrect termination code
-    m.checkConverging()
+    print('Checking for files that did not converge...')
+    #m.checkConverging()
 
     # 3) Check for shell flash
+    print('Checking for early shell flashing...')
     m.checkFlash()
     
     # 4) Check for age cuts
+    print('Checking the age of outputs...')
     m.checkAge()
     
 def main():
@@ -52,12 +57,15 @@ def main():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', help="mesa output file", default='/media/ubuntu/T7/mesa-1296')
+    parser.add_argument('--noTimeCheck', dest='timeCheck', action='store_false')
+    parser.set_defaults(useNMDM=True)
     args = parser.parse_args()
 
     m = MesaOutput(args.dir)
+    
     # check the output data first!!!
-    runChecks(m)
-
+    runChecks(m, args.timeCheck)
+    print(m.flags)
     # Now write the output files
     outDict = {'flag':m.flags.astype(int), 'log_g': [],
                'Teff': [], '[Fe/H]': [], 'log_L': []}
@@ -69,8 +77,9 @@ def main():
         outDict['log_L'].append(logL)
     
     df = pd.DataFrame(outDict)
+    df.set_index(m.index, inplace=True)
     df.to_csv("WorthyLeeBC/iBandOutput.txt", header=False,
-              index=False, sep='\t')
+              index=True, sep='\t')
 
 if __name__ == '__main__':
     sys.exit(main())

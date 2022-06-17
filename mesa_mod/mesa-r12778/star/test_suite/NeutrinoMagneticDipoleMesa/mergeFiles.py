@@ -19,8 +19,10 @@ def main():
     else:
         key = args.dir.split('/')[-1]
     
-    color = pd.read_csv('colorCorrections.txt', header=None)
-    outData = pd.read_csv('iBandOutput.txt', sep='\t', header=None)
+    color = pd.read_csv('colorCorrections.txt', header=None, index_col=0)
+    color.columns = ['our_flag', 'worthey_lee_flag', 'M_I', 'M_I_err']
+    outData = pd.read_csv('iBandOutput.txt', sep='\t', index_col=0, header=None)
+    outData.columns = ['flag', 'surface_grav', 'Teff', 'feh', 'L']
 
     gridFiles = glob.glob(os.path.join(os.getenv('HOME'), 'NMDinStars', 'makeGrids', f'{key}*.txt'))
 
@@ -30,14 +32,10 @@ def main():
         grid.append(df)
              
     grid = pd.concat(grid)
-    
-    color.set_index(grid.index, inplace=True)
-    outData.set_index(grid.index, inplace=True)
-
-    header = ['mass_index', 'y_index', 'z_index', 'mu_index', 'mass', 'y', 'z', 'mu', 'flag', ]
+    grid.columns = ['mass_index', 'y_index', 'z_index', 'mu_index', 'mass', 'y', 'z', 'mu']
     
     allData = pd.concat([grid, outData, color], axis=1)
-    print(allData)
+    allData.to_csv(f'postProcess_output_{key}.txt')
     
 if __name__ == '__main__':
     sys.exit(main())

@@ -3,7 +3,7 @@ module load lang/Python/3.7.2-intel-2018.5.274
 rm WorthyLeeBC/colorCorrections.txt
 
 # prep MESA's output to be passed into Worthey & Lee
-python3 prepMesaOut.py --dir $1
+python3 prepMesaOut.py --dir $1 --noTimeCheck
 
 # get number of files in directory
 # n=$(echo $1 | sed "s@.*/mesa-@@g" | sed "s@/@@g")
