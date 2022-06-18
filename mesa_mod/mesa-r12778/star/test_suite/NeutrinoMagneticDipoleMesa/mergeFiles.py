@@ -32,7 +32,7 @@ def main():
     grid.columns = ['mass_index', 'y_index', 'z_index', 'mu_index', 'mass', 'y', 'z', 'mu']
     
     allData = pd.concat([grid, outData, color], axis=1)
-    allData.drop(columns='our_flag')
+    allData.drop(columns='our_flag', inplace=True)
     allData.query('M_I == M_I', inplace=True)
     allData.to_csv(f'postProcess_output_{key}.txt')
     

@@ -32,9 +32,10 @@ def convert(filepath):
 
 def runChecks(m, checkTime):
     # 1) check for time
-    print('Checking for files that ran out of time...')
-    finished = m.checkTime()
     if checkTime:
+        print('Checking for files that ran out of time...')
+        finished = m.checkTime()
+
         if not finished:
             print('Not all models have finished!')
             print('Exiting, please rerun necessary grid')

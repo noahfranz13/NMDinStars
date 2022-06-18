@@ -116,7 +116,7 @@ class MesaOutput():
                 idx = int(dd.split('/')[-1].split('i')[-1])
                 gridRow = grid.iloc[idx]
                 toRerun.append(gridRow)
-
+        print(toRerun)
         if len(toRerun) > 0:
             outfile = os.path.join(os.getcwd(), 'rerun_grid.txt')
             toRerun = pd.concat(toRerun)
