@@ -6,7 +6,6 @@
 import sys, os, glob
 import pandas as pd
 
-
 def main():
 
     import argparse
@@ -24,17 +23,16 @@ def main():
     outData = pd.read_csv('iBandOutput.txt', sep='\t', index_col=0, header=None)
     outData.columns = ['flag', 'surface_grav', 'Teff', 'feh', 'L']
 
-    gridFiles = glob.glob(os.path.join(os.getenv('HOME'), 'NMDinStars', 'makeGrids', f'{key}*.txt'))
-
+    gridFiles = glob.glob(os.path.join(os.getenv('HOME'), 'NMDinStars', 'makeGrids', f'*.txt'))
     grid = []
     for gg in gridFiles:
         df = pd.read_csv(gg, header=None, index_col=0, sep='\t')
         grid.append(df)
-             
     grid = pd.concat(grid)
     grid.columns = ['mass_index', 'y_index', 'z_index', 'mu_index', 'mass', 'y', 'z', 'mu']
     
     allData = pd.concat([grid, outData, color], axis=1)
+    allData.query('M_I == M_I', inplace=True)
     allData.to_csv(f'postProcess_output_{key}.txt')
     
 if __name__ == '__main__':

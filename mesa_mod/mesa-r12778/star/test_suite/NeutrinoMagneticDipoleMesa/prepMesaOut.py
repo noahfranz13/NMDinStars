@@ -42,7 +42,7 @@ def runChecks(m, checkTime):
         
     # 2) flag ones with incorrect termination code
     print('Checking for files that did not converge...')
-    #m.checkConverging()
+    m.checkConverging()
 
     # 3) Check for shell flash
     print('Checking for early shell flashing...')
