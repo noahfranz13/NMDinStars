@@ -41,7 +41,7 @@
       max_model_number = -1 !20000! JS says: this is the maximum model number before the code terminates.
 
       
-      use_other_neu = .false. !JS says: make sure you don't forget to turn this on.
+      use_other_neu = .true. !JS says: make sure you don't forget to turn this on.
       use_Type2_opacities = .true.
       
       ! parameters to fill in based on the grid
