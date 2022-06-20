@@ -165,7 +165,6 @@ class MesaOutput():
             whereLess1 = np.where(he4[lastIdx1:] < 0.9)[0]
             if len(whereLess1) > 0:
                 self.flags[i] = 2
-                
-                
+                                
         print(f'WARNING : {len(np.where(self.flags == 2)[0])} models He Flashed')
         
