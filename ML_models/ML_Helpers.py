@@ -95,7 +95,7 @@ def buildModel(nLayers, activation='relu', loss='mse', optimizer='adam', metrics
         
     return model
 
-def plotLoss(h, key='loss'):
+def plot(h, key='loss'):
     '''
     Plots the loss of the Keras history dict
     '''
@@ -107,5 +107,6 @@ def plotLoss(h, key='loss'):
     ax.set_xlabel('Epochs')
     ax.set_ylabel(key)
     ax.legend()
+    fig.savefig(key+'.jpeg', bbox_inches='tight', transparent=False)
         
     
