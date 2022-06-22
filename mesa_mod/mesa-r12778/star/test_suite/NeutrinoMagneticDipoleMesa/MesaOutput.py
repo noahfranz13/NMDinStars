@@ -78,9 +78,14 @@ class MesaOutput():
         goodIdxs = []
         tp = np.array(self.terminalPaths)
         print(f'Length of grep: {len(good)-1}\nLength of terminal paths: {len(tp)}')
-
+        #print(tp)
+        #print(good)
         for f in good[:-1]: # the last element of stdout is always empty
-            goodIdxs.append(np.where(f == tp)[0][0])
+            idx = np.where(f == tp)[0]
+            if len(idx > 0):
+                goodIdxs.append(idx[0])
+            else:
+                print("No file found for: ", f)
             
         indexes = np.array(goodIdxs)
         goodData = np.array(self.dataPaths)[indexes]
