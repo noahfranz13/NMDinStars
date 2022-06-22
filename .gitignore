@@ -13,6 +13,7 @@ mesa_mod_backup/*
 *.data
 *.out
 *.err
-*n.*
+*.nfs*
+*sed*
 *inlist*
 *terminal_output*

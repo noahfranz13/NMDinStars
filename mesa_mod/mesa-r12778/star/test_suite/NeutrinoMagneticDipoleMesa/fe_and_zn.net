@@ -1,0 +1,6 @@
+include 'basic.net'
+      
+add_isos(
+    fe56
+    zn64
+    )

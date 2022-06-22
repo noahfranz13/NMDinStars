@@ -47,8 +47,12 @@ def runChecks(m, checkTime):
 
     # 3) Check for shell flash
     print('Checking for early shell flashing...')
-    m.checkFlash()
-    
+    try:
+        m.checkFlash()
+    except:
+        print('No center_he4 outputted, using modified method')
+        m.MD_findShellFlash()
+
     # 4) Check for age cuts
     print('Checking the age of outputs...')
     m.checkAge()

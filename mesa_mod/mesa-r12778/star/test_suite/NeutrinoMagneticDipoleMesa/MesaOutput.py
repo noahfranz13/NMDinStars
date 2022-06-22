@@ -173,3 +173,36 @@ class MesaOutput():
                                 
         print(f'WARNING : {len(np.where(self.flags == 2)[0])} models He Flashed')
         
+    def MD_findShellFlash(self):
+        """
+        From Mitchell Dennis, to be used with old data that doesn't have output center_he4
+
+        This function determines whether or not a given MESA model is shell flashing.
+
+        INPUTS:
+        The power_he_burn MESA output.
+
+        RETURNS:
+        A Boolean that evaluates to True if a model is shell flashing
+        """
+        goodIdxs = np.where(self.flags == 0)[0]
+
+        for ii, m in zip(goodIdxs, np.array(self.data)[goodIdxs]):
+            heBurn = m.power_he_burn
+
+            shellFlash = False
+            heIgnitionFlag = False
+            previousLuminosity = 0
+            maxHeBurn = 0
+
+            for i in range(len(heBurn)):
+                if heBurn[i] > maxHeBurn:
+                    maxHeBurn = heBurn[i]
+                if (not heIgnitionFlag and heBurn[i] > 10**-6):
+                    heIgnitionFlag = True
+                if (not shellFlash and heIgnitionFlag and heBurn[i] < maxHeBurn / 5):
+                    shellFlashIndex = i
+                    shellFlash = True
+                if (shellFlash and i > shellFlashIndex + 50):
+                    #return True
+                    self.flags[ii] == 2
