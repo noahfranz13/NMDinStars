@@ -7,6 +7,9 @@ import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout # import dropout for further extension of the function
     
+import seaborn as sb
+sb.set(context='talk', style='whitegrid', palette='Set1')
+plt.rcParams["font.family"] = "serif"
 
 
 # define a normalization function
@@ -63,7 +66,7 @@ def splitData(df, trainFrac=0.7, valFrac=0.15, testFrac=0.15, seed=None):
     return train, val, test
 
 # define a function to build a model given some inputs
-def buildModel(nLayers, activation='relu', loss='mse', optimizer='adam', metrics=[]):
+def buildModel(nLayers, activation='relu', loss='mse', optimizer='adam', metrics=[], nOutputs=2, actLast='sigmoid'):
     '''
     Builds the Sequential model for ML
     Note: make this more complex with more options as needed
@@ -73,6 +76,8 @@ def buildModel(nLayers, activation='relu', loss='mse', optimizer='adam', metrics
     loss [String] : loss function to use during compiling
     optimizer [String] : optimizer to use for training, default is adam
     metrics [List] : metrics to return from the model training
+    nOutputs [int] : number of output values, used to set # of nodes in last layer
+    actLast [String] : activation function to use in the last layer
     
     returns : a Keras Sequential Model object
     '''
@@ -83,10 +88,14 @@ def buildModel(nLayers, activation='relu', loss='mse', optimizer='adam', metrics
     # start large than get smaller
     nodes = 2**nLayers
     while nLayers > 0:
-        model.add(Dense(nodes, activation=activation))
+        if nLayers == 1:
+            model.add(Dense(nOutputs, activation='sigmoid'))
+        else:
+            model.add(Dense(nodes, activation=activation))
         
         nodes = nodes/2
         nLayers -= 1
+        
         
     # compile the model
     model.compile(loss=loss,
@@ -95,7 +104,7 @@ def buildModel(nLayers, activation='relu', loss='mse', optimizer='adam', metrics
         
     return model
 
-def plot(h, key='loss'):
+def plotLoss(h, key='loss'):
     '''
     Plots the loss of the Keras history dict
     '''
@@ -105,8 +114,70 @@ def plot(h, key='loss'):
     ax.plot(h['val_' + key], label='Validation')
     
     ax.set_xlabel('Epochs')
-    ax.set_ylabel(key)
+    ax.set_ylabel('Loss')
     ax.legend()
-    fig.savefig(key+'.jpeg', bbox_inches='tight', transparent=False)
-        
+    fig.savefig('loss.jpeg', bbox_inches='tight', transparent=False)
+
+def plotAccuracy(h, key='accuracy'):
+    '''
+    Plots the loss of the Keras history dict
+    '''
+    fig, ax = plt.subplots()
+
+    ax.plot(h[key], label='Training')
+    ax.plot(h['val_' + key], label='Validation')
+    
+    ax.set_xlabel('Epochs')
+    ax.set_ylabel('Accuracy')
+    ax.legend()
+    fig.savefig('accuracy.jpeg', bbox_inches='tight', transparent=False)
+
+def plotCompare(actual, prediction):
+    '''
+    Plots a  predicted ouput vs. the expected
+    output
+
+    actual [array]     : expected array of outputs
+    prediction [array] : models predicted outputs
+
+    Returns : Nothing, saves a figure
+
+    '''
+
+    fig, ax = plt.subplots()
+
+    ax.plot(actual, prediction, 'o')
+    
+    ax.set_xlabel('Expected Results')
+    ax.set_ylabel('Model Prediction')
+
+    fig.savefig('output_comparison.jpeg',
+                bbox_inches='tight',
+                transparent=False)
+
+
+def plotCompareHist(actual, prediction):
+    '''
+    Plots a 2D histogram of the predicted ouput vs. the expected
+    output
+
+    actual [array]     : expected array of outputs
+    prediction [array] : models predicted outputs
+
+    Returns : Nothing, saves a figure
+    '''
+    import cmasher as cm
+    
+    fig, ax = plt.subplots()
+
+    count, xedge, yedge, im = ax.hist2d(actual, prediction,
+                                        bins=int(len(actual)/1000),
+                                        cmap=cm.horizon)
+    ax.set_xlabel('Expected Results')
+    ax.set_ylabel('Model Prediction')
+
+    fig.colorbar(im)
+    fig.savefig('output_2dHist.jpeg',
+                bbox_inches='tight',
+                transparent=False)
     
