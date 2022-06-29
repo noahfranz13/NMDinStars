@@ -5,12 +5,11 @@ import pandas as pd
 import numpy as np
 
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout # import dropout for further extension of the function
+from tensorflow.keras.layers import Dense
     
 import seaborn as sb
 sb.set(context='talk', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
-
 
 # define a normalization function
 def minNormalize(d):
@@ -34,7 +33,7 @@ def inverseMinNormalize(dNorm, minVal, maxVal):
     return dNorm * (maxVal - minVal) + minVal
 
 # define a useful splitting function
-def splitData(df, trainFrac=0.7, valFrac=0.15, testFrac=0.15, seed=None):
+def splitData(df, trainFrac=0.8, valFrac=0.10, testFrac=0.10, seed=None):
     '''
     Randomly splits a dataset into training, validation, and testing
     
@@ -85,8 +84,8 @@ def buildModel(nLayers, activation='relu', loss='mse', optimizer='adam', metrics
     # initialize the model
     model = Sequential()
     
-    # start large than get smaller
     nodes = 2**nLayers
+    # start large than get smaller
     while nLayers > 0:
         if nLayers == 1:
             model.add(Dense(nOutputs, activation='sigmoid'))
@@ -104,7 +103,7 @@ def buildModel(nLayers, activation='relu', loss='mse', optimizer='adam', metrics
         
     return model
 
-def plotLoss(h, key='loss'):
+def plotLoss(h, key='loss', name='loss.jpeg'):
     '''
     Plots the loss of the Keras history dict
     '''
@@ -116,9 +115,9 @@ def plotLoss(h, key='loss'):
     ax.set_xlabel('Epochs')
     ax.set_ylabel('Loss')
     ax.legend()
-    fig.savefig('loss.jpeg', bbox_inches='tight', transparent=False)
+    fig.savefig(name, bbox_inches='tight', transparent=False)
 
-def plotAccuracy(h, key='accuracy'):
+def plotAccuracy(h, key='accuracy', name='accuracy.jpeg'):
     '''
     Plots the loss of the Keras history dict
     '''
@@ -130,33 +129,36 @@ def plotAccuracy(h, key='accuracy'):
     ax.set_xlabel('Epochs')
     ax.set_ylabel('Accuracy')
     ax.legend()
-    fig.savefig('accuracy.jpeg', bbox_inches='tight', transparent=False)
+    fig.savefig(name, bbox_inches='tight', transparent=False)
 
-def plotCompare(actual, prediction):
+def plotFalseNegPos(h):
     '''
-    Plots a  predicted ouput vs. the expected
-    output
-
-    actual [array]     : expected array of outputs
-    prediction [array] : models predicted outputs
-
-    Returns : Nothing, saves a figure
-
+    Plots the loss of the Keras history dict
     '''
-
+    # plot false negatives
     fig, ax = plt.subplots()
 
-    ax.plot(actual, prediction, 'o')
+    ax.plot(h['false_negatives'], label='Training')
+    ax.plot(h['val_false_negatives'], label='Validation')
     
-    ax.set_xlabel('Expected Results')
-    ax.set_ylabel('Model Prediction')
+    ax.set_xlabel('Epochs')
+    ax.set_ylabel('False Negative')
+    ax.legend()
+    fig.savefig('FalseNegative.jpeg', bbox_inches='tight', transparent=False)
 
-    fig.savefig('output_comparison.jpeg',
-                bbox_inches='tight',
-                transparent=False)
+    # plot false positives
+    fig, ax = plt.subplots()
+
+    ax.plot(h['false_positives'], label='Training')
+    ax.plot(h['val_false_positives'], label='Validation')
+    
+    ax.set_xlabel('Epochs')
+    ax.set_ylabel('False Positive')
+    ax.legend()
+    fig.savefig('FalsePositive.jpeg', bbox_inches='tight', transparent=False)
 
 
-def plotCompareHist(actual, prediction):
+def plotCompareHist(actual, prediction, name='output_2Dhist.jpeg'):
     '''
     Plots a 2D histogram of the predicted ouput vs. the expected
     output
@@ -171,13 +173,18 @@ def plotCompareHist(actual, prediction):
     fig, ax = plt.subplots()
 
     count, xedge, yedge, im = ax.hist2d(actual, prediction,
-                                        bins=int(len(actual)/1000),
-                                        cmap=cm.horizon)
+                                        bins=20,
+                                        cmap=cm.dusk)
     ax.set_xlabel('Expected Results')
     ax.set_ylabel('Model Prediction')
-
-    fig.colorbar(im)
-    fig.savefig('output_2dHist.jpeg',
+    ax.set_aspect('equal')
+    ax.tick_params(axis='both',
+                   which='major',
+                   direction='in',
+                   length=5,
+                   color='white')
+    fig.colorbar(im, label='Number of Models')
+    fig.savefig(name,
                 bbox_inches='tight',
                 transparent=False)
     
