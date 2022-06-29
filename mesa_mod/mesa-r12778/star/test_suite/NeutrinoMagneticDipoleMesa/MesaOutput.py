@@ -66,7 +66,8 @@ class MesaOutput():
         
         import subprocess as sp
 
-        cmd = [f"grep -r 'termination code: power_he_burn_upper_limit' {os.path.join(self.dirPath, '*/*')}" ]
+        cmd = [f"grep -r 'termination code: power_he_burn_upper_limit' {self.dirPath}" ]
+        
         grep = sp.run(cmd, stderr=sp.PIPE, stdout=sp.PIPE, text=True, shell=True)
 
         output = grep.stdout

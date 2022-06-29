@@ -1,5 +1,7 @@
 #!/bin/bash
 
-sbatch --job-name=grid1_1 --array=1-25000 --partition=shared nmdm_array1.slurm /home/nfranz/NMDinStars/makeGrids/second-gridFile-0.txt 
-sbatch --job-name=grid1_2 --array=1-25000 --partition=shared nmdm_array1.slurm /home/nfranz/NMDinStars/makeGrids/second-gridFile-1.txt
-sbatch --job-name=grid1_3 --array=1-6250 --partition=kill-shared nmdm_array1.slurm /home/nfranz/NMDinStars/makeGrids/second-gridFile-2.txt
+sbatch --job-name=grid2_1 --array=1-25000 --error=error-%A.err --output=output-%A.out --partition=shared nmdm_array2.slurm /home/nfranz/NMDinStars/makeGrids/second-gridFile-0.txt 
+
+sbatch --job-name=grid2_2 --array=1-25000 --error=error-%A.err --output=output-%A.out --partition=kill-shared nmdm_array2.slurm /home/nfranz/NMDinStars/makeGrids/second-gridFile-1.txt
+
+sbatch --job-name=grid2_3 --array=1-6250 --error=error-%A.err --output=output-%A.out --partition=kill-shared nmdm_array2.slurm /home/nfranz/NMDinStars/makeGrids/second-gridFile-2.txt

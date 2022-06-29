@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sbatch --job-name=grid1_rerun --array=1-3 --error=error-%A.err --output=output-%A.out --partition=shared nmdm_array_rerun.slurm grid_to_rerun.csv 

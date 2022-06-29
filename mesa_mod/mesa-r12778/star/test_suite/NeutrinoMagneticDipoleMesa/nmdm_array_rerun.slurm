@@ -1,11 +1,11 @@
 #!/bin/bash
-##SBATCH --job-name=timingArray
+##SBATCH --job-name=grid1
 
 ##SBATCH --array=1-1296
 
 ##SBATCH --partition=kill-shared
 ## 3 day max run time for public partitions, except 4 hour limit  in sandbox
-#SBATCH --time=0-04:30:00 ## time format is DD-HH:MM:SS
+#SBATCH --time=0-07:00:00 ## time format is DD-HH:MM:SS
 
 #SBATCH --nodes=1
 ##SBATCH --tasks-per-node=1
@@ -51,7 +51,7 @@ sed -i -e "52s/Zbase =/zbase = ${z}d0/g" $inlist
 sed -i -e "88s/nmdm/nmdm_$uqCode/g" $inlist
 
 ## make output directory
-outpath=/home/nfranz/lus_scratch/mesa-112500/second/out_${uqCode}/
+outpath=/home/nfranz/lus_scratch/mesa-112500/first/out_${uqCode}/
 mkdir $outpath
 
 ## Run MESA
