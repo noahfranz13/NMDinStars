@@ -14,11 +14,11 @@ from tensorflow.keras.optimizers import Adam
 from ML_Helpers import *
 
 # read in   the data using pandas
-datadir = '/home/ubuntu/Documents/NMDinStars/ML_models/'
-infile = os.path.join(datadir, 'fulldata.txt')
+datadir = '/home/ubuntu/Documents/NMDinStars/analysis/output_analysis/'
+infile = os.path.join(datadir, 'allData.csv')
 allData = pd.read_csv(infile) # time is in minutes
 allData = allData[allData.flag != 1] # cut out flag = 1
-data = allData[['mass', 'Y', 'Z']]
+data = allData[['mass', 'y', 'z']]
 
 # set hyper parameters
 nLayers = 8
@@ -26,8 +26,7 @@ epochs = 120
 batch = 120
 
 # normalize the data
-#normData, minVal, maxVal = minNormalize(data)
-normData = data # just because the input is already normalized
+normData, minVal, maxVal = minNormalize(data)
 
 normData['flag'] = allData['flag']
 

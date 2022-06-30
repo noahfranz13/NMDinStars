@@ -14,16 +14,15 @@ from tensorflow.keras.metrics import MeanAbsoluteError as mae
 
 from sklearn.metrics import mean_squared_error
 
-from MD_machineLearningFunctions import deNormalise
 from ML_Helpers import *
 
 # read in the data using pandas
-datadir = '/home/ubuntu/Documents/NMDinStars/ML_models/'
-infile = os.path.join(datadir, 'fulldata.txt')
+datadir = '/home/ubuntu/Documents/NMDinStars/analysis/output_analysis/'
+infile = os.path.join(datadir, 'allData.csv')
 allData = pd.read_csv(infile) # time is in minutes
 # cut out too old, he flash, and didn't converge
 allData = allData[allData.flag == 0]
-data = allData[['mass', 'Y', 'Z', 'IBand', 'Ierr']]
+data = allData[['mass', 'y', 'z', 'M_I', 'M_I_err']]
 
 # set hyper parameters
 nLayers = 10
@@ -31,12 +30,11 @@ epochs = 120
 batch = 120
 initLR = 1e-4
 
-inNames = ['mass', 'Y', 'Z']
-outNames = ['IBand', 'Ierr']
+inNames = ['mass', 'y', 'z']
+outNames = ['M_I', 'M_I_err']
 
 # normalize the data
-#normData, minVal, maxVal = minNormalize(data)
-normData = data # just because the input is already normalized
+normData, minVal, maxVal = minNormalize(data)
 
 # split up the data
 train, val, test = splitData(normData)
@@ -54,7 +52,7 @@ cb = EarlyStopping(monitor='val_loss',
                    restore_best_weights=True)
 lrCalib = ReduceLROnPlateau(monitor='val_loss',
                             factor=0.01,
-                            patience=3,
+                            patience=5,
                             cooldown=5,
                             verbose=1)
 
@@ -77,10 +75,10 @@ pred = model.predict(test[inNames])
 predI, predErr = pred[:,0], pred[:,1]
 
 # denormalize Mitchell's data using his denormalization function
-predI_deNorm = deNormalise(0.0, 5.6129999999999995, 5.611, predI)
-predErr_deNorm = deNormalise(0.106, 0.8350000000000001, 0.053, predErr)
-Iband = deNormalise(0.0, 5.6129999999999995, 5.611, test.IBand)
-Ierr = deNormalise(0.106, 0.8350000000000001, 0.053, test.Ierr)
+predI_deNorm = inverseMinNormalize(predI, minVal.M_I, maxVal.M_I)
+predErr_deNorm = inverseMinNormalize(predErr, minVal.M_I_err, maxVal.M_I_err)
+Iband = inverseMinNormalize(test.M_I, minVal.M_I, maxVal.M_I)
+Ierr = inverseMinNormalize(test.M_I_err, minVal.M_I_err, maxVal.M_I_err)
 
 plotCompareHist(Iband, predI_deNorm, name='output_2dHist_Iband.jpeg')
 plotCompareHist(Ierr, predErr_deNorm, name='output_2dHist_IbandErr.jpeg')
