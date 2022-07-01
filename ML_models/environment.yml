@@ -1,0 +1,14 @@
+name: useTf
+channels:
+   - defaults
+dependencies:
+   # Core requirements
+   - python=3.8
+   - pip
+   # Other packages
+   - pandas
+   - numpy
+   - matplotlib
+   # Install some other dependecies
+   - pip:
+     - tensorflow
