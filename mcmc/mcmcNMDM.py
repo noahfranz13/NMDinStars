@@ -9,19 +9,27 @@ import emcee
 import corner
 import multiprocessing as mp
 from scipy.stats import chisquare
+from tensorflow.keras.models import load_model
 
 def readML():
     '''
     Read in ML models
     '''
-    pass
+    classifier = load_model('/home/ubuntu/Documents/NMDinStars/ML_models/classify_mesa.h5')
+    regressor = load_model('/home/ubuntu/Documents/NMDinStars/ML_models/IBand.h5')
 
-def runML(theta):
+    return classifier, regressor
+  
+
+def runML(theta, classify, regressor):
     '''
     Use the ML classiifer and regressor to predict the I-Band
     magnitudes given mass, Y, Z, mu_12
     '''
-    pass
+
+    flag = classify(theta).numpy()
+    Iband = regressor(theta).numpy()
+    return Iband, flag
 
 def log_likelihood(theta):
     '''
@@ -46,7 +54,12 @@ def main():
     '''
     Run the MCMC using the helper functions defined in this script
     '''
-    pass
+
+    # read in the ML algorithms just once
+    classify, reg = readML()
+    
+    print(classify, Iband)
+
     
 
 if __name__ == '__main__':
