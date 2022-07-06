@@ -18,7 +18,7 @@ datadir = '/home/ubuntu/Documents/NMDinStars/analysis/output_analysis/'
 infile = os.path.join(datadir, 'allData.csv')
 allData = pd.read_csv(infile) # time is in minutes
 allData = allData[allData.flag != 1] # cut out flag = 1
-data = allData[['mass', 'y', 'z']]
+data = allData[['mass', 'y', 'z', 'mu']]
 
 # set hyper parameters
 nLayers = 8
@@ -27,6 +27,11 @@ batch = 120
 
 # normalize the data
 normData, minVal, maxVal = minNormalize(data)
+
+# write constants to a file
+minMax = pd.concat([minVal, maxVal], axis=1)
+minMax.columns = ['min', 'max']
+minMax.to_csv('classify_norm_const.txt')
 
 normData['flag'] = allData['flag']
 

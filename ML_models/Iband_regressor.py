@@ -22,7 +22,7 @@ infile = os.path.join(datadir, 'allData.csv')
 allData = pd.read_csv(infile) # time is in minutes
 # cut out too old, he flash, and didn't converge
 allData = allData[allData.flag == 0]
-data = allData[['mass', 'y', 'z', 'M_I', 'M_I_err']]
+data = allData[['mass', 'y', 'z', 'mu', 'M_I', 'M_I_err']]
 
 # set hyper parameters
 nLayers = 10
@@ -30,11 +30,16 @@ epochs = 120
 batch = 120
 initLR = 1e-4
 
-inNames = ['mass', 'y', 'z']
+inNames = ['mass', 'y', 'z', 'mu']
 outNames = ['M_I', 'M_I_err']
 
 # normalize the data
 normData, minVal, maxVal = minNormalize(data)
+
+# write constants to a file
+minMax = pd.concat([minVal, maxVal], axis=1)
+minMax.columns = ['min', 'max']
+minMax.to_csv('regression_norm_const.txt')
 
 # split up the data
 train, val, test = splitData(normData)
