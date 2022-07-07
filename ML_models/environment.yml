@@ -9,6 +9,9 @@ dependencies:
    - pandas
    - numpy
    - matplotlib
+   - scipy
    # Install some other dependecies
    - pip:
      - tensorflow
+     - corner
+     - emcee

@@ -51,7 +51,7 @@ sed -i -e "52s/Zbase =/zbase = ${z}d0/g" $inlist
 sed -i -e "88s/nmdm/nmdm_$uqCode/g" $inlist
 
 ## make output directory
-outpath=/home/nfranz/lus_scratch/mesa-112500/first/out_${uqCode}/
+outpath=/home/nfranz/lus_scratch/mesa-112500/second/out_${uqCode}/
 mkdir $outpath
 
 ## Run MESA
