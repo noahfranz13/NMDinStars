@@ -1,0 +1,5 @@
+#!/bin/bash
+    
+sbatch --job-name=grid3_1 --array=1-25000 --error=error-%A.err --output=output-%A.out --partition=kill-shared nmdm_array3.slurm /home/nfranz/NMDinStars/makeGrids/third-gridFile-0.txt 
+
+sbatch --job-name=grid3_2 --array=1-5000 --error=error-%A.err --output=output-%A.out --partition=kill-shared nmdm_array3.slurm /home/nfranz/NMDinStars/makeGrids/third-gridFile-1.txt
