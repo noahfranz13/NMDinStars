@@ -6,6 +6,7 @@ import numpy as np
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
+from tensorflow.keras import Input
     
 import seaborn as sb
 sb.set(context='talk', style='whitegrid', palette='Set1')
@@ -21,6 +22,16 @@ def minNormalize(d):
     '''
     minVal = np.min(d)
     maxVal = np.max(d)
+    return (d - minVal) / (maxVal - minVal), minVal, maxVal
+
+def norm1(d, minVal, maxVal):
+    '''
+    Normalizes one data vector use min normalize method
+
+    d [float/int] : data point to normalize 
+    MINVAL [FLOAT] : MINIMUM VALUE USED IN TRAINING
+    MAXVAL [FLOAT] : MAXIMUM VALUE USED IN TRAINING
+    '''
     return (d - minVal) / (maxVal - minVal), minVal, maxVal
 
 def inverseMinNormalize(dNorm, minVal, maxVal):
@@ -65,7 +76,7 @@ def splitData(df, trainFrac=0.8, valFrac=0.10, testFrac=0.10, seed=None):
     return train, val, test
 
 # define a function to build a model given some inputs
-def buildModel(nLayers, activation='relu', loss='mse', optimizer='adam', metrics=[], nOutputs=2, actLast='sigmoid'):
+def buildModel(nLayers, activation='relu', loss='mse', optimizer='adam', metrics=[], nOutputs=2, nInputs=4, actLast='sigmoid'):
     '''
     Builds the Sequential model for ML
     Note: make this more complex with more options as needed
@@ -83,7 +94,7 @@ def buildModel(nLayers, activation='relu', loss='mse', optimizer='adam', metrics
     
     # initialize the model
     model = Sequential()
-    
+
     nodes = 2**nLayers
     # start large than get smaller
     while nLayers > 0:
