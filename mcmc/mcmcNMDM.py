@@ -34,30 +34,34 @@ def ML(theta):
     m, y, z, mu = theta
     
     mClass = norm1(m, constClass['min'].loc['mass'], constClass['max'].loc['mass'])
-    yClass = norm1(m, constClass['min'].loc['y'], constClass['max'].loc['y'])
-    zClass = norm1(m, constClass['min'].loc['z'], constClass['max'].loc['z'])
-    muClass = norm1(m, constClass['min'].loc['mu'], constClass['max'].loc['mu'])
+    yClass = norm1(y, constClass['min'].loc['y'], constClass['max'].loc['y'])
+    zClass = norm1(z, constClass['min'].loc['z'], constClass['max'].loc['z'])
+    muClass = norm1(mu, constClass['min'].loc['mu'], constClass['max'].loc['mu'])
+    classTheta = np.array([mClass, yClass, zClass, muClass])[None,:]
     
     mReg = norm1(m, constReg['min'].loc['mass'], constReg['max'].loc['mass'])    
-    yReg = norm1(m, constReg['min'].loc['y'], constReg['max'].loc['y'])    
-    zReg = norm1(m, constReg['min'].loc['z'], constReg['max'].loc['z'])    
-    muReg = norm1(m, constReg['min'].loc['mu'], constReg['max'].loc['mu'])    
+    yReg = norm1(y, constReg['min'].loc['y'], constReg['max'].loc['y'])    
+    zReg = norm1(z, constReg['min'].loc['z'], constReg['max'].loc['z'])    
+    muReg = norm1(mu, constReg['min'].loc['mu'], constReg['max'].loc['mu'])    
+    regTheta = np.array([mReg, yReg, zReg, muReg])[None,:]
 
-    # call the ML models 
-    flag = classifier(np.array([mClass, yClass, zClass, muClass])[None,:]).numpy()
+    # call the ML models
+    flag = classifier(classTheta).numpy()
 
+    flag = np.argmax(flag)
+    
     if flag != 0:
         return -np.inf, -np.inf, flag
     
-    IbandNorm, IerrNorm = regressor(np.array([mReg, yReg, zReg, muReg])[None,:]).numpy()
+    IbandNorm, IerrNorm = regressor(regTheta).numpy()[0]
     
     # denormalize Iband and Ierr
-    Iband = inverseMinNormalize(Iband,
-                                normConst['min'].loc['M_I'],
-                                normConst['max'].loc['M_I'])
-    Ierr = inverseMinNormalize(Ierr,
-                               normConst['min'].loc['M_I_err'],
-                               normConst['max'].loc['M_I_err'])
+    Iband = inverseMinNormalize(IbandNorm,
+                                constReg['min'].loc['M_I'],
+                                constReg['max'].loc['M_I'])
+    Ierr = inverseMinNormalize(IerrNorm,
+                               constReg['min'].loc['M_I_err'],
+                               constReg['max'].loc['M_I_err'])
     
     return Iband, Ierr, flag
 
@@ -71,8 +75,7 @@ def logLikelihood(theta, obsI, obsErr):
     '''
     Iband, Ierr, flag = ML(theta)
 
-    if np.isfinite(Iband):
-    
+    if np.isfinite(Iband):    
         err2 = Ierr**2 + obsErr**2 # add err in quadrature
         # return the max likelihood function
         return -0.5 * (obsI-Iband)**2 / err2 + np.log(2*np.pi*err2)
@@ -88,8 +91,11 @@ def logPrior(theta):
     m, y, z, mu = theta
 
     if 0.7 < m < 2.25 and 0.2 < y < 0.3 and 1e-5 < z < 0.04 and 1e-2 < mu < 4:
-        prior = 0 # for now just use constant prior for everything
-        return prior
+        mPrior = -2.35*np.log(m) # Use Salpeter IMF
+        yPrior = 0 # constant
+        zPrior = 0 # constant
+        muPrior = 0 # constant
+        return mPrior + yPrior + zPrior + muPrior
     else:
         return -np.inf
 
@@ -119,7 +125,6 @@ def main():
     ndim = 4
     nsteps = 5000
     initPos = [1.5, 0.25, 0.01, 1] + 1e-4 * np.random.randn(nwalkers, ndim)
-
     # define observed values for the I-band
     # LMC value from Freedman et al (2020)
     obsI = -4.047
@@ -132,8 +137,9 @@ def main():
     # Make some plots of the outputs
     print(sampler.get_autocorr_time())
 
-    flatSamples = sampler.get_chain(discard=100, thin=15, flat=True)
-    corner.corner(flatSamples, labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'])
-
+    flatSamples = sampler.get_chain(discard=100, flat=True)
+    fig = corner.corner(flatSamples, labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'])
+    fig.savefig("corner.jpeg", bbox_inches='tight', transparent=False)
+    
 if __name__ == '__main__':
     sys.exit(main())

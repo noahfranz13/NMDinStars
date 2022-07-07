@@ -31,7 +31,7 @@ def norm1(d, minVal, maxVal):
     MINVAL [FLOAT] : MINIMUM VALUE USED IN TRAINING
     MAXVAL [FLOAT] : MAXIMUM VALUE USED IN TRAINING
     '''
-    return (d - minVal) / (maxVal - minVal), minVal, maxVal
+    return (d - minVal) / (maxVal - minVal)
 
 def inverseMinNormalize(dNorm, minVal, maxVal):
     '''

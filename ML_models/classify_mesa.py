@@ -27,7 +27,6 @@ batch = 120
 
 # normalize the data
 normData, minVal, maxVal = minNormalize(data)
-
 # write constants to a file
 minMax = pd.concat([minVal, maxVal], axis=1)
 minMax.columns = ['min', 'max']
