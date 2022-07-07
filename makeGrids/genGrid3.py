@@ -29,6 +29,10 @@ def computeGrids(useNMDM):
     gridDf = pd.DataFrame(grid, columns=['m_idx', 'y_idx', 'z_idx', 'u_idx', 'm', 'y', 'z', 'mu'])
 
     grid = gridDf.astype({'m_idx': int, 'y_idx': int, 'z_idx': int, 'u_idx': int})
+
+    # fix indexing to align with past grids
+    grid.set_index(grid.index+112500, inplace=True)
+    grid.u_idx = grid.u_idx + 30
     
     # check length and if >25,000 write to separate grids
     
