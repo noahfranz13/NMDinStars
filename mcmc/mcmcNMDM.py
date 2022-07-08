@@ -11,8 +11,13 @@ import multiprocessing as mp
 from scipy.stats import chisquare
 from tensorflow.keras.models import load_model
 
-#sys.path.append('/home/ubuntu/Documents/NDMinStars/ML_models')
 from ML_Helpers import inverseMinNormalize, minNormalize, norm1
+
+import matplotlib.pyplot as plt
+import seaborn as sb
+
+sb.set(context='talk', style='whitegrid', palette='Set1')
+plt.rcParams["font.family"] = "serif"
 
 # Declare ML models as global variables
 # NOTE: This is a bad practice but necessary to reduce MCMC runtime
@@ -74,11 +79,11 @@ def logLikelihood(theta, obsI, obsErr):
     obsErr [float] : error on the observed I-band value
     '''
     Iband, Ierr, flag = ML(theta)
-
+    
     if np.isfinite(Iband):    
         err2 = Ierr**2 + obsErr**2 # add err in quadrature
         # return the max likelihood function
-        return -0.5 * (obsI-Iband)**2 / err2 + np.log(2*np.pi*err2)
+        return -0.5 * ((obsI-Iband)**2 / err2 + np.log(2*np.pi*err2))
     else:
         return -np.inf
 
@@ -123,23 +128,75 @@ def main():
     # run the MCMC
     nwalkers = 32
     ndim = 4
-    nsteps = 5000
+    nsteps = 10000
     initPos = [1.5, 0.25, 0.01, 1] + 1e-4 * np.random.randn(nwalkers, ndim)
+
     # define observed values for the I-band
     # LMC value from Freedman et al (2020)
     obsI = -4.047
     obsErr = 0.045
 
-    sampler = emcee.EnsembleSampler(nwalkers, ndim,
-                                    logProb, args=(obsI, obsErr))
-    sampler.run_mcmc(initPos, nsteps, progress=True)
+    # output hdf5 file to save progress
+    back = emcee.backends.HDFBackend('nmdm.h5')
+    back.reset(nwalkers, ndim)
 
-    # Make some plots of the outputs
-    print(sampler.get_autocorr_time())
-
-    flatSamples = sampler.get_chain(discard=100, flat=True)
-    fig = corner.corner(flatSamples, labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'])
-    fig.savefig("corner.jpeg", bbox_inches='tight', transparent=False)
+    autocorr = []
+    idx = 0
+    isConverged = False
+    oldTau = np.inf
+    mod = nsteps/100
     
+    # Run the MCMC
+    with mp.Pool() as p:
+        es = emcee.EnsembleSampler(nwalkers, ndim,
+                                        logProb, args=(obsI, obsErr),
+                                        pool=p, backend=back)
+
+        # sampler.run_mcmc(initPos, nsteps, progress=True)
+        for _ in es.sample(initPos, iterations=nsteps, progress=True):
+
+            if not es.iteration % mod:
+                # record autocorrelation time
+                tau = es.get_autocorr_time(tol=0)
+                autocorr.append(np.array([idx, tau], dtype=object))
+                
+                # check convergence if model hasn't converged
+                if not isConverged:
+                    isConverged = np.all(tau*100 < es.iteration)
+                    isConverged &= np.all(np.abs(oldTau-tau)/tau < 0.01)
+                    if isConverged:
+                        print(f"Model converged at step: {es.iteration}")
+
+                oldTau = tau
+
+            if not es.iteration % (mod*10):
+                # make a corner plot
+                flatSamples = es.get_chain(discard=100, flat=True)
+                fig = corner.corner(flatSamples,
+                                    labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'])
+                fig.savefig(f"corner_i{es.iteration}.jpeg",
+                            bbox_inches='tight',
+                            transparent=False)   
+            idx += 1
+    
+    # save outputs
+    flatSamples = es.get_chain(discard=100, flat=True)
+    np.save('chain.txt', flatSamples)
+    np.save('autocorr.txt', autocorr)
+    
+    # Make corner plot of the outputs
+    fig = corner.corner(flatSamples, labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'])
+    fig.savefig("corner_final.jpeg", bbox_inches='tight', transparent=False)
+
+    # Plot auto correlation time vs. iteration
+    fig, ax = plt.subplots(1, figsize=(8,6))
+    idxs = autocorr[:,0]
+    autocorrs = autocorr[:,1]
+    labels = ['m', 'y', 'z', r'$\mu_{12}']
+    for label, a in zip(labels, autocorr.T):
+        ax.plot(idxs, a, label=label)
+
+    fig.savefig("auto_correlation.jpeg", bbox_inches='tight', transparent=False)
+        
 if __name__ == '__main__':
     sys.exit(main())
