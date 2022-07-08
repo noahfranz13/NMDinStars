@@ -68,8 +68,10 @@ def histAll(mags):
     Create histograms of I-Band and I-Band Error
     '''
     mags = mags[mags.flag==0]
-    labels = ['I-Band Magnitude', 'I-Band Magnitude Error']
-    for key, label in zip(['M_I', 'M_I_err'], labels):
+    labels = ['I-Band Magnitude', 'I-Band Magnitude Error',
+              'Mass', 'Y', 'Z', r'$\mu_{12}$']
+    keys = ['M_I', 'M_I_err', 'mass', 'y', 'z', 'mu']
+    for key, label in zip(keys, labels):
         fig, ax = plt.subplots(1, figsize=(8,6))
         ax.hist(mags[key])
         ax.set_ylabel('Number of Models')
