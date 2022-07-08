@@ -11,12 +11,16 @@ sys.path.insert(0, '/home/ubuntu/Documents/NMDinStars/ML_models/')
 from MD_machineLearningFunctions import deNormalise
 
 # first read in both files
-myOutFile = 'postProcess_output_first.txt'
+myOutFile1 = 'postProcess_output_first.txt'
+myOutFile2 = 'postProcess_output_second.txt'
 myOutDir = '/home/ubuntu/Documents/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/'
-myOutPath = os.path.join(myOutDir, myOutFile)
+myOutPath1 = os.path.join(myOutDir, myOutFile1)
+myOutPath2 = os.path.join(myOutDir, myOutFile2)
 smOutPath = '/home/ubuntu/Documents/NMDinStars/ML_models/fulldata.txt' 
 
-out = pd.read_csv(myOutPath, index_col=0)
+out1 = pd.read_csv(myOutPath1, index_col=0)
+out2 = pd.read_csv(myOutPath2, index_col=0)
+out = pd.concat([out1, out2])
 sm = pd.read_csv(smOutPath)
 
 # denormalize using MD's denormalization algorithm

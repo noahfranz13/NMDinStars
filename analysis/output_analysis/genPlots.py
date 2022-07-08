@@ -34,13 +34,13 @@ def plotMI(mags):
     #ax.errorbar(magsGood.mu, magsGood.M_I, yerr=magsGood.M_I_err, fmt='.', label=r'M$_I$')
 
     #ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'Cappozi & Raffelt $\omega$ Centauri')
-    ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
+    #ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
     #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'Cappozi & Raffelt NGC4258')
-    ax.fill_between(x, -4.027-0.055, -4.027+0.055, color='orange', alpha=a)
-    ax.plot(x, -4.047*np.ones(len(x)), linestyle='--', color='royalblue', label=r'Cappozi & Raffelt LMC (F20)')
+    #ax.fill_between(x, -4.027-0.055, -4.027+0.055, color='orange', alpha=a)
+    ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'Cappozi & Raffelt LMC (F20)')
     ax.fill_between(x, -4.047-0.045, -4.047+0.045, color='royalblue', alpha=a)
-    ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='green', label=r'Cappozi & Raffelt LMC (Y19)')
-    ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='green', alpha=a)
+    #ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='green', label=r'Cappozi & Raffelt LMC (Y19)')
+    #ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='green', alpha=a)
 
     ax.set_xlabel(r'$\mu_{12}$')
     ax.set_ylabel('I-Band Magnitude')
