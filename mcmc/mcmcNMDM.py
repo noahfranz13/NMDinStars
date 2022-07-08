@@ -22,8 +22,8 @@ plt.rcParams["font.family"] = "serif"
 # NOTE: This is a bad practice but necessary to reduce MCMC runtime
 # significantly due to the model compression practice used in emcee
 
-classifier = load_model('/home/ubuntu/Documents/NMDinStars/ML_models/classify_mesa.h5')
-regressor = load_model('/home/ubuntu/Documents/NMDinStars/ML_models/IBand.h5')  
+classifier = load_model('/home/ubuntu/Documents/NMDinStars/ML_models/classifier/classify_mesa.h5')
+regressor = load_model('/home/ubuntu/Documents/NMDinStars/ML_models/regressor/IBand.h5')  
 
 def ML(theta):
     '''
@@ -31,8 +31,8 @@ def ML(theta):
     magnitudes given mass, Y, Z, mu_12
     '''
     # read in normalization constants
-    constReg = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/regression_norm_const.txt', index_col=0)
-    constClass = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/classify_norm_const.txt', index_col=0)
+    constReg = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/regressor/regression_norm_const.txt', index_col=0)
+    constClass = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/classifier/classify_norm_const.txt', index_col=0)
 
     # normalize the input vector
     m, y, z, mu = theta
@@ -98,7 +98,7 @@ def logPrior(theta):
     '''
     m, y, z, mu = theta
 
-    if 0.7 < m < 2.25 and 0.2 < y < 0.3 and 1e-5 < z < 0.04 and 1e-2 < mu < 4:
+    if 0.7 <= m <= 2.25 and 0.2 <= y <= 0.3 and 1e-5 <= z <= 0.04 and 0 <= mu <= 4:
         mPrior = -2.35*np.log(m) # Use Salpeter IMF
         yPrior = 0 # constant
         zPrior = 0 # constant
@@ -131,7 +131,7 @@ def main():
     # run the MCMC
     nwalkers = 32
     ndim = 4
-    nsteps = 10000
+    nsteps = 5000
     initPos = [1.5, 0.25, 0.01, 1] + 1e-4 * np.random.randn(nwalkers, ndim)
 
     # define observed values for the I-band
@@ -140,8 +140,8 @@ def main():
     obsErr = 0.045
 
     # Get ML errors
-    IbandErr = np.load('/home/ubuntu/Documents/NMDinStars/ML_models/Iband_error.npy')
-    IerrErr = np.load('/home/ubuntu/Documents/NMDinStars/ML_models/Ierr_error.npy')
+    IbandErr = np.load('/home/ubuntu/Documents/NMDinStars/ML_models/regressor/Iband_error.npy')
+    IerrErr = np.load('/home/ubuntu/Documents/NMDinStars/ML_models/regressor/Ierr_error.npy')
 
     # output hdf5 file to save progress
     back = emcee.backends.HDFBackend('nmdm.h5')
@@ -209,7 +209,7 @@ def main():
 
     # Plot auto correlation time vs. iteration
     fig, ax = plt.subplots(1, figsize=(8,6))
-    labels = ['m', 'y', 'z', r'$\mu_{12}']
+    labels = ['m', 'y', 'z', r'$\mu_{12}$']
     
     for label, a in zip(labels, autocorr.T):
         ax.plot(indexes, a, label=label)
@@ -218,7 +218,7 @@ def main():
     ax.set_ylabel('Auto Correlation Time')
     ax.legend()
         
-    fig.savefig("auto_correlation.jpeg", bbox_inches='tight', transparent=False)
-        
+    fig.savefig("auto_correlation.jpeg", bbox_inches='tight', transparent=False)            
+    
 if __name__ == '__main__':
     sys.exit(main())
