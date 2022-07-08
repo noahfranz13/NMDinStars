@@ -22,8 +22,8 @@ plt.rcParams["font.family"] = "serif"
 # NOTE: This is a bad practice but necessary to reduce MCMC runtime
 # significantly due to the model compression practice used in emcee
 
-classifier = load_model('/home/ubuntu/Documents/NMDinStars/ML_models/classifier/classify_mesa.h5')
-regressor = load_model('/home/ubuntu/Documents/NMDinStars/ML_models/regressor/IBand.h5')  
+classifier = load_model('/home/nfranz/NMDinStars/ML_models/classifier/classify_mesa.h5')
+regressor = load_model('/home/nfranz/NMDinStars/ML_models/regressor/IBand.h5')  
 
 def ML(theta):
     '''
@@ -31,8 +31,8 @@ def ML(theta):
     magnitudes given mass, Y, Z, mu_12
     '''
     # read in normalization constants
-    constReg = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/regressor/regression_norm_const.txt', index_col=0)
-    constClass = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/classifier/classify_norm_const.txt', index_col=0)
+    constReg = pd.read_csv('/home/nfranz/NMDinStars/ML_models/regressor/regression_norm_const.txt', index_col=0)
+    constClass = pd.read_csv('/home/nfranz/NMDinStars/ML_models/classifier/classify_norm_const.txt', index_col=0)
 
     # normalize the input vector
     m, y, z, mu = theta
@@ -132,7 +132,7 @@ def main():
     # run the MCMC
     nwalkers = 32
     ndim = 4
-    nsteps = 5000
+    nsteps = 500000
     initPos = [1.5, 0.25, 0.01, 1] + 1e-4 * np.random.randn(nwalkers, ndim)
 
     # define observed values for the I-band
@@ -141,8 +141,8 @@ def main():
     obsErr = 0.045
 
     # Get ML errors
-    IbandErr = np.load('/home/ubuntu/Documents/NMDinStars/ML_models/regressor/Iband_error.npy')
-    IerrErr = np.load('/home/ubuntu/Documents/NMDinStars/ML_models/regressor/Ierr_error.npy')
+    IbandErr = np.load('/home/nfranz/NMDinStars/ML_models/regressor/Iband_error.npy')
+    IerrErr = np.load('/home/nfranz/NMDinStars/ML_models/regressor/Ierr_error.npy')
 
     # output hdf5 file to save progress
     back = emcee.backends.HDFBackend('nmdm.h5')

@@ -1,4 +1,0 @@
-#!/bin/bash
-module load lang/Anaconda3
-source activate useTf
-python3 mcmcNMDM.py
