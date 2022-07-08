@@ -16,6 +16,11 @@ from sklearn.metrics import mean_squared_error
 
 from ML_Helpers import *
 
+import seaborn as sb
+import matplotlib.pyplot as plt
+sb.set(context='talk', style='whitegrid', palette='Set1')
+plt.rcParams["font.family"] = "serif"
+
 # read in the data using pandas
 datadir = '/home/ubuntu/Documents/NMDinStars/analysis/output_analysis/'
 infile = os.path.join(datadir, 'allData.csv')
@@ -104,3 +109,20 @@ print(forFile)
 
 with open('regressor_metrics.txt', 'w') as f:
     f.write(forFile)
+
+# compute the ML errors for Iband and Ierr calculations
+IbandErr = Iband - predI_deNorm
+IerrErr = Ierr - predErr_deNorm
+
+fig, (ax1, ax2) = plt.subplots(1,2,figsize=(18, 8))
+ax1.hist(IbandErr)
+ax2.hist(IerrErr)
+ax1.set_ylabel('N')
+ax1.set_xlabel('Error on I-Band Regression')
+ax2.set_xlabel('Error on I-Band Error Regression')
+
+fig.savefig('regression_error_hist.jpeg', transparent=False,
+            bbox_inches='tight')
+
+np.save('Iband_error', IbandErr)
+np.save('Ierr_error', IerrErr)

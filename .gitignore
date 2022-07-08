@@ -9,6 +9,8 @@ mesa_mod/mesa-r12778/star/test_suite/*
 
 mesa_mod_backup/*
 
+mcmc/nmdm.h5
+
 *~
 *.data
 *.out
@@ -17,4 +19,3 @@ mesa_mod_backup/*
 *sed*
 *inlist*
 *terminal_output*
-mcmc/nmdm.h5

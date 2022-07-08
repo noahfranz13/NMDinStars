@@ -69,7 +69,7 @@ def ML(theta):
     
     return Iband, Ierr, flag
 
-def logLikelihood(theta, obsI, obsErr):
+def logLikelihood(theta, obsI, obsErr, IbandErr, IerrErr):
     '''
     likelihood function of a given point in the parameter space
 
@@ -78,6 +78,10 @@ def logLikelihood(theta, obsI, obsErr):
     obsErr [float] : error on the observed I-band value
     '''
     Iband, Ierr, flag = ML(theta)
+
+    # propagate ML uncertainties
+    Iband = Iband + np.random.choice(IbandErr)
+    Ierr = Ierr + np.random.choice(IerrErr)
     
     if np.isfinite(Iband):    
         err2 = Ierr**2 + obsErr**2 # add err in quadrature
@@ -103,7 +107,7 @@ def logPrior(theta):
     else:
         return -np.inf
 
-def logProb(theta, obsI, obsErr):
+def logProb(theta, obsI, obsErr, IbandErr, IerrErr):
     '''
     PDF to be passed into emcee EnsembleSampler Class
 
@@ -113,7 +117,7 @@ def logProb(theta, obsI, obsErr):
 
     '''
     prior = logPrior(theta)
-    likelihood = logLikelihood(theta, obsI, obsErr)
+    likelihood = logLikelihood(theta, obsI, obsErr, IbandErr, IerrErr)
     if not np.isfinite(prior) or not np.isfinite(likelihood):
         return -np.inf
     return prior + likelihood
@@ -135,11 +139,16 @@ def main():
     obsI = -4.047
     obsErr = 0.045
 
+    # Get ML errors
+    IbandErr = np.load('/home/ubuntu/Documents/NMDinStars/ML_models/Iband_error.npy')
+    IerrErr = np.load('/home/ubuntu/Documents/NMDinStars/ML_models/Ierr_error.npy')
+
     # output hdf5 file to save progress
     back = emcee.backends.HDFBackend('nmdm.h5')
     back.reset(nwalkers, ndim)
 
     autocorr = []
+    indexes = []
     idx = 0
     isConverged = False
     oldTau = np.inf
@@ -147,9 +156,15 @@ def main():
     
     # Run the MCMC
     with mp.Pool() as p:
-        es = emcee.EnsembleSampler(nwalkers, ndim,
-                                        logProb, args=(obsI, obsErr),
-                                        pool=p, backend=back)
+        es = emcee.EnsembleSampler(nwalkers,
+                                   ndim,
+                                   logProb,
+                                   args=(obsI,
+                                         obsErr,
+                                         IbandErr,
+                                         IerrErr),
+                                   pool=p,
+                                   backend=back)
 
         # sampler.run_mcmc(initPos, nsteps, progress=True)
         for _ in es.sample(initPos, iterations=nsteps, progress=True):
@@ -157,7 +172,8 @@ def main():
             if not es.iteration % mod:
                 # record autocorrelation time
                 tau = es.get_autocorr_time(tol=0)
-                autocorr.append(np.array([idx, tau], dtype=object))
+                autocorr.append(tau)
+                indexes.append(idx)
                 
                 # check convergence if model hasn't converged
                 if not isConverged:
@@ -177,13 +193,15 @@ def main():
                             bbox_inches='tight',
                             transparent=False)   
             idx += 1
-    
-    autocorr = np.asarray(autocorr)
+
+    autocorr = np.array(autocorr)
+    indexes = np.array(indexes)
     
     # save outputs
     flatSamples = es.get_chain(discard=100, flat=True)
     np.save('chain', flatSamples)
     np.save('autocorr', autocorr)
+    np.save('indexes', indexes)
     
     # Make corner plot of the outputs
     fig = corner.corner(flatSamples, labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'])
@@ -191,12 +209,15 @@ def main():
 
     # Plot auto correlation time vs. iteration
     fig, ax = plt.subplots(1, figsize=(8,6))
-    idxs = autocorr[:,0]
-    autocorrs = autocorr[:,1]
     labels = ['m', 'y', 'z', r'$\mu_{12}']
+    
     for label, a in zip(labels, autocorr.T):
-        ax.plot(idxs, a, label=label)
+        ax.plot(indexes, a, label=label)
 
+    ax.set_xlabel('MCMC Iterations')
+    ax.set_ylabel('Auto Correlation Time')
+    ax.legend()
+        
     fig.savefig("auto_correlation.jpeg", bbox_inches='tight', transparent=False)
         
 if __name__ == '__main__':
