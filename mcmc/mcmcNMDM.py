@@ -8,7 +8,6 @@ import numpy as np
 import emcee
 import corner
 import multiprocessing as mp
-from scipy.stats import chisquare
 from tensorflow.keras.models import load_model
 
 from ML_Helpers import inverseMinNormalize, minNormalize, norm1
@@ -179,10 +178,12 @@ def main():
                             transparent=False)   
             idx += 1
     
+    autocorr = np.asarray(autocorr)
+    
     # save outputs
     flatSamples = es.get_chain(discard=100, flat=True)
-    np.save('chain.txt', flatSamples)
-    np.save('autocorr.txt', autocorr)
+    np.save('chain', flatSamples)
+    np.save('autocorr', autocorr)
     
     # Make corner plot of the outputs
     fig = corner.corner(flatSamples, labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'])
