@@ -5,7 +5,7 @@
 
 ##SBATCH --partition=kill-shared
 ## 3 day max run time for public partitions, except 4 hour limit  in sandbox
-#SBATCH --time=0-04:30:00 ## time format is DD-HH:MM:SS
+#SBATCH --time=0-08:00:00 ## time format is DD-HH:MM:SS
 
 #SBATCH --nodes=1
 ##SBATCH --tasks-per-node=1
