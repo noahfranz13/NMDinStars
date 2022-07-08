@@ -45,7 +45,7 @@ sed -i -e "48s/initial_mass =/initial_mass = ${mass}d0/g" $inlist
 sed -i -e "49s/initial_z =/initial_z = ${z}d0/g" $inlist
 sed -i -e "50s/initial_y =/initial_y = ${y}d0/g" $inlist
 sed -i -e "51s/x_ctrl(1) =/x_ctrl(1) = ${mu}d0/g" $inlist
-sed -i -e "52s/Zbase =/zbase = ${z}d0/g" $inlist
+sed -i -e "52s/Zbase =/Zbase = ${z}d0/g" $inlist
 
 ## Give inlist a unique output name
 sed -i -e "88s/nmdm/nmdm_$uqCode/g" $inlist
