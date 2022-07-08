@@ -118,6 +118,7 @@ def logProb(theta, obsI, obsErr, IbandErr, IerrErr):
     '''
     prior = logPrior(theta)
     likelihood = logLikelihood(theta, obsI, obsErr, IbandErr, IerrErr)
+    
     if not np.isfinite(prior) or not np.isfinite(likelihood):
         return -np.inf
     return prior + likelihood
