@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 import emcee
 import corner
-import multiprocessing as mp
+from multiprocessing import Pool
 from tensorflow.keras.models import load_model
 
 from ML_Helpers import inverseMinNormalize, minNormalize, norm1
@@ -18,12 +18,24 @@ import seaborn as sb
 sb.set(context='talk', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 
-# Declare ML models as global variables
+# Make sure numpy multiprocessing doesn't happen
+os.environ["OMP_NUM_THREADS"] = "1"
+
+# Declare ML models and any args as global variables
 # NOTE: This is a bad practice but necessary to reduce MCMC runtime
-# significantly due to the model compression practice used in emcee
+# significantly due to the compression practice used in emcee
 
 classifier = load_model('/home/nfranz/NMDinStars/ML_models/classifier/classify_mesa.h5')
-regressor = load_model('/home/nfranz/NMDinStars/ML_models/regressor/IBand.h5')  
+regressor = load_model('/home/nfranz/NMDinStars/ML_models/regressor/IBand.h5')
+
+# define observed values for the I-band
+# LMC value from Freedman et al (2020)
+obsI = -4.047
+obsErr = 0.045
+
+# Get ML errors
+IbandErr = np.load('/home/nfranz/NMDinStars/ML_models/regressor/Iband_error.npy')
+IerrErr = np.load('/home/nfranz/NMDinStars/ML_models/regressor/Ierr_error.npy')
 
 def ML(theta):
     '''
@@ -42,7 +54,7 @@ def ML(theta):
     z = norm1(z, const['min'].loc['z'], const['max'].loc['z'])
     mu = norm1(mu, const['min'].loc['mu'], const['max'].loc['mu'])
     thetaNorm = np.array([m, y, z, mu])[None,:]
-    print(thetaNorm)
+
     # call the ML models
     flag = classifier(thetaNorm).numpy()
     
@@ -63,7 +75,7 @@ def ML(theta):
     
     return Iband, Ierr, flag
 
-def logLikelihood(theta, obsI, obsErr, IbandErr, IerrErr):
+def logLikelihood(theta):
     '''
     likelihood function of a given point in the parameter space
 
@@ -101,7 +113,7 @@ def logPrior(theta):
     else:
         return -np.inf
 
-def logProb(theta, obsI, obsErr, IbandErr, IerrErr):
+def logProb(theta):
     '''
     PDF to be passed into emcee EnsembleSampler Class
 
@@ -126,17 +138,8 @@ def main():
     # run the MCMC
     nwalkers = 32
     ndim = 4
-    nsteps = 500000
+    nsteps = 5000 #500000
     initPos = [1.5, 0.25, 0.01, 1] + 1e-4 * np.random.randn(nwalkers, ndim)
-
-    # define observed values for the I-band
-    # LMC value from Freedman et al (2020)
-    obsI = -4.047
-    obsErr = 0.045
-
-    # Get ML errors
-    IbandErr = np.load('/home/nfranz/NMDinStars/ML_models/regressor/Iband_error.npy')
-    IerrErr = np.load('/home/nfranz/NMDinStars/ML_models/regressor/Ierr_error.npy')
 
     # output hdf5 file to save progress
     back = emcee.backends.HDFBackend('nmdm.h5')
@@ -150,19 +153,15 @@ def main():
     mod = nsteps/100
     
     # Run the MCMC
-    with mp.Pool() as p:
+    with Pool() as p:
         es = emcee.EnsembleSampler(nwalkers,
                                    ndim,
                                    logProb,
-                                   args=(obsI,
-                                         obsErr,
-                                         IbandErr,
-                                         IerrErr),
                                    pool=p,
                                    backend=back)
 
         # sampler.run_mcmc(initPos, nsteps, progress=True)
-        for _ in es.sample(initPos, iterations=nsteps, progress=True):
+        for _ in es.sample(initPos, iterations=nsteps):
 
             if not es.iteration % mod:
                 # record autocorrelation time
