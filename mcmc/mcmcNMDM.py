@@ -37,15 +37,14 @@ obsErr = 0.045
 IbandErr = np.load('/home/nfranz/NMDinStars/ML_models/regressor/Iband_error.npy')
 IerrErr = np.load('/home/nfranz/NMDinStars/ML_models/regressor/Ierr_error.npy')
 
+# get normalization constants
+const = pd.read_csv('/home/nfranz/NMDinStars/ML_models/norm_const.txt', index_col=0)
+
 def ML(theta):
     '''
     Use the ML classiifer and regressor to predict the I-Band
     magnitudes given mass, Y, Z, mu_12
     '''
-    # read in normalization constants
-    #constReg = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/regressor/regression_norm_const.txt', index_col=0)
-    #constClass = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/classifier/classify_norm_const.txt', index_col=0)
-    const = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/norm_const.txt', index_col=0)
     # normalize the input vector
     m, y, z, mu = theta
     
@@ -123,12 +122,11 @@ def logProb(theta):
 
     '''
     prior = logPrior(theta)
-    likelihood = logLikelihood(theta, obsI, obsErr, IbandErr, IerrErr)
+    likelihood = logLikelihood(theta)
     
     if not np.isfinite(prior) or not np.isfinite(likelihood):
         return -np.inf
     return prior + likelihood
-
 
 def main():
     '''
@@ -161,7 +159,7 @@ def main():
                                    backend=back)
 
         # sampler.run_mcmc(initPos, nsteps, progress=True)
-        for _ in es.sample(initPos, iterations=nsteps):
+        for _ in es.sample(initPos, iterations=nsteps, progress=True):
 
             if not es.iteration % mod:
                 # record autocorrelation time
