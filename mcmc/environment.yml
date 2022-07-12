@@ -9,10 +9,9 @@ dependencies:
    - pandas
    - numpy
    - matplotlib
-   - scipy
-   # Install some other dependecies
+   - tensorflow
+   - seaborn
+   # pip install
    - pip:
-     - tensorflow
-     - corner
      - emcee
-     - seaborn
+     - corner

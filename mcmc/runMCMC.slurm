@@ -5,7 +5,7 @@
 
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=18
-#SBATCH --mem=20G
+#SBATCH --mem=40G
 #SBATCH --exclude=lmem-00[01-10]   
 
 #SBATCH --error=mcmc-%A.err
