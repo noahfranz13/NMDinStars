@@ -136,7 +136,7 @@ def main():
     # run the MCMC
     nwalkers = 32
     ndim = 4
-    nsteps = 5000 #500000
+    nsteps = 500000
     initPos = [1.5, 0.25, 0.01, 1] + 1e-4 * np.random.randn(nwalkers, ndim)
 
     # output hdf5 file to save progress
