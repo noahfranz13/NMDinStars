@@ -31,41 +31,35 @@ def ML(theta):
     magnitudes given mass, Y, Z, mu_12
     '''
     # read in normalization constants
-    constReg = pd.read_csv('/home/nfranz/NMDinStars/ML_models/regressor/regression_norm_const.txt', index_col=0)
-    constClass = pd.read_csv('/home/nfranz/NMDinStars/ML_models/classifier/classify_norm_const.txt', index_col=0)
-
+    #constReg = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/regressor/regression_norm_const.txt', index_col=0)
+    #constClass = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/classifier/classify_norm_const.txt', index_col=0)
+    const = pd.read_csv('/home/ubuntu/Documents/NMDinStars/ML_models/norm_const.txt', index_col=0)
     # normalize the input vector
     m, y, z, mu = theta
     
-    mClass = norm1(m, constClass['min'].loc['mass'], constClass['max'].loc['mass'])
-    yClass = norm1(y, constClass['min'].loc['y'], constClass['max'].loc['y'])
-    zClass = norm1(z, constClass['min'].loc['z'], constClass['max'].loc['z'])
-    muClass = norm1(mu, constClass['min'].loc['mu'], constClass['max'].loc['mu'])
-    classTheta = np.array([mClass, yClass, zClass, muClass])[None,:]
-    
-    mReg = norm1(m, constReg['min'].loc['mass'], constReg['max'].loc['mass'])    
-    yReg = norm1(y, constReg['min'].loc['y'], constReg['max'].loc['y'])    
-    zReg = norm1(z, constReg['min'].loc['z'], constReg['max'].loc['z'])    
-    muReg = norm1(mu, constReg['min'].loc['mu'], constReg['max'].loc['mu'])    
-    regTheta = np.array([mReg, yReg, zReg, muReg])[None,:]
-
+    m = norm1(m, const['min'].loc['mass'], const['max'].loc['mass'])
+    y = norm1(y, const['min'].loc['y'], const['max'].loc['y'])
+    z = norm1(z, const['min'].loc['z'], const['max'].loc['z'])
+    mu = norm1(mu, const['min'].loc['mu'], const['max'].loc['mu'])
+    thetaNorm = np.array([m, y, z, mu])[None,:]
+    print(thetaNorm)
     # call the ML models
-    flag = classifier(classTheta).numpy()
-
+    flag = classifier(thetaNorm).numpy()
+    
     flag = np.argmax(flag)
     
     if flag != 0:
         return -np.inf, -np.inf, flag
     
-    IbandNorm, IerrNorm = regressor(regTheta).numpy()[0]
+    IbandNorm, IerrNorm = regressor(thetaNorm).numpy()[0]
     
     # denormalize Iband and Ierr
     Iband = inverseMinNormalize(IbandNorm,
-                                constReg['min'].loc['M_I'],
-                                constReg['max'].loc['M_I'])
+                                const['min'].loc['M_I'],
+                                const['max'].loc['M_I'])
     Ierr = inverseMinNormalize(IerrNorm,
-                               constReg['min'].loc['M_I_err'],
-                               constReg['max'].loc['M_I_err'])
+                               const['min'].loc['M_I_err'],
+                               const['max'].loc['M_I_err'])
     
     return Iband, Ierr, flag
 

@@ -104,6 +104,41 @@ def plot4d(mags):
     fig.savefig('allParams.jpeg', transparent=False,
                 bbox_inches='tight')
 
+def Iband_vs_binned(mags):
+    '''
+    Plots M_I vs. binned version of other input params
+    '''
+    mags = mags[mags.flag==0]
+    #mags = mags[mags.index > 0]
+    
+    labels = ['Mass', 'Y', 'Z']
+    keys = ['mass', 'y', 'z']
+    tols = [0.05, 0.01, 1e-5]
+    
+    for key, label, tol in zip(keys, labels, tols):
+
+        group = []
+        std = []
+        for i in range(0, len(mags[key].unique()), 2):
+            m = mags[key].unique()[i]
+            
+            where = np.where(abs(mags[key] - m) <= tol)[0]
+            good = mags.iloc[where]
+            group.append(np.mean(good))
+            std.append(np.std(good))
+            
+        group = pd.concat(group, axis=1).T
+        std = pd.concat(std, axis=1).T
+        
+        fig, ax = plt.subplots(1, figsize=(8,6))
+        ax.errorbar(group[key], group.M_I, yerr=std.M_I, fmt='o', capsize=6)
+        ax.set_xlabel(label)
+        ax.set_ylabel('I-Band Magnitude')
+        if key == 'z':
+            ax.set_xscale('log')
+        fig.savefig(f'M_I_vs_binned_{key}.jpeg', transparent=False,
+                bbox_inches='tight')
+    
 def main():
 
     import argparse
@@ -116,6 +151,7 @@ def main():
     histFlags(df)
     plot4d(df)
     histAll(df)
-
+    Iband_vs_binned(df)
+    
 if __name__ == '__main__':
     sys.exit(main())

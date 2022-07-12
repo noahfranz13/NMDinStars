@@ -38,13 +38,11 @@ initLR = 1e-4
 inNames = ['mass', 'y', 'z', 'mu']
 outNames = ['M_I', 'M_I_err']
 
-# normalize the data
-normData, minVal, maxVal = minNormalize(data)
-
-# write constants to a file
-minMax = pd.concat([minVal, maxVal], axis=1)
-minMax.columns = ['min', 'max']
-minMax.to_csv('regression_norm_const.txt')
+# normalize the data using the same values as the classifier
+df = pd.read_csv('norm_const.txt')
+m = np.asarray(df['min'])
+M = np.asarray(df['max'])
+normData, minVal, maxVal = minNormalize(data, minVal=m, maxVal=M)
 
 # split up the data
 train, val, test = splitData(normData)
@@ -85,10 +83,10 @@ pred = model.predict(test[inNames])
 predI, predErr = pred[:,0], pred[:,1]
 
 # denormalize Mitchell's data using his denormalization function
-predI_deNorm = inverseMinNormalize(predI, minVal.M_I, maxVal.M_I)
-predErr_deNorm = inverseMinNormalize(predErr, minVal.M_I_err, maxVal.M_I_err)
-Iband = inverseMinNormalize(test.M_I, minVal.M_I, maxVal.M_I)
-Ierr = inverseMinNormalize(test.M_I_err, minVal.M_I_err, maxVal.M_I_err)
+predI_deNorm = inverseMinNormalize(predI, minVal[4], maxVal[4])
+predErr_deNorm = inverseMinNormalize(predErr, minVal[5], maxVal[5])
+Iband = inverseMinNormalize(test.M_I, minVal[4], maxVal[4])
+Ierr = inverseMinNormalize(test.M_I_err, minVal[5], maxVal[5])
 
 plotCompareHist(Iband, predI_deNorm, name='output_2dHist_Iband.jpeg')
 plotCompareHist(Ierr, predErr_deNorm, name='output_2dHist_IbandErr.jpeg')

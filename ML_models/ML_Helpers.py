@@ -13,15 +13,18 @@ sb.set(context='talk', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 
 # define a normalization function
-def minNormalize(d):
+def minNormalize(d, minVal=None, maxVal=None):
     '''
     Normalizes data between 0 and 1 for ML algorithms
     
     d [np.array] : dataset to normalize
+    minVal [np.Array] : Array with minimum values to normalize with
+    maxVal [np.Array] : Array with max values to normalize with
     return : normalized dataset, minimum of dataset, maximum of dataset
     '''
-    minVal = np.min(d)
-    maxVal = np.max(d)
+    if type(minVal) is not np.ndarray:
+        minVal = np.min(d)
+        maxVal = np.max(d)
     return (d - minVal) / (maxVal - minVal), minVal, maxVal
 
 def norm1(d, minVal, maxVal):
