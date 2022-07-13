@@ -25,7 +25,7 @@ def plotCorner():
     fig = corner.corner(chain,
                         labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'],
                         show_titles=True,
-                        color='red')
+                        color='lightcoral')
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
     
