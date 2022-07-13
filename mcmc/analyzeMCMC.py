@@ -12,13 +12,10 @@ import corner
 sb.set(context='paper', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 
-def plotCorner():
+def plotCorner(chain):
     '''
     Create a prettier corner plot
     '''
-
-    chain = np.load('chain.npy')
-
     # log Z
     chain[:, 2] = np.log10(chain[:, 2])
     
@@ -31,10 +28,35 @@ def plotCorner():
                         fill_contours=True)
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
+def testGaussian(chain):
+    '''
+    Test if the output distributions are gaussian
+    '''
+    from scipy.stats import kstest, norm
+
+    # implement the Kolmogorov-Smirnov p-test
+    labels = ['M', 'Y', 'Z', 'mu']
+    forFile = 'Kolmogorov-Smirnov Normality Test\n'
+    forFile += 'p > 0.05 : Gaussian\n\n'
+    for col, label in zip(chain.T, labels):
+        stat, p = kstest(col, 'norm')
+        forFile += f'{label} p-value: {p}\n'
+        if p > 0.05:
+            forFile += 'Normal Distribution!\n'
+        else:
+            forFile += 'Non-Normal Distribution\n'
+        forFile += '\n'
+        
+    print(forFile)
+    with open('normality_test.txt', 'w') as f:
+        f.write(forFile)
     
 def main():
 
-    plotCorner()
+    chain = np.load('chain.npy')
+
+    #plotCorner(chain)
+    testGaussian(chain)
         
 if __name__ == '__main__':
     sys.exit(main())
