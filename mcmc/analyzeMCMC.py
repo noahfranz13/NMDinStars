@@ -16,8 +16,6 @@ def plotCorner(chain):
     '''
     Create a prettier corner plot
     '''
-    # log Z
-    chain[:, 2] = np.log10(chain[:, 2])
     
     fig = corner.corner(chain,
                         labels=['Mass', 'Y', r'log$_{10}$(Z)', r'$\mu_{12}$'],
@@ -89,6 +87,13 @@ def main():
 
     chain = np.load('chain.npy')
 
+    # log Z
+    chain[:, 2] = np.log10(chain[:, 2])
+
+    # log mu
+    chain[:,3] = np.log10(chain[:,3])
+
+    
     plotCorner(chain)
     testGaussian(chain)
     CI(chain, 0.68)
