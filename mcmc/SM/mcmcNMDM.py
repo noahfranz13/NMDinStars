@@ -46,9 +46,9 @@ def ML(theta):
     # normalize the input vector
     m, y, z = theta
     
-    m = normFromValues(1.4, 2.9524999999999997, 0.7, m)
-    y = normFromValues(0.4, 0.50485, 0.2, y)
-    z = normFromValues(2.68878e-05, 0.0406135894, 1.34439e-5, z)
+    m = normaliseFromValues(1.4, 2.9524999999999997, 0.7, m)
+    y = normaliseFromValues(0.4, 0.50485, 0.2, y)
+    z = normaliseFromValues(2.68878e-05, 0.0406135894, 1.34439e-5, z)
     thetaNorm = np.array([m, y, z])[None,:]
 
     # call the ML models
@@ -127,9 +127,9 @@ def main():
 
     # run the MCMC
     nwalkers = 32
-    ndim = 4
+    ndim = 3
     nsteps = 500000
-    initPos = [1.5, 0.25, 0.01, 1] + 1e-4 * np.random.randn(nwalkers, ndim)
+    initPos = [1.5, 0.25, 0.01] + 1e-4 * np.random.randn(nwalkers, ndim)
 
     # output hdf5 file to save progress
     back = emcee.backends.HDFBackend('nmdm.h5')
