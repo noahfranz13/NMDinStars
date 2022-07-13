@@ -23,7 +23,7 @@ def plotCorner():
     chain[:, 2] = np.log10(chain[:, 2])
     
     fig = corner.corner(chain,
-                        labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'],
+                        labels=['Mass', 'Y', r'log$_{10}$(Z)', r'$\mu_{12}$'],
                         show_titles=True,
                         color='dodgerblue',
                         smooth=True,
