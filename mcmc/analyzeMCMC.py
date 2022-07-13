@@ -17,9 +17,12 @@ def plotCorner():
     Create a prettier corner plot
     '''
 
-    flatSamples = np.load('chain.npy')
+    chain = np.load('chain.npy')
 
-    fig = corner.corner(flatSamples,
+    # log Z
+    chain[:, 2] = np.log10(chain[:, 2])
+    
+    fig = corner.corner(chain,
                         labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'],
                         show_titles=True)
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
