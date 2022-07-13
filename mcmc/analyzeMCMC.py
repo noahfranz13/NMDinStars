@@ -26,7 +26,7 @@ def plotCorner(chain):
                         smooth=True,
                         plot_datapoints=False,
                         fill_contours=True,
-                        quantiles=[0.68, 0.995, 0.999])
+                        title_quantiles=[0.68])
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
 def testGaussian(chain):
