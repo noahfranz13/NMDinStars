@@ -51,13 +51,48 @@ def testGaussian(chain):
     print(forFile)
     with open('normality_test.txt', 'w') as f:
         f.write(forFile)
+
+def CI(chain, alpha):
+    '''
+    Calculate the confidence intervals around the median
+    of each input parameter in the chain
     
+    chain [Array] : np array of output samples from the MCMC
+    alpha [float] : confidence level to compute
+    center [string] : techniique to get central value of distribution
+                      that the CI is based around. Supported options are
+                      'median', 'mode', 'mean'
+    '''
+    
+    forFile = 'Confidence Intervals: \n\n'
+    labels = ['M', 'Y', 'Z', 'mu']
+    for col, label in zip(chain.T, labels):
+
+        middle = 0.5
+        q1 = np.quantile(col, middle-(alpha/2))
+        q2 = np.quantile(col, middle)
+        q3 = np.quantile(col, middle+(alpha/2))
+        
+        forFile += f'{label} {alpha*100}% CI:\n'
+        forFile += f'         Q1: {q1}\n'
+        forFile += f'Q2 (median): {q2}\n'
+        forFile += f'         Q3: {q3}\n'
+        forFile += '\n'
+        
+    print(forFile)
+    with open(f'CI_{alpha}.txt', 'w') as f:
+        f.write(forFile)
+    
+    
+        
 def main():
 
     chain = np.load('chain.npy')
 
     plotCorner(chain)
     testGaussian(chain)
+    CI(chain, 0.68)
+    CI(chain, 0.995)
         
 if __name__ == '__main__':
     sys.exit(main())
