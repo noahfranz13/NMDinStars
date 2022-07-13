@@ -25,7 +25,8 @@ def plotCorner(chain):
                         color='dodgerblue',
                         smooth=True,
                         plot_datapoints=False,
-                        fill_contours=True)
+                        fill_contours=True,
+                        quantiles=[0.68, 0.995, 0.999])
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
 def testGaussian(chain):
@@ -55,7 +56,7 @@ def main():
 
     chain = np.load('chain.npy')
 
-    #plotCorner(chain)
+    plotCorner(chain)
     testGaussian(chain)
         
 if __name__ == '__main__':
