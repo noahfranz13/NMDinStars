@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import seaborn as sb
 import corner
 
-sb.set(context='talk', style='whitegrid', palette='Set1')
+sb.set(context='paper', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 
 def plotCorner():
@@ -24,7 +24,8 @@ def plotCorner():
     
     fig = corner.corner(chain,
                         labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'],
-                        show_titles=True)
+                        show_titles=True,
+                        color='red')
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
     
