@@ -89,10 +89,6 @@ def main():
 
     # log Z
     chain[:, 2] = np.log10(chain[:, 2])
-
-    # log mu
-    chain[:,3] = np.log10(chain[:,3])
-
     
     plotCorner(chain)
     testGaussian(chain)
