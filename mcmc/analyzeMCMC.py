@@ -110,9 +110,9 @@ def plotHists(chain):
 def main():
 
     chain = np.load('chain.npy')
-
+    
     # log Z
-    chain[:, 2] = np.log10(chain[:, 2])
+    chain = np.log10(chain[:, 2])
     
     plotCorner(chain)
     testGaussian(chain)
