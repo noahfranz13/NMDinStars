@@ -56,9 +56,9 @@ def ML(theta):
 
     # call the ML models
     flag = classifier(thetaNorm).numpy()
-    
+    print(flag)
     flag = np.argmax(flag)
-    
+    print(flag)
     if flag != 0:
         return -np.inf, -np.inf, flag
     
@@ -136,7 +136,7 @@ def main():
     # run the MCMC
     nwalkers = 32
     ndim = 4
-    nsteps = 500000
+    nsteps = 5000 #500000
     initPos = [1.5, 0.25, 0.01, 1] + 1e-4 * np.random.randn(nwalkers, ndim)
 
     # output hdf5 file to save progress
