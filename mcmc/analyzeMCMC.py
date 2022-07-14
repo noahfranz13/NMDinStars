@@ -21,7 +21,7 @@ def plotCorner(chain):
                         labels=['Mass', 'Y', r'log$_{10}$(Z)', r'$\mu_{12}$'],
                         show_titles=True,
                         color='dodgerblue',
-                        smooth=True,
+                        smooth=False,
                         plot_datapoints=False,
                         fill_contours=True,
                         title_quantiles=[0.68])
@@ -81,7 +81,32 @@ def CI(chain, alpha):
     with open(f'CI_{alpha}.txt', 'w') as f:
         f.write(forFile)
     
-    
+def plot2Dhists(chain):
+    '''
+    Plot 2D histograms for mu vs. other parameters
+    '''
+    labels = ['M', 'Y', 'Z']
+    mu = chain.T[-1]
+    for col, label in zip(chain.T[:-1], labels):
+        print(len(mu), len(col))
+        fig, ax = plt.subplots(figsize=(8,6))
+        ax.hist2d(col, mu, bins=20)
+        ax.set_xlabel(label)
+        ax.set_ylabel(r'$\mu_{12}$')
+        fig.savefig(f"mu_vs_{label}_2dhist.jpeg", bbox_inches='tight', transparent=False)
+
+def plotHists(chain):
+    '''
+    Plot histograms for input parameters
+    '''
+    labels = ['M', 'Y', 'Z', 'mu12']
+    for col, label in zip(chain.T, labels):
+        fig, ax = plt.subplots(figsize=(8,6))
+        ax.hist(col, bins=20)
+        ax.set_xlabel(label)
+        ax.set_ylabel('N')
+        fig.savefig(f"{label}_hist.jpeg", bbox_inches='tight', transparent=False)
+
         
 def main():
 
@@ -94,6 +119,8 @@ def main():
     testGaussian(chain)
     CI(chain, 0.68)
     CI(chain, 0.995)
+    plot2Dhists(chain)
+    plotHists(chain)
         
 if __name__ == '__main__':
     sys.exit(main())
