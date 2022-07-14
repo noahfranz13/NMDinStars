@@ -40,10 +40,9 @@ IerrErr = np.load('/home/nfranz/NMDinStars/ML_models/regressor/Ierr_error.npy')
 # get normalization constants
 const = pd.read_csv('/home/nfranz/NMDinStars/ML_models/norm_const.txt', index_col=0)
 
-def ML(theta):
+def norm(theta):
     '''
-    Use the ML classiifer and regressor to predict the I-Band
-    magnitudes given mass, Y, Z, mu_12
+    Normalizes theta to pass into ML algorithms
     '''
     # normalize the input vector
     m, y, z, mu = theta
@@ -54,14 +53,18 @@ def ML(theta):
     mu = norm1(mu, const['min'].loc['mu'], const['max'].loc['mu'])
     thetaNorm = np.array([m, y, z, mu])[None,:]
 
-    # call the ML models
-    flag = classifier(thetaNorm).numpy()
-    print(flag)
-    flag = np.argmax(flag)
-    print(flag)
-    if flag != 0:
-        return -np.inf, -np.inf, flag
-    
+    return thetaNorm
+
+def ML(theta):
+    '''
+    Use the ML classiifer and regressor to predict the I-Band
+    magnitudes given mass, Y, Z, mu_12
+    '''
+
+    # normalize values
+    thetaNorm = norm(theta)
+
+    # call the ML models    
     IbandNorm, IerrNorm = regressor(thetaNorm).numpy()[0]
     
     # denormalize Iband and Ierr
@@ -72,7 +75,7 @@ def ML(theta):
                                const['min'].loc['M_I_err'],
                                const['max'].loc['M_I_err'])
     
-    return Iband, Ierr, flag
+    return Iband, Ierr
 
 def logLikelihood(theta):
     '''
@@ -82,19 +85,16 @@ def logLikelihood(theta):
     obsI [float] : Observed I-band value to compare to
     obsErr [float] : error on the observed I-band value
     '''
-    Iband, Ierr, flag = ML(theta)
+    Iband, Ierr = ML(theta)
 
     # propagate ML uncertainties
     Iband = Iband + np.random.choice(IbandErr)
     Ierr = Ierr + np.random.choice(IerrErr)
     
-    if np.isfinite(Iband):    
-        err2 = Ierr**2 + obsErr**2 # add err in quadrature
-        # return the max likelihood function
-        return -0.5 * ((obsI-Iband)**2 / err2 + np.log(2*np.pi*err2))
-    else:
-        return -np.inf
-
+    err2 = Ierr**2 + obsErr**2 # add err in quadrature
+    # return the max likelihood function
+    return -0.5 * ((obsI-Iband)**2 / err2 + np.log(2*np.pi*err2))
+    
 def logPrior(theta):
     '''
     Prior to pass to log_prob to be passed into the MCMC
@@ -103,6 +103,15 @@ def logPrior(theta):
     '''
     m, y, z, mu = theta
 
+    # call the classification algorithm and check flag
+    thetaNorm = norm(theta) # normalize to pass into ML
+    
+    flag = classifier(thetaNorm).numpy()
+    flag = np.argmax(flag)
+    if flag != 0:
+        return -np.inf
+
+    # other priors
     if 0.7 <= m <= 2.25 and 0.2 <= y <= 0.3 and 1e-5 <= z <= 0.04 and 0 <= mu <= 4:
         mPrior = 0 #-2.35*np.log(m) # Use Salpeter IMF
         yPrior = 0 # constant
@@ -124,7 +133,7 @@ def logProb(theta):
     prior = logPrior(theta)
     likelihood = logLikelihood(theta)
     
-    if not np.isfinite(prior) or not np.isfinite(likelihood):
+    if not np.isfinite(prior):
         return -np.inf
     return prior + likelihood
 
