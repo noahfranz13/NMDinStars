@@ -21,10 +21,9 @@ def plotCorner(chain):
                         labels=['Mass', 'Y', r'log$_{10}$(Z)', r'$\mu_{12}$'],
                         show_titles=True,
                         color='dodgerblue',
-                        smooth=False,
+                        smooth=True,
                         plot_datapoints=False,
-                        fill_contours=True,
-                        title_quantiles=[0.68])
+                        fill_contours=True)
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
 def testGaussian(chain):
