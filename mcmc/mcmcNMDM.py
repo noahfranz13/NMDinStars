@@ -168,11 +168,10 @@ def main():
                 indexes.append(idx)
                 
                 # check convergence if model hasn't converged
-                if not isConverged:
-                    isConverged = np.all(tau*100 < es.iteration)
-                    isConverged &= np.all(np.abs(oldTau-tau)/tau < 0.01)
-                    if isConverged:
-                        print(f"Model converged at step: {es.iteration}")
+                isConverged = np.all(tau*100 < es.iteration)
+                isConverged &= np.all(np.abs(oldTau-tau)/tau < 0.01)
+                if isConverged:
+                    print(f"Model converged at step: {es.iteration}")
 
                 oldTau = tau
 
