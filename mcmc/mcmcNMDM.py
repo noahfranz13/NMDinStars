@@ -163,7 +163,7 @@ def main():
 
             if not es.iteration % mod:
                 # record autocorrelation time
-                tau = es.get_autocorr_time(tol=0, discard=es.iteration/2)
+                tau = es.get_autocorr_time(tol=0, discard=es.iteration//2)
                 autocorr.append(tau)
                 indexes.append(idx)
                 
@@ -177,7 +177,7 @@ def main():
 
             if not es.iteration % (mod*10):
                 # make a corner plot
-                flatSamples = es.get_chain(discard=es.iteration/2, flat=True)
+                flatSamples = es.get_chain(discard=es.iteration//2, flat=True)
                 fig = corner.corner(flatSamples,
                                     labels=['Mass', 'Y', 'Z', r'$\mu_{12}$'])
                 fig.savefig(f"corner_i{es.iteration}.jpeg",
@@ -189,7 +189,7 @@ def main():
     indexes = np.array(indexes)
     
     # save outputs
-    flatSamples = es.get_chain(discard=es.iteration/2, flat=True)
+    flatSamples = es.get_chain(discard=es.iteration//2, flat=True)
     np.save('chain', flatSamples)
     np.save('autocorr', autocorr)
     np.save('indexes', indexes)
