@@ -104,40 +104,66 @@ def plot4d(mags):
     fig.savefig('allParams.jpeg', transparent=False,
                 bbox_inches='tight')
 
-def Iband_vs_binned(mags):
+def Iband_vs_binned(df):
     '''
     Plots M_I vs. binned version of other input params
     '''
-    mags = mags[mags.flag==0]
-    #mags = mags[mags.index > 0]
+    df = df[df.flag==0]
     
     labels = ['Mass', 'Y', 'Z']
     keys = ['mass', 'y', 'z']
-    tols = [0.05, 0.01, 1e-5]
-    
+    tols = [0.05, 0.01, 1e-4]
+    allMus = np.sort(df.mu.unique())
+    mus = [allMus[1], allMus[26], allMus[29]]
+
     for key, label, tol in zip(keys, labels, tols):
 
-        group = []
-        std = []
-        for i in range(0, len(mags[key].unique()), 2):
-            m = mags[key].unique()[i]
-            
-            where = np.where(abs(mags[key] - m) <= tol)[0]
-            good = mags.iloc[where]
-            group.append(np.mean(good))
-            std.append(np.std(good))
-            
-        group = pd.concat(group, axis=1).T
-        std = pd.concat(std, axis=1).T
-        
         fig, ax = plt.subplots(1, figsize=(8,6))
-        ax.errorbar(group[key], group.M_I, yerr=std.M_I, fmt='o', capsize=6)
+    
+        for mu in mus:
+            mags = df[df.mu == mu]
+            #print(mags)
+
+            '''
+            group = []
+            std = []
+            for i in range(0, len(mags[key].unique()), 2):
+                m = mags[key].unique()[i]
+            
+                where = np.where(abs(mags[key] - m) <= tol)[0]
+                good = mags.iloc[where]
+                group.append(np.mean(good))
+                std.append(np.std(good))
+            
+            #print(type(group[0]))
+            group = pd.concat(group, axis=1).T
+            std = pd.concat(std, axis=1).T
+            '''
+            group = mags.groupby([key]).mean().reset_index()
+            std = mags.groupby([key]).std().reset_index()
+            
+            ax.errorbar(group[key], group.M_I, yerr=std.M_I, fmt='o', capsize=6, label=r'$\mu_{12}=$'+str(round(mu, 3)))
+
+        # Plot observational values
+        x = np.linspace(min(mags[key])-tol, max(mags[key])+tol)
+        a = 0.25
+
+        #ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'Cappozi & Raffelt $\omega$ Centauri')
+        #ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
+        #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'Cappozi & Raffelt NGC4258')
+        #ax.fill_between(x, -4.027-0.055, -4.027+0.055, color='orange', alpha=a)
+        ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'Cappozi & Raffelt LMC (F20)')
+        ax.fill_between(x, -4.047-0.045, -4.047+0.045, color='royalblue', alpha=a)
+        #ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='green', label=r'Cappozi & Raffelt LMC (Y19)')
+        #ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='green', alpha=a)
+        
         ax.set_xlabel(label)
         ax.set_ylabel('I-Band Magnitude')
+        ax.legend()
         if key == 'z':
             ax.set_xscale('log')
         fig.savefig(f'M_I_vs_binned_{key}.jpeg', transparent=False,
-                bbox_inches='tight')
+                    bbox_inches='tight')
     
 def main():
 
