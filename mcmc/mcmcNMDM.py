@@ -66,7 +66,6 @@ def io():
         regressor = load_model(os.path.join(cwd, 'SM/IBand_SM.h5'))
         IbandErr = np.load(os.path.join(cwd,'SM/Iband_error.npy'))
         IerrErr = np.load(os.path.join(cwd, 'SM/Ierr_error.npy'))
-    else
 
 def norm(theta):
     '''
@@ -85,11 +84,7 @@ def norm(theta):
         m = normaliseFromValues(1.4, 2.9524999999999997, 0.7, m)
         y = normaliseFromValues(0.4, 0.50485, 0.2, y)
         z = normaliseFromValues(2.68878e-05, 0.0406135894, 1.34439e-5, z)
-        thetaNorm = np.array([m, y, z])[None,:]
-
-    else:
-        m, y, z = theta
-        
+        thetaNorm = np.array([m, y, z])[None,:]        
 
     return thetaNorm
 
