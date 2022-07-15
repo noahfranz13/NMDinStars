@@ -105,7 +105,6 @@ def plotHists(chain):
         ax.set_xlabel(label)
         ax.set_ylabel('N')
         fig.savefig(f"{label}_hist.jpeg", bbox_inches='tight', transparent=False)
-
         
 def main():
 
