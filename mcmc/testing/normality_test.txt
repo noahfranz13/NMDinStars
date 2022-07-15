@@ -1,0 +1,12 @@
+Kolmogorov-Smirnov Normality Test
+p > 0.05 : Gaussian
+
+M p-value: 0.0
+Non-Normal Distribution
+
+Y p-value: 0.0
+Non-Normal Distribution
+
+Z p-value: 0.0
+Non-Normal Distribution
+
