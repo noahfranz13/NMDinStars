@@ -74,6 +74,7 @@ def CI(chain, alpha):
         forFile += f'         Q1: {q1}\n'
         forFile += f'Q2 (median): {q2}\n'
         forFile += f'         Q3: {q3}\n'
+        forFile += f'{label} = {q2} (+{q2-q1}, -{q3-q2})'
         forFile += '\n'
         
     print(forFile)
