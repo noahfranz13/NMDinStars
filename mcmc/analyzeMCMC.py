@@ -1,3 +1,4 @@
+
 '''
 Analysis script of the mcmc outputs to create nicer plots and get
 constraints on input parameters
@@ -109,10 +110,17 @@ def plotHists(chain):
         
 def main():
 
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--log', dest='plotLogged', action='store_false')
+    parser.set_defaults(plotLogged=True)
+    args = parser.parse_args()
+    
     chain = np.load('chain.npy')
     
     # log Z
-    #chain[:,2] = np.log10(chain[:, 2])
+    if args.plotLogged:
+        chain[:,2] = np.log10(chain[:, 2])
     
     plotCorner(chain)
     testGaussian(chain)
