@@ -112,8 +112,8 @@ def main():
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--log', dest='plotLogged', action='store_false')
-    parser.set_defaults(plotLogged=True)
+    parser.add_argument('--log', dest='plotLogged', action='store_true')
+    parser.set_defaults(plotLogged=False)
     args = parser.parse_args()
     
     chain = np.load('chain.npy')
