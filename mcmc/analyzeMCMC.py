@@ -25,7 +25,7 @@ def plotCorner(chain, log):
     
     fig = corner.corner(chain,
                         labels=labels,
-                        show_titles=True,
+                        show_titles=False,
                         color='dodgerblue',
                         smooth=True,
                         plot_datapoints=False,
