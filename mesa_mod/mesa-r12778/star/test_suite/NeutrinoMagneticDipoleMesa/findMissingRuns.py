@@ -4,14 +4,14 @@ import numpy as np
 import pandas as pd
 
 # collect grid
-gridFiles = glob.glob('/home/nfranz/NMDinStars/makeGrids/second*.txt')
+gridFiles = glob.glob('/home/nfranz/NMDinStars/makeGrids/third*.txt')
 grids = []
 for g in gridFiles:
     grids.append(pd.read_csv(g, header=None, sep='\t', index_col=0))
 
 grid = pd.concat(grids)
 
-dirs = glob.glob('/home/nfranz/lus_scratch/mesa-112500/second/out*/*.data')
+dirs = glob.glob('/home/nfranz/lus_scratch/mesa-112500/third/out*/*.data')
 
 idxList = np.array([int(os.path.split(d)[0].split('/')[-1].split('i')[-1]) for d in dirs])
 print(grid)
