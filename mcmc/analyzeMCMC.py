@@ -13,13 +13,18 @@ import corner
 sb.set(context='paper', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 
-def plotCorner(chain):
+def plotCorner(chain, log):
     '''
     Create a prettier corner plot
     '''
+
+    if log:
+        labels = ['Mass', 'Y', r'log$_{10}$(Z)', r'$\mu_{12}$']
+    else:
+        labels = ['Mass', 'Y', 'Z', r'$\mu_{12}$']
     
     fig = corner.corner(chain,
-                        labels=['Mass', 'Y', r'log$_{10}$(Z)', r'$\mu_{12}$'],
+                        labels=labels,
                         show_titles=True,
                         color='dodgerblue',
                         smooth=True,
@@ -122,7 +127,7 @@ def main():
     if args.plotLogged:
         chain[:,2] = np.log10(chain[:, 2])
     
-    plotCorner(chain)
+    plotCorner(chain, args.plotLogged)
     testGaussian(chain)
     CI(chain, 0.68)
     CI(chain, 0.995)
