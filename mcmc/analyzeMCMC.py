@@ -19,7 +19,7 @@ def plotCorner(chain, log):
     '''
 
     if log:
-        labels = ['Mass', 'Y', r'log$_{10}$(Z)', r'$\mu_{12}$']
+        labels = ['Mass', 'Y', r'log$_{10}$(Z)', r'log$_{10}$($\mu_{12}$)']
     else:
         labels = ['Mass', 'Y', 'Z', r'$\mu_{12}$']
     
@@ -126,6 +126,7 @@ def main():
     # log Z
     if args.plotLogged:
         chain[:,2] = np.log10(chain[:, 2])
+        chain[:,3] = np.log10(chain[:,3])
     
     plotCorner(chain, args.plotLogged)
     testGaussian(chain)
