@@ -154,7 +154,7 @@ def logPrior(theta):
         return -np.inf
 
     # other priors
-    if 0.7 <= m <= 2.25 and 0.2 <= y <= 0.3 and 1e-5 <= z <= 0.04 and 0 <= mu <= 4:
+    if 0.7 <= m <= 2.25 and 0.2 <= y <= 0.3 and 1e-5 <= z <= 0.04 and 0 <= mu <= 6:
         mPrior = 0 #-2.35*np.log(m) # Use Salpeter IMF
         yPrior = 0 # constant
         zPrior = 0 # constant

@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sb
 
-sb.set(context='talk', style='whitegrid', palette='Set1')
+sb.set(context='paper', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 
 def io(mesaOutFile):
@@ -33,13 +33,13 @@ def plotMI(mags):
     ax.errorbar(group.mu, group.M_I, yerr=std.M_I, fmt='o', label=r'Average M$_I$', capsize=6)
     #ax.errorbar(magsGood.mu, magsGood.M_I, yerr=magsGood.M_I_err, fmt='.', label=r'M$_I$')
 
-    #ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'Cappozi & Raffelt $\omega$ Centauri')
+    #ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'$\omega$ Centauri')
     #ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
-    #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'Cappozi & Raffelt NGC4258')
+    #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'NGC4258')
     #ax.fill_between(x, -4.027-0.055, -4.027+0.055, color='orange', alpha=a)
-    ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'Cappozi & Raffelt LMC (F20)')
+    ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'LMC (F20)')
     ax.fill_between(x, -4.047-0.045, -4.047+0.045, color='royalblue', alpha=a)
-    #ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='green', label=r'Cappozi & Raffelt LMC (Y19)')
+    #ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='green', label=r'LMC (Y19)')
     #ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='green', alpha=a)
 
     ax.set_xlabel(r'$\mu_{12}$')
@@ -148,13 +148,13 @@ def Iband_vs_binned(df):
         x = np.linspace(min(mags[key])-tol, max(mags[key])+tol)
         a = 0.25
 
-        #ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'Cappozi & Raffelt $\omega$ Centauri')
+        #ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'$\omega$ Centauri')
         #ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
-        #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'Cappozi & Raffelt NGC4258')
+        #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'NGC4258')
         #ax.fill_between(x, -4.027-0.055, -4.027+0.055, color='orange', alpha=a)
-        ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'Cappozi & Raffelt LMC (F20)')
+        ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'LMC (F20)')
         ax.fill_between(x, -4.047-0.045, -4.047+0.045, color='royalblue', alpha=a)
-        #ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='green', label=r'Cappozi & Raffelt LMC (Y19)')
+        #ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='green', label=r'LMC (Y19)')
         #ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='green', alpha=a)
         
         ax.set_xlabel(label)
