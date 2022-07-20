@@ -15,14 +15,15 @@ class MesaOutput():
         self.dataPaths = self.getDataFiles()
         self.terminalPaths = self.getTerminalOut()
         self.flags = np.zeros(len(self.dataPaths))
-
+        self.index = self.getIndex()
+        print(len(self.index))
+        print(self.index[:10])
+        
         if read:
             self.data = self.getData()
         else:
             self.data = None
-
-        self.index = self.getIndex()
-
+            
     def getDataFiles(self):
         '''
         Get the data output files from dirPath
@@ -39,8 +40,8 @@ class MesaOutput():
         '''
         Get the index from the filepath
         '''
-        dirs = glob.glob(os.path.join(self.dirPath, '*'))
-        return np.array([dd.split('i')[-1] for dd in dirs])  
+        dirs = glob.glob(os.path.join(self.dirPath, '*/*.data'))
+        return np.array([dd.split('i')[-1].split('.')[0] for dd in dirs])  
 
     def getDataHelper(self, f): return MesaData(f)
 
