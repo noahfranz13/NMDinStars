@@ -29,7 +29,8 @@ def plotCorner(chain, log):
                         color='dodgerblue',
                         smooth=True,
                         plot_datapoints=False,
-                        fill_contours=True)
+                        fill_contours=True,
+                        levels=[0.68, 0.90, 0.95])
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
 def testGaussian(chain):
