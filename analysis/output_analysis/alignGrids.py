@@ -7,13 +7,13 @@ import os, sys
 import pandas as pd
 import numpy as np
 
-sys.path.insert(0, '/home/ubuntu/Documents/NMDinStars/ML_models/')
+sys.path.insert(0, '/home/ubuntu/Documents/NMDinStars/ML_models/SM/')
 from MD_machineLearningFunctions import deNormalise
 
 # first read in both files
 myOutFile1 = 'postProcess_output_first.txt'
 myOutFile2 = 'postProcess_output_second.txt'
-mtOutFile3 = 'postProcess_output_third.txt'
+myOutFile3 = 'postProcess_output_third.txt'
 myOutDir = '/home/ubuntu/Documents/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/'
 myOutPath1 = os.path.join(myOutDir, myOutFile1)
 myOutPath2 = os.path.join(myOutDir, myOutFile2)
