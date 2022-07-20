@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=mcmc_constM
+#SBATCH --job-name=mcmc
 #SBATCH --partition=shared
 #SBATCH --time=0-20:00:00
 

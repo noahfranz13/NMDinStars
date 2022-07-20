@@ -23,7 +23,7 @@ plt.rcParams["font.family"] = "serif"
 os.environ["OMP_NUM_THREADS"] = "1"
 
 # define cwd
-cwd = '/home/ubuntu/Documents/NMDinStars/ML_models'
+cwd = '/home/nfranz/NMDinStars/ML_models'
 
 # Declare ML models and any args as global variables
 # NOTE: This is a bad practice but necessary to reduce MCMC runtime
@@ -197,7 +197,7 @@ def main():
     useMu = args.useMu
     io() # read in stuff we need
 
-    nsteps = 5000 #500000
+    nsteps = 500000
     nwalkers = 32
     
     if useMu:
