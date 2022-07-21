@@ -12,7 +12,9 @@ sb.set(context='paper', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 
 def io(mesaOutFile):
-    return pd.read_csv(mesaOutFile, index_col=0)
+
+    df = pd.read_csv(mesaOutFile, index_col=0)
+    return df
 
 def plotMI(mags):
     '''
@@ -23,16 +25,18 @@ def plotMI(mags):
     
     magsGood = mags[mags['flag'] == 0]
 
-    x = np.linspace(0, max(magsGood.mu)+0.5)
     a = 0.25
     
     fig, ax = plt.subplots()
     group = magsGood.groupby(magsGood.mu).mean().reset_index()
     std = magsGood.groupby(magsGood.mu).std()
     
-    ax.errorbar(group.mu, group.M_I, yerr=std.M_I, fmt='o', label=r'Average M$_I$', capsize=6)
+    ax.errorbar(group.mu, group.M_I, yerr=std.M_I, fmt='o', label=r'Average M$_I$', capsize=4)
     #ax.errorbar(magsGood.mu, magsGood.M_I, yerr=magsGood.M_I_err, fmt='.', label=r'M$_I$')
 
+    xmin, xmax = ax.get_xlim()
+    x = np.linspace(xmin, xmax+0.5)
+    
     #ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'$\omega$ Centauri')
     #ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
     #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'NGC4258')
@@ -42,9 +46,11 @@ def plotMI(mags):
     #ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='green', label=r'LMC (Y19)')
     #ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='green', alpha=a)
 
+    
     ax.set_xlabel(r'$\mu_{12}$')
     ax.set_ylabel('I-Band Magnitude')
-    ax.set_xscale('log')
+    #ax.set_xscale('log')
+    ax.set_xlim(xmin, xmax+0.5)
     ax.legend(prop={'size': 10})
     fig.savefig('mu12_vs_MI.jpeg', transparent=False,
                 bbox_inches='tight')
@@ -112,9 +118,9 @@ def Iband_vs_binned(df):
     
     labels = ['Mass', 'Y', 'Z']
     keys = ['mass', 'y', 'z']
-    tols = [0.05, 0.01, 1e-4]
+    tols = [0, 0, 0.01]
     allMus = np.sort(df.mu.unique())
-    mus = [allMus[1], allMus[26], allMus[29]]
+    mus = [allMus[1], allMus[-10], allMus[-1]]
 
     for key, label, tol in zip(keys, labels, tols):
 
@@ -141,13 +147,19 @@ def Iband_vs_binned(df):
             '''
             group = mags.groupby([key]).mean().reset_index()
             std = mags.groupby([key]).std().reset_index()
+
+            if mu == mus[0]:
+                cap = 'SM'
+            else:
+                cap = r'$\mu_{12}=$'+str(round(mu, 3))
             
-            ax.errorbar(group[key], group.M_I, yerr=std.M_I, fmt='o', capsize=6, label=r'$\mu_{12}=$'+str(round(mu, 3)))
+            ax.errorbar(group[key], group.M_I, yerr=std.M_I, fmt='o', capsize=4, label=cap)
 
         # Plot observational values
-        x = np.linspace(min(mags[key])-tol, max(mags[key])+tol)
         a = 0.25
-
+        xmin, xmax = ax.get_xlim()
+        x = np.linspace(xmin, xmax+tol)
+        
         #ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'$\omega$ Centauri')
         #ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
         #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'NGC4258')
@@ -162,6 +174,7 @@ def Iband_vs_binned(df):
         ax.legend()
         if key == 'z':
             ax.set_xscale('log')
+        ax.set_xlim(xmin, xmax+tol)
         fig.savefig(f'M_I_vs_binned_{key}.jpeg', transparent=False,
                     bbox_inches='tight')
     
