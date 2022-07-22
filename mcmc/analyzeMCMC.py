@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import seaborn as sb
 import corner
 
-sb.set(context='paper', style='whitegrid', palette='Set1')
+sb.set(context='poster', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 
 def plotCorner(chain, log):
