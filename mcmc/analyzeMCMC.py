@@ -32,7 +32,7 @@ def plotCorner(chain, log):
                         plot_datapoints=False,
                         fill_contours=True,
                         levels=[0.68, 0.90, 0.95],
-                        labelpad=0.5)
+                        labelpad=0.3)
 
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
