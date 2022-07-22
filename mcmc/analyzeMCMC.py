@@ -21,6 +21,9 @@ plt.rcParams['xtick.top'] = False
 plt.rcParams['ytick.direction'] = 'out'
 plt.rcParams['xtick.direction'] = 'out'
 
+plt.rcParams['figure.subplot.wspace'] = 0.9
+plt.rcParams['figure.subplot.hspace'] = 0.9
+
 def plotCorner(chain, log):
     '''
     Create a prettier corner plot
