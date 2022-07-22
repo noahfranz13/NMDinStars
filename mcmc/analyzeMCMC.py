@@ -6,7 +6,6 @@ constraints on input parameters
 # imports
 import sys
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sb
 import corner
@@ -33,10 +32,7 @@ def plotCorner(chain, log):
                         plot_datapoints=False,
                         fill_contours=True,
                         levels=[0.68, 0.90, 0.95],
-                        labelpad=1)
-
-    #for ax in fig.get_axes():
-    #    ax.tick_params(axis='both', labelsize=16)
+                        labelpad=0.5)
 
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
