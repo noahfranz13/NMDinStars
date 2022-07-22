@@ -14,7 +14,6 @@ import corner
 sb.set(context='poster', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["figure.dpi"] = 300
-mpl.rcParams["axes.labelpad"] = 50
 
 def plotCorner(chain, log):
     '''
@@ -35,8 +34,8 @@ def plotCorner(chain, log):
                         fill_contours=True,
                         levels=[0.68, 0.90, 0.95])
 
-    #for ax in fig.get_axes():
-    #ax.tick_params(axis='both', labelsize=14)
+    for ax in fig.get_axes():
+        ax.tick_params(axis='both', labelsize=16)
 
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
