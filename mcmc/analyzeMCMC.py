@@ -21,8 +21,7 @@ plt.rcParams['xtick.top'] = False
 plt.rcParams['ytick.direction'] = 'out'
 plt.rcParams['xtick.direction'] = 'out'
 
-plt.rcParams['figure.subplot.wspace'] = 0.9
-plt.rcParams['figure.subplot.hspace'] = 0.9
+plt.rcParams['figure.autolayout'] = True
 
 def plotCorner(chain, log):
     '''
