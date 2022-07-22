@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=nmdm
+#SBATCH --job-name=modZ
 #SBATCH --partition=shared
 ## 3 day max run time for public partitions, except 4 hour max runtime for the sandbox partition
-#SBATCH --time=0-04:00:00 ## time format is DD-HH:MM:SS
+#SBATCH --time=0-06:00:00 ## time format is DD-HH:MM:SS
 
 #SBATCH --nodes=1
 ##SBATCH --tasks-per-node=1
@@ -28,4 +28,4 @@ export MESA_DIR=/home/nfranz/NMDinStars/mesa_mod/mesa-r12778
 
 export OMP_NUM_THREADS=$([[ -v SLURM_CPUS_PER_TASK ]] && echo ${SLURM_CPUS_PER_TASK} || echo "1")
 
-./star inlistNoNu/inlist_temp_0_0_1_0_test #You could also use ./rn depending on how your inlists are set up.
+./star inlist_modZ #You could also use ./rn depending on how your inlists are set up.
