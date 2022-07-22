@@ -10,9 +10,16 @@ import matplotlib.pyplot as plt
 import seaborn as sb
 import corner
 
-sb.set(context='poster', style='whitegrid', palette='Set1')
+sb.set(context='poster', style='white', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["figure.dpi"] = 300
+plt.rcParams["axes.grid.which"] = 'both'
+plt.rcParams['ytick.left'] = True
+plt.rcParams['xtick.bottom'] = True
+plt.rcParams['ytick.right'] = False
+plt.rcParams['xtick.top'] = False
+plt.rcParams['ytick.direction'] = 'out'
+plt.rcParams['xtick.direction'] = 'out'
 
 def plotCorner(chain, log):
     '''
