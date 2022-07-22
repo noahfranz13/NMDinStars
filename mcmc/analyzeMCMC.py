@@ -21,7 +21,8 @@ plt.rcParams['xtick.top'] = False
 plt.rcParams['ytick.direction'] = 'out'
 plt.rcParams['xtick.direction'] = 'out'
 
-plt.rcParams['figure.autolayout'] = True
+plt.rcParams['xtick.major.size'] = 3
+plt.rcParams['ytick.major.size'] = 3
 
 def plotCorner(chain, log):
     '''
