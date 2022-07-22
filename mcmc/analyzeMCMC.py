@@ -32,10 +32,11 @@ def plotCorner(chain, log):
                         smooth=True,
                         plot_datapoints=False,
                         fill_contours=True,
-                        levels=[0.68, 0.90, 0.95])
+                        levels=[0.68, 0.90, 0.95],
+                        labelpad=1)
 
-    for ax in fig.get_axes():
-        ax.tick_params(axis='both', labelsize=16)
+    #for ax in fig.get_axes():
+    #    ax.tick_params(axis='both', labelsize=16)
 
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
