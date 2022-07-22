@@ -12,6 +12,10 @@ import corner
 
 sb.set(context='poster', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
+plt.rcParams["figure.constrained_layout.h_pad"] = 0.25
+plt.rcParams["figure.constrained_layout.w_pad"] = 0.25
+plt.rcParams["figure.dpi"] = 300
+
 
 def plotCorner(chain, log):
     '''
