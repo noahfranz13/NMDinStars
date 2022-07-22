@@ -6,6 +6,7 @@ constraints on input parameters
 # imports
 import sys
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sb
 import corner
@@ -13,7 +14,7 @@ import corner
 sb.set(context='poster', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["figure.dpi"] = 300
-plt.rcParams["axes.labelpad"] = 20
+mpl.rcParams["axes.labelpad"] = 50
 
 def plotCorner(chain, log):
     '''
@@ -33,6 +34,10 @@ def plotCorner(chain, log):
                         plot_datapoints=False,
                         fill_contours=True,
                         levels=[0.68, 0.90, 0.95])
+
+    #for ax in fig.get_axes():
+    #ax.tick_params(axis='both', labelsize=14)
+
     fig.savefig("corner_pretty.jpeg", bbox_inches='tight', transparent=False)
 
 def testGaussian(chain):
