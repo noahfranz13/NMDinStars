@@ -33,9 +33,8 @@ classifier = None
 regressor = None
 
 # define observed values for the I-band
-# LMC value from Freedman et al (2020)
-obsI = -4.047
-obsErr = 0.045
+obsI = None
+obsErr = None
 
 # Get ML errors
 IbandErr = None
@@ -189,12 +188,21 @@ def main():
 
     import argparse
     parser = argparse.ArgumentParser()
+    parser.add_argument('--obsI', help='observed I-band value', type=int, default=None)
+    parser.add_argument('--Ierr', help='observed I-band value error', type=int, default=None)
     parser.add_argument('--no-mu', dest='useMu', action='store_false')
     parser.set_defaults(useMu=True)
     args = parser.parse_args()
-
+    
+    # set global variables from inputs
     global useMu
+    global obsI
+    global obsErr
+    
     useMu = args.useMu
+    obsI = args.obsI
+    obsErr = args.IErr
+
     io() # read in stuff we need
 
     nsteps = 500000
