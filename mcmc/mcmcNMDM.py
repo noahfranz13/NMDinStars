@@ -188,8 +188,8 @@ def main():
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--obsI', help='observed I-band value', type=int, default=None)
-    parser.add_argument('--Ierr', help='observed I-band value error', type=int, default=None)
+    parser.add_argument('--obsI', help='observed I-band value', type=float, default=None)
+    parser.add_argument('--Ierr', help='observed I-band value error', type=float, default=None)
     parser.add_argument('--no-mu', dest='useMu', action='store_false')
     parser.set_defaults(useMu=True)
     args = parser.parse_args()
@@ -201,7 +201,7 @@ def main():
     
     useMu = args.useMu
     obsI = args.obsI
-    obsErr = args.IErr
+    obsErr = args.Ierr
 
     io() # read in stuff we need
 

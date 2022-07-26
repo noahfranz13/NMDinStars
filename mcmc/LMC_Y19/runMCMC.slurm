@@ -1,11 +1,11 @@
 #!/bin/bash
 #SBATCH --job-name=Y19
 #SBATCH --partition=shared
-#SBATCH --time=0-20:00:00
+#SBATCH --time=0-14:00:00
 
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=18
-#SBATCH --mem=40G
+#SBATCH --mem=20G
 #SBATCH --exclude=lmem-00[01-10]   
 
 #SBATCH --error=mcmc-%A.err
