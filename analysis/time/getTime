@@ -1,0 +1,17 @@
+#!/bin/bash
+
+dir=$1
+
+cd $dir
+
+# Clear files if they already exist
+[ -f ../postProcessResults/runtimesHost.txt ] && rm ../postProcessResults/runtimesHost.txt
+
+# Iterate over all files
+for f in $(find . -type f -iname "*.txt" -print)
+do
+    line=$(grep 'runtime' $f)
+    #echo $line
+    read -ra parsedLine <<< $line
+    echo -e "${parsedLine[5]}" >> $dir/runtimes.txt 
+done
