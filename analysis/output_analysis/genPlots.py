@@ -8,8 +8,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sb
 
-sb.set(context='paper', style='whitegrid', palette='Set1')
+#sb.set(context='paper', style='whitegrid', palette='Set1')
+sb.set(style='white', context='talk', palette='Set1') # Dark2
 plt.rcParams["font.family"] = "serif"
+plt.rcParams["figure.dpi"] = 300
+plt.rcParams["axes.grid.which"] = 'both'
+plt.rcParams['ytick.left'] = True
+plt.rcParams['xtick.bottom'] = True
+plt.rcParams['ytick.right'] = True
+plt.rcParams['xtick.top'] = True
+plt.rcParams['ytick.direction'] = 'in'
+plt.rcParams['xtick.direction'] = 'in'
 
 def io(mesaOutFile):
 
@@ -41,10 +50,10 @@ def plotMI(mags):
     #ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
     #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'NGC4258')
     #ax.fill_between(x, -4.027-0.055, -4.027+0.055, color='orange', alpha=a)
-    ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'LMC (F20)')
-    ax.fill_between(x, -4.047-0.045, -4.047+0.045, color='royalblue', alpha=a)
-    #ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='green', label=r'LMC (Y19)')
-    #ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='green', alpha=a)
+    #ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'LMC (F20)')
+    #ax.fill_between(x, -4.047-0.045, -4.047+0.045, color='royalblue', alpha=a)
+    ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='k', label=r'LMC (Y19)')
+    ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='k', alpha=a)
 
     
     ax.set_xlabel(r'$\mu_{12}$')
@@ -164,10 +173,10 @@ def Iband_vs_binned(df):
         #ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
         #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'NGC4258')
         #ax.fill_between(x, -4.027-0.055, -4.027+0.055, color='orange', alpha=a)
-        ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'LMC (F20)')
-        ax.fill_between(x, -4.047-0.045, -4.047+0.045, color='royalblue', alpha=a)
-        #ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='green', label=r'LMC (Y19)')
-        #ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='green', alpha=a)
+        #ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'LMC (F20)')
+        #ax.fill_between(x, -4.047-0.045, -4.047+0.045, color='royalblue', alpha=a)
+        ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='k', label=r'LMC (Y19)')
+        ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='k', alpha=a)
         
         ax.set_xlabel(label)
         ax.set_ylabel('I-Band Magnitude')
