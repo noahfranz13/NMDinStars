@@ -9,18 +9,20 @@ import matplotlib.pyplot as plt
 import seaborn as sb
 
 #sb.set(context='paper', style='whitegrid', palette='Set1')
-sb.set(style='white', context='talk', palette='Set1') # Dark2
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["figure.dpi"] = 300
-plt.rcParams["axes.grid.which"] = 'both'
-plt.rcParams['ytick.left'] = True
-plt.rcParams['xtick.bottom'] = True
-plt.rcParams['ytick.right'] = True
-plt.rcParams['xtick.top'] = True
-plt.rcParams['ytick.direction'] = 'in'
-plt.rcParams['xtick.direction'] = 'in'
 
 def io(mesaOutFile):
+
+    sb.set(style='white', context='talk', palette='Set1') # Dark2
+    plt.rcParams["font.family"] = "serif"
+    plt.rcParams["figure.dpi"] = 300
+    plt.rcParams["axes.grid.which"] = 'both'
+    plt.rcParams['ytick.left'] = True
+    plt.rcParams['xtick.bottom'] = True
+    plt.rcParams['ytick.right'] = True
+    plt.rcParams['xtick.top'] = True
+    plt.rcParams['ytick.direction'] = 'in'
+    plt.rcParams['xtick.direction'] = 'in'
+
 
     df = pd.read_csv(mesaOutFile, index_col=0)
     return df
@@ -36,7 +38,7 @@ def plotMI(mags):
 
     a = 0.25
     
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(1, figsize=(8,6))
     group = magsGood.groupby(magsGood.mu).mean().reset_index()
     std = magsGood.groupby(magsGood.mu).std()
     
@@ -60,7 +62,7 @@ def plotMI(mags):
     ax.set_ylabel('I-Band Magnitude')
     #ax.set_xscale('log')
     ax.set_xlim(xmin, xmax+0.5)
-    ax.legend(prop={'size': 10})
+    ax.legend(prop={'size': 14})
     fig.savefig('mu12_vs_MI.jpeg', transparent=False,
                 bbox_inches='tight')
 
@@ -125,7 +127,7 @@ def Iband_vs_binned(df):
     '''
     df = df[df.flag==0]
     
-    labels = ['Mass', 'Y', 'Z']
+    labels = [r'Mass [M$_\odot$]', 'Y', 'Z']
     keys = ['mass', 'y', 'z']
     tols = [0, 0, 0.01]
     allMus = np.sort(df.mu.unique())
@@ -139,21 +141,6 @@ def Iband_vs_binned(df):
             mags = df[df.mu == mu]
             #print(mags)
 
-            '''
-            group = []
-            std = []
-            for i in range(0, len(mags[key].unique()), 2):
-                m = mags[key].unique()[i]
-            
-                where = np.where(abs(mags[key] - m) <= tol)[0]
-                good = mags.iloc[where]
-                group.append(np.mean(good))
-                std.append(np.std(good))
-            
-            #print(type(group[0]))
-            group = pd.concat(group, axis=1).T
-            std = pd.concat(std, axis=1).T
-            '''
             group = mags.groupby([key]).mean().reset_index()
             std = mags.groupby([key]).std().reset_index()
 
@@ -180,7 +167,7 @@ def Iband_vs_binned(df):
         
         ax.set_xlabel(label)
         ax.set_ylabel('I-Band Magnitude')
-        ax.legend()
+        ax.legend(prop={'size': 14}, loc='best')
         if key == 'z':
             ax.set_xscale('log')
         ax.set_xlim(xmin, xmax+tol)
