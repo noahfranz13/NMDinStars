@@ -11,6 +11,9 @@ the grid
 4. *First* run `./genGrid1`
 5. Once you are happy with that, run `./runGrid2` to finish the grid
 
+## Sample Inlists
+Any file starting with "inlist" is a sample inslist used during this project. The inlist template used for grid runs is `inlist_template`.
+
 ## Checking to see if the grid is complete
 1. Run the python3 script `findMissingRuns.py`. This will write to a file called `grid_to_rerun.csv`.
 2. Change the output path in `nmdm_array_rerun.slurm` and run it to restart models that didn't finish.
