@@ -31,3 +31,15 @@ def pltHist(err, xlabel):
 
 pltHist(Iband, 'Error on I-Band Regression')
 pltHist(Ierr, 'Error on I-Band Error Regression')
+
+# compute mean and sd of each distribution
+Iband_mean = np.mean(Iband)
+Iband_sd = np.std(Iband)
+Ierr_mean = np.mean(Ierr)
+Ierr_sd = np.std(Ierr)
+
+with open('stats.txt', 'w') as f:
+    f.write(f'Iband error Mean: {Iband_mean}\n')
+    f.write(f'Iband error std: {Iband_sd}\n')
+    f.write(f'Ierr error mean: {Ierr_mean}\n')
+    f.write(f'Ierr error std: {Ierr_sd}\n')
