@@ -11,3 +11,8 @@ the expected luminosity of the TRGB after introducing Neutrino
 * `mcmc` has the scripts and plots for the MCMC analysis.
 
 ## Installing MESA
+These steps follow from: https://docs.mesastar.org/en/release-r22.05.1/installation.html#download-mesa. Here are some additional notes to ensure you are installing the same version of MESA used for this project:
+
+1. Install the MESA SDK from this link: http://user.astro.wisc.edu/~townsend/static.php?ref=mesasdk. You want to download the file with version `mesasdk-x86_64-macos-gcc9-21.9.1.pkg`.
+2. You can then install MESA version 12778 from the older releases link here: https://zenodo.org/record/6547951#.Y0dp30zMJD8
+
