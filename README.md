@@ -17,3 +17,6 @@ These steps follow from: https://docs.mesastar.org/en/release-r22.05.1/installat
 2. You can then install MESA version 12778 from the older releases link here: https://zenodo.org/record/6547951#.Y0dp30zMJD8
 
 Then, you should place MESA in the mesa_mod subdirectory and put the `mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/` directory in that path within the MESA installation. This should allow you to run the inlists and scripts as is in that directory!
+
+## Versions Used
+python version 3.8, NumPy version 1.22.3, Pandas version 1.4.3, Matplotlib version 3.5.1, Seaborn version 0.11.2, Tensorflow version 2.4.1, corner version 2.2.1, emcee version 3.1.2.
