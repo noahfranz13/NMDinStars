@@ -9,3 +9,5 @@ the expected luminosity of the TRGB after introducing Neutrino
 * `analysis` holds plotting code to create figures for papers and presentations. Additionally, the `output_analysis` subdirectory has code to merge post processing outputs.
 * `makeGrids` has scripts to create the different input grid files to run MESA on.
 * `mcmc` has the scripts and plots for the MCMC analysis.
+
+## Installing MESA
