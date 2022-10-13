@@ -16,3 +16,4 @@ These steps follow from: https://docs.mesastar.org/en/release-r22.05.1/installat
 1. Install the MESA SDK from this link: http://user.astro.wisc.edu/~townsend/static.php?ref=mesasdk. You want to download the file with version `mesasdk-x86_64-macos-gcc9-21.9.1.pkg`.
 2. You can then install MESA version 12778 from the older releases link here: https://zenodo.org/record/6547951#.Y0dp30zMJD8
 
+Then, you should place MESA in the mesa_mod subdirectory and put the `mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/` directory in that path within the MESA installation. This should allow you to run the inlists and scripts as is in that directory!
