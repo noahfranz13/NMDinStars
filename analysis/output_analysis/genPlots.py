@@ -41,8 +41,13 @@ def plotMI(mags):
     fig, ax = plt.subplots(1, figsize=(8,6))
     group = magsGood.groupby(magsGood.mu).mean().reset_index()
     std = magsGood.groupby(magsGood.mu).std()
+
+    x = group.mu.to_numpy()
+    y = group.M_I.to_numpy()
+    err = std.M_I.to_numpy()
     
-    ax.errorbar(group.mu, group.M_I, yerr=std.M_I, fmt='o', label=r'Average M$_I$', capsize=4)
+    ax.plot(x, y, '-', label=r'Average M$_I$')
+    ax.fill_between(x, y-err, y+err, label=r'1$\sigma$ M$_I$', alpha=0.25)
     #ax.errorbar(magsGood.mu, magsGood.M_I, yerr=magsGood.M_I_err, fmt='.', label=r'M$_I$')
 
     xmin, xmax = ax.get_xlim()
@@ -62,7 +67,7 @@ def plotMI(mags):
     ax.set_ylabel('I-Band Magnitude')
     #ax.set_xscale('log')
     ax.set_xlim(xmin, xmax+0.5)
-    ax.legend(prop={'size': 14})
+    ax.legend(prop={'size': 10}, loc='best')
     fig.savefig('mu12_vs_MI.jpeg', transparent=False,
                 bbox_inches='tight')
 
@@ -130,10 +135,11 @@ def Iband_vs_binned(df):
     labels = [r'Mass [M$_\odot$]', 'Y', 'Z']
     keys = ['mass', 'y', 'z']
     tols = [0, 0, 0.01]
+    locs = ['upper left', 'upper left', 'best']
     allMus = np.sort(df.mu.unique())
     mus = [allMus[1], allMus[-10], allMus[-1]]
 
-    for key, label, tol in zip(keys, labels, tols):
+    for key, label, tol, loc in zip(keys, labels, tols, locs):
 
         fig, ax = plt.subplots(1, figsize=(8,6))
     
@@ -144,12 +150,20 @@ def Iband_vs_binned(df):
             group = mags.groupby([key]).mean().reset_index()
             std = mags.groupby([key]).std().reset_index()
 
+            
             if mu == mus[0]:
                 cap = 'SM'
             else:
                 cap = r'$\mu_{12}=$'+str(round(mu, 3))
             
-            ax.errorbar(group[key], group.M_I, yerr=std.M_I, fmt='o', capsize=4, label=cap)
+            x = group[key].to_numpy()
+            y = group.M_I.to_numpy()
+            err = std.M_I.to_numpy()
+                
+            ax.plot(x, y, '-', label=cap)
+            ax.fill_between(x, y-err, y+err, label=r'1$\sigma$ {}'.format(cap), alpha=0.25)
+
+            #ax.errorbar(group[key], group.M_I, yerr=std.M_I, fmt='o', capsize=4, label=cap)
 
         # Plot observational values
         a = 0.25
@@ -167,7 +181,7 @@ def Iband_vs_binned(df):
         
         ax.set_xlabel(label)
         ax.set_ylabel('I-Band Magnitude')
-        ax.legend(prop={'size': 14}, loc='best')
+        ax.legend(prop={'size': 10}, loc=loc, ncol=2)
         if key == 'z':
             ax.set_xscale('log')
         ax.set_xlim(xmin, xmax+tol)
