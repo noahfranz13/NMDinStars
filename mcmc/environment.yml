@@ -8,6 +8,7 @@ dependencies:
    # Other packages
    - pandas
    - numpy
+   - scipy
    - matplotlib
    - tensorflow
    - seaborn

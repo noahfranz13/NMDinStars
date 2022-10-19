@@ -9,6 +9,7 @@ import emcee
 import corner
 from multiprocessing import Pool
 from tensorflow.keras.models import load_model
+import scipy
 
 from ML_Helpers import inverseMinNormalize, minNormalize, norm1
 from MD_machineLearningFunctions import normaliseFromValues, deNormalise 
@@ -154,14 +155,22 @@ def logPrior(theta):
 
     # other priors
     if 0.7 <= m <= 2.25 and 0.2 <= y <= 0.3 and 1e-5 <= z <= 0.04 and 0 <= mu <= 6:
-        mPrior = 0 #-2.35*np.log(m) # Use Salpeter IMF
-        yPrior = 0 # constant
-        zPrior = 0 # constant
+        if gaussianPriors:
+            # use gaussian distributions
+            mPrior = np.log(scipy.stats.norm(loc=0.82, scale=0.025).pdf(m)) 
+            yPrior = np.log(scipy.stats.norm(loc=0.245, scale=0.015).pdf(y))
+            zPrior = np.log(scipy.stats.norm(loc=0.00136, scale=0.00035).pdf(z))
+        else:
+            mPrior = 0 # constant
+            yPrior = 0 # constant
+            zPrior = 0 # constant
+
         if len(theta) > 3:
             muPrior = 0 # constant
             return mPrior + yPrior + zPrior + muPrior
         else:
             return mPrior + yPrior + zPrior
+
     else:
         return -np.inf
 
@@ -191,17 +200,21 @@ def main():
     parser.add_argument('--obsI', help='observed I-band value', type=float, default=None)
     parser.add_argument('--Ierr', help='observed I-band value error', type=float, default=None)
     parser.add_argument('--no-mu', dest='useMu', action='store_false')
+    parser.add_argument('--gaussianPriors', dest='gaussianPriors', action='store_true')
     parser.set_defaults(useMu=True)
+    parser.set_defaults(gaussianPriors=False)
     args = parser.parse_args()
     
     # set global variables from inputs
     global useMu
     global obsI
     global obsErr
+    global gaussianPriors
     
     useMu = args.useMu
     obsI = args.obsI
     obsErr = args.Ierr
+    gaussianPriors = args.gaussianPriors
 
     io() # read in stuff we need
 
