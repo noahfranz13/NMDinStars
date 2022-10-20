@@ -146,6 +146,7 @@ def main():
     testGaussian(chain)
     CI(chain, 0.68)
     CI(chain, 0.995)
+    CI(chain, 0.95)
     plot2Dhists(chain)
     plotHists(chain)
         
