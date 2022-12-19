@@ -12,7 +12,7 @@ C     The 9th nind is BC_v
 C     out-of-bounds flag. Nominal is zero.
       integer      iflag,error
       real         solarMag,magConst
-      real         BCi,Mbol,Mi,Mierr
+      real         BCi,Mbol,Mi,Mierr,VI,VIerr
       integer      idx ! define index column
 
 C      real         mass, helium, metal
@@ -37,7 +37,7 @@ C     set extrapolation flag to nominal value
 C     load data table
       call readtable(a)
 
-C     Begin MD edits:
+C     Begin NF edits:
 
 
 C     arg: number of runs
@@ -91,6 +91,8 @@ C     BCv error
             Mbol=solarMag-magConst*logL
             Mi=Mbol-BCi
             Mierr=sqrt(cerr(4)**2+cerr(9)**2)
+            VI=clrs(4)
+            VIerr=cerr(4)
 C     write(73,'(a6,f7.3,a5,f5.3)') 'U-B = ',clrs(1),' +/- ',cerr(1)
 C     write(73,'(a6,f7.3,a5,f5.3)') 'B-V = ',clrs(2),' +/- ',cerr(2)
 C     write(73,'(a6,f7.3,a5,f5.3)') 'V-R = ',clrs(3),' +/- ',cerr(3)
@@ -99,11 +101,12 @@ C     write(73,'(a6,f7.3,a5,f5.3)') 'J-K = ',clrs(5),' +/- ',cerr(5)
 C     write(73,'(a6,f7.3,a5,f5.3)') 'H-K = ',clrs(6),' +/- ',cerr(6)
 C     write(73,'(a6,f7.3,a5,f5.3)') 'V-K = ',clrs(7),' +/- ',cerr(7)
 C     write(73,'(a6,f7.3,a5,f5.3)') 'BCv = ',clrs(9),' +/- ',cerr(9)
-            write(73, '(i7,a2,i1,a2,i3,a2,f7.3,a2,f5.3)') 
-     &       idx,', ',error,', ',iflag,', ',Mi,', ',Mierr
+            write(73,'(i7,a2,i1,a2,i3,a2,f7.3,a2,f5.3,a2,f7.3,a2,f5.3)') 
+     &           idx,', ',error,', ',iflag,', ',Mi,', ',Mierr,', ',
+     &           VI,', ',VIerr
          else
-            write(73, '(i7,a2,a3,a3,a3,a1)')
-     &       idx,', ','1, ','1, ','1, ','1'
+            write(73, '(i7,a2,a3,a3,a3,a3,a3,a1)')
+     &       idx,', ','1, ','1, ','1, ','1, ', '1, ', '1'
          end if
          
       end do

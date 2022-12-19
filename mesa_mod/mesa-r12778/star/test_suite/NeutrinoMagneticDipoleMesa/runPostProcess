@@ -1,0 +1,13 @@
+#!/bin/bash
+
+ls ./postProcess
+
+echo "Post processing first grid"
+./postProcess /media/ubuntu/Jeremy_Mac/NF/mesa-112500/first/
+
+echo "Post processing second grid"
+./postProcess /media/ubuntu/Jeremy_Mac/NF/mesa-112500/second/
+
+echo "Post processing third grid"
+./postProcess /media/ubuntu/Jeremy_Mac/NF/mesa-112500/third/
+

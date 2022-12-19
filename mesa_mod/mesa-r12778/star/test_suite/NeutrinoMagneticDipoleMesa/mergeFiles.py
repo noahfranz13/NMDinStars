@@ -19,11 +19,16 @@ def main():
         key = args.dir.split('/')[-1]
     
     color = pd.read_csv('colorCorrections.txt', header=None, index_col=0)
-    color.columns = ['our_flag', 'worthey_lee_flag', 'M_I', 'M_I_err']
+    color.columns = ['our_flag', 'worthey_lee_flag', 'M_I', 'M_I_err', 'V_I', 'V_I_err']
     outData = pd.read_csv('iBandOutput.txt', sep='\t', index_col=0, header=None)
     outData.columns = ['flag', 'surface_grav', 'Teff', 'feh', 'L']
 
-    gridFiles = glob.glob(os.path.join(os.getenv('HOME'), 'NMDinStars', 'makeGrids', f'*.txt'))
+    onMana = False
+    if onMana:
+        gridFiles = glob.glob(os.path.join(os.getenv('HOME'), 'NMDinStars', 'makeGrids', f'*.txt'))
+    else:
+        gridFiles = glob.glob(os.path.join(os.getenv('HOME'), 'Documents', 'NMDinStars', 'makeGrids', f'*.txt'))
+
     grid = []
     for gg in gridFiles:
         df = pd.read_csv(gg, header=None, index_col=0, sep='\t')
