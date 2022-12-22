@@ -27,7 +27,7 @@ infile = os.path.join(datadir, 'allData.csv')
 allData = pd.read_csv(infile) # time is in minutes
 # cut out too old, he flash, and didn't converge
 allData = allData[allData.flag == 0]
-data = allData[['mass', 'y', 'z', 'mu', 'M_I', 'M_I_err']]
+data = allData[['mass', 'y', 'z', 'mu', 'M_I', 'M_I_err', 'V_I', 'V_I_err']]
 
 # set hyper parameters
 nLayers = 10
@@ -36,7 +36,7 @@ batch = 120
 initLR = 1e-4
 
 inNames = ['mass', 'y', 'z', 'mu']
-outNames = ['M_I', 'M_I_err']
+outNames = ['M_I', 'M_I_err', 'V_I', 'V_I_err']
 
 # normalize the data using the same values as the classifier
 df = pd.read_csv('norm_const.txt')
@@ -48,7 +48,7 @@ normData, minVal, maxVal = minNormalize(data, minVal=m, maxVal=M)
 train, val, test = splitData(normData)
 
 # build the model
-model = buildModel(nLayers, nOutputs=2,
+model = buildModel(nLayers, nOutputs=4,
                    activation='tanh',
                    metrics=[rms(), mae()],
                    optimizer=Adam(learning_rate=initLR))
@@ -80,37 +80,49 @@ plotLoss(hist.history, name='loss_regressor.jpeg')
 # test the model with predict method
 pred = model.predict(test[inNames])
 
-predI, predErr = pred[:,0], pred[:,1]
+predI, predErr, predVI, predVIerr = pred[:,0], pred[:,1], pred[:,2], pred[:,3]
 
 # denormalize Mitchell's data using his denormalization function
 predI_deNorm = inverseMinNormalize(predI, minVal[4], maxVal[4])
 predErr_deNorm = inverseMinNormalize(predErr, minVal[5], maxVal[5])
+predVI_deNorm = inverseMinNormalize(predVI, minVal[6], maxVal[6])
+predVIerr_deNorm = inverseMinNormalize(predVIerr, minVal[7], maxVal[7])
+
 Iband = inverseMinNormalize(test.M_I, minVal[4], maxVal[4])
 Ierr = inverseMinNormalize(test.M_I_err, minVal[5], maxVal[5])
+VI = inverseMinNormalize(test.V_I, minVal[6], maxVal[6])
+VIerr = inverseMinNormalize(test.V_I_err, minVal[7], maxVal[7])
 
 plotCompareHist(Iband, predI_deNorm, name='output_2dHist_Iband.jpeg')
 plotCompareHist(Ierr, predErr_deNorm, name='output_2dHist_IbandErr.jpeg')
-
+plotCompareHist(VI, predVI_deNorm, name='output_2dHist_V-I.jpeg')
+plotCompareHist(VIerr, predVIerr_deNorm, name='output_2dHist_V-I_Err.jpeg')
 
 # compute mean squared error
 rmse_I = mean_squared_error(Iband, predI_deNorm, squared=False)
 rmse_Err = mean_squared_error(Ierr, predErr_deNorm, squared=False)
+rmse_VI = mean_squared_error(VI, predVI_deNorm, squared=False)
+rmse_VIerr = mean_squared_error(VIerr, predVIerr_deNorm, squared=False)
 
 # print and write metrics to a file
 
 forFile = ''
 forFile += f"Loss: {hist.history['val_loss'][-1]}\n"
 forFile += f'Root Mean Squared Error on I-Band: {rmse_I}\n'
-forFile += f'Root Mean Squared Error on I-Band Error: {rmse_Err}' 
+forFile += f'Root Mean Squared Error on I-Band Error: {rmse_Err}\n' 
+forFile += f'Root Mean Squared Error on V-I: {rmse_VI}\n'
+forFile += f'Root Mean Squared Error on V-I Error: {rmse_VIerr}' 
 
 print(forFile)
 
 with open('regressor_metrics.txt', 'w') as f:
     f.write(forFile)
 
-# compute the ML errors for Iband and Ierr calculations
+# compute the ML errors for Iband, Ierr, V-I, and V-I error calculations
 IbandErr = Iband - predI_deNorm
 IerrErr = Ierr - predErr_deNorm
+VIerr = VI - predVI_deNorm
+VIerrErr = VIerr - predVIerr_deNorm
 
 fig, (ax1, ax2) = plt.subplots(1,2,figsize=(18, 8))
 ax1.hist(IbandErr)
@@ -124,3 +136,5 @@ fig.savefig('regression_error_hist.jpeg', transparent=False,
 
 np.save('Iband_error', IbandErr)
 np.save('Ierr_error', IerrErr)
+np.save('VI_error', VIerr)
+np.save('VIerr_error', VIerrErr)

@@ -18,7 +18,7 @@ datadir = '/home/ubuntu/Documents/NMDinStars/analysis/output_analysis/'
 infile = os.path.join(datadir, 'allData.csv')
 allData = pd.read_csv(infile) # time is in minutes
 allData = allData[allData.flag != 1] # cut out flag = 1
-data = allData[['mass', 'y', 'z', 'mu', 'M_I', 'M_I_err']]
+data = allData[['mass', 'y', 'z', 'mu', 'M_I', 'M_I_err', 'V_I', 'V_I_err']]
 
 # set hyper parameters
 nLayers = 8
@@ -34,7 +34,7 @@ minMax.to_csv('norm_const.txt')
 
 print(normData)
 # remove the I-band and M_I columns
-normData.drop(['M_I', 'M_I_err'], inplace=True, axis=1)
+normData.drop(['M_I', 'M_I_err', 'V_I', 'V_I_err'], inplace=True, axis=1)
 
 # add flag labels to the dataset for splitting
 normData['flag'] = allData['flag']

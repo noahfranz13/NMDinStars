@@ -1,3 +1,5 @@
-Loss: 0.0002306461101397872
-Root Mean Squared Error on I-Band: 0.06267203724772301
-Root Mean Squared Error on I-Band Error: 0.005433053783161708
+Loss: 0.0001946521078934893
+Root Mean Squared Error on I-Band: 0.07044076119074573
+Root Mean Squared Error on I-Band Error: 0.004846963828100359
+Root Mean Squared Error on V-I: 0.05062625255651272
+Root Mean Squared Error on V-I Error: 0.0031481640165540517
