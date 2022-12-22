@@ -18,6 +18,8 @@ plt.rcParams['xtick.direction'] = 'in'
 # read in the two error files
 Iband = np.load('Iband_error.npy')
 Ierr = np.load('Ierr_error.npy')
+VI = np.load('VI_error.npy')
+VIerr = np.load('VIerr_error.npy')
 
 # plot the histograms
 
@@ -34,17 +36,27 @@ def pltHist(err, xlabel):
     fig.savefig(f'{xlabel}_hist.jpeg', transparent=False,
                 bbox_inches='tight')
     
-pltHist(Iband, 'Error on I-Band Regression')
-pltHist(Ierr, 'Error on I-Band Error Regression')
+pltHist(Iband, 'Error on I-Band Regression Prediction')
+pltHist(Ierr, 'Error on I-Band Error Regression Prediction')
+pltHist(VI, 'Error on V-I Regression Prediction')
+pltHist(VIerr, 'Error on V-I Error Regression Prediction')
 
 # compute mean and sd of each distribution
 Iband_mean = np.mean(Iband)
 Iband_sd = np.std(Iband)
 Ierr_mean = np.mean(Ierr)
 Ierr_sd = np.std(Ierr)
+VI_mean = np.mean(VI)
+VI_sd = np.std(VI)
+VIerr_mean = np.mean(VIerr)
+VIerr_sd = np.std(VIerr)
 
 with open('stats.txt', 'w') as f:
     f.write(f'Iband error Mean: {Iband_mean}\n')
     f.write(f'Iband error std: {Iband_sd}\n')
     f.write(f'Ierr error mean: {Ierr_mean}\n')
     f.write(f'Ierr error std: {Ierr_sd}\n')
+    f.write(f'V-I error Mean: {VI_mean}\n')
+    f.write(f'V-I error std: {VI_sd}\n')
+    f.write(f'V-I error error mean: {VIerr_mean}\n')
+    f.write(f'V-I error error std: {VIerr_sd}\n')
