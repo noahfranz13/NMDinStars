@@ -27,7 +27,7 @@ out = pd.concat([out1, out2, out3])
 sm = pd.read_csv(smOutPath)
 
 # denormalize using MD's denormalization algorithm
-keyOrder = ['mass', 'Y', 'Z', 'time', 'grav', 'Teff', 'FeH', 'logL', 'IBand', 'Ierr']
+keyOrder = ['mass', 'Y', 'Z', 'time', 'grav', 'Teff', 'FeH', 'logL', 'IBand', 'Ierr', 'VI', 'VIerr']
 constPath = '/home/ubuntu/Documents/NMDinStars/ML_models/normalisationConstants.txt'
 with open(constPath, 'r') as f:
     for line, key in zip(f, keyOrder):
@@ -83,10 +83,12 @@ outDf['mu'] = np.zeros(len(outDf))
 outDf.drop('time', axis=1, inplace=True)
 outDf.columns = [ 'flag', 'worthey_lee_flag', 'mass_index', 'y_index',
                   'z_index', 'mass', 'y', 'z', 'surface_grav', 'Teff',
-                  'feh', 'L', 'M_I', 'M_I_err', 'mu_index', 'mu']
+                  'feh', 'L', 'M_I', 'M_I_err', 'V_I', 'V_I_err',  'mu_index', 'mu']
 
 outDf['index'] = -1*np.arange(1, len(outDf)+1, 1)
 outDf.set_index('index', inplace=True)
+
+print(f'columns in one and not the other: {outDf.columns.difference(out.columns)}')
 
 totGrid = pd.concat([out, outDf], axis=0)
 print(totGrid)
