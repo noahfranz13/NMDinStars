@@ -98,7 +98,7 @@ def ML(theta):
     thetaNorm = norm(theta)
 
     # call the ML models    
-    IbandNorm, IerrNorm = regressor(thetaNorm).numpy()[0]
+    IbandNorm, IerrNorm, VInorm, VIerrNorm = regressor(thetaNorm).numpy()[0]
 
     if useMu:
         # denormalize Iband and Ierr
@@ -108,12 +108,21 @@ def ML(theta):
         Ierr = inverseMinNormalize(IerrNorm,
                                    const['min'].loc['M_I_err'],
                                    const['max'].loc['M_I_err'])
+        VI = inverseMinNormalize(VInorm,
+                                 const['min'].loc['V_I'],
+                                 const['min'].loc['V_I'])
+        VIerr = inverseMinNormalize(VIerrNorm,
+                                    const['min'].loc['V_I_err'],
+                                    const['min'].loc['V_I_err'])
+        
     else:
         # denormalize Iband and Ierr
         Iband = deNormalise(0.0, 5.6129999999999995, 5.611, IbandNorm)
         Ierr = deNormalise(0.106, 0.8350000000000001, 0.053, IerrNorm)
+        VI = deNormalise(2.068, 1.034, 8.18, VInorm)
+        VIerr = deNormalise(0.028, 0.014, 0.368, VIerrNorm)
         
-    return Iband, Ierr
+    return Iband, Ierr, VI, VIerr
 
 def logLikelihood(theta):
     '''
@@ -123,7 +132,7 @@ def logLikelihood(theta):
     obsI [float] : Observed I-band value to compare to
     obsErr [float] : error on the observed I-band value
     '''
-    Iband, Ierr = ML(theta)
+    Iband, Ierr, VI, VIerr = ML(theta)
 
     # propagate ML uncertainties
     Iband = Iband + np.random.choice(IbandErr)
