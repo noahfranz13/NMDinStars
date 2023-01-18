@@ -55,12 +55,17 @@ def io():
     global regressor
     global IbandErr
     global IerrErr
+    global VIerr
+    global VIerrErr
     
     if useMu:
         classifier = load_model(os.path.join(cwd, 'classifier/classify_mesa.h5'))
         regressor = load_model(os.path.join(cwd, 'regressor/IBand.h5'))
         IbandErr = np.load(os.path.join(cwd,'regressor/Iband_error.npy'))
         IerrErr = np.load(os.path.join(cwd, 'regressor/Ierr_error.npy'))
+        VI_err = np.load(os.path.join(cwd, 'regressor/VI_error.npy'))
+        VIerr_err = np.load(os.path.join(cwd, 'regressor/VIerr_error.npy')) 
+
     else:
         classifier = load_model(os.path.join(cwd, 'SM/classify_mesa_SM.h5'))
         regressor = load_model(os.path.join(cwd, 'SM/IBand_SM.h5'))
@@ -137,8 +142,16 @@ def logLikelihood(theta):
     # propagate ML uncertainties
     Iband = Iband + np.random.choice(IbandErr)
     Ierr = Ierr + np.random.choice(IerrErr)
+    VI = VI + np.random.choice(VI_err)
+    VIerr = VIerr + np.random.choice(VIerr_err)
+
+    # combine errors
+    cov_I_VI = np.cov(Iband, VI)
+    partial_V = -0.182 * (denormVIBand) - 0.266
+    partial_I = 1
+    sigma_MI_2 = (partial_I**2)*(IErr**2) + (partial_V**2)*(VIErr)**2 + 2*partial_I*partial_V*VIErr*IErr*cov_I_VI
+    sigma_2 = (yerr**2 + sigma_MI_2**2)
     
-    err2 = Ierr**2 + obsErr**2 # add err in quadrature
     # return the max likelihood function
     return -0.5 * ((obsI-Iband)**2 / err2 + np.log(2*np.pi*err2))
     
