@@ -147,14 +147,25 @@ def logLikelihood(theta):
 
     # combine errors
     cov_I_VI = np.cov(Iband, VI)
+
+    # define partials with respect to V and I
     partial_V = -0.182 * (denormVIBand) - 0.266
     partial_I = 1
+
+    # compute the uncertainties
     sigma_MI_2 = (partial_I**2)*(IErr**2) + (partial_V**2)*(VIErr)**2 + 2*partial_I*partial_V*VIErr*IErr*cov_I_VI
-    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    sigma_2 = (obsErr**2 + sigma_MI_2**2)
+
+    # compute the corrected IBand with the V-I correction
+    corrected_IBand = Iband - 0.091*(VI - 1.5)**2 + 0.007*(VI - 1.5)
+
+    # find the maximum likelihood function
+    likelihood += ((obsI - corrected_IBand)**2 / sigma_2) + np.log(2*np.pi*sigma_2)
+    likelihood = -likelihood / 2
     
     # return the max likelihood function
-    return -0.5 * ((obsI-Iband)**2 / err2 + np.log(2*np.pi*err2))
-    
+    return likelihood
+
 def logPrior(theta):
     '''
     Prior to pass to log_prob to be passed into the MCMC
