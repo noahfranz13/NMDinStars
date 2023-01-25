@@ -1,6 +1,6 @@
 
 #!/bin/bash
-#SBATCH --job-name=NGC4258
+#SBATCH --job-name=LM_F20
 #SBATCH --partition=shared
 #SBATCH --time=0-14:00:00
 
@@ -17,5 +17,5 @@
 
 module load lang/Anaconda3
 source activate useTf
-python3 ../../mcmcNMDM.py --obs NGC4258
+python3 ../../mcmcNMDM.py --obs LMC_F20
 python3 ../../analyzeMCMC.py

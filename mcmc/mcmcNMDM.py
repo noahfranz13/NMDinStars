@@ -36,6 +36,7 @@ regressor = None
 # define observed values for the I-band
 obsI = None
 obsErr = None
+obs = None
 
 # Get ML errors
 IbandErr = None
@@ -134,6 +135,56 @@ def ML(theta):
         
     return Iband, Ierr, VI, VIerr
 
+'''
+The following 4 functions are from MD 
+They quantify the V-I band correction for each object
+
+denormIBand : the denormalized ML prediciton of the IBand
+denormIerr  : the denormalized ML prediction of the Ierr
+denormVIBand: The denormalized ML predication of the V-I band
+denormVIErr : The denormalized ML prediction on the V-I band error
+yerr        : The error on the observed value for the I-band magnitude
+
+Note: cov_I_VI is defined globally to reduce runtime
+'''
+def F20_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr):
+    partial_V = 0
+    partial_I = 1
+    sigma_MI_2 = (partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*partial_I*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
+    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    corrected_IBand = denormIBand - 0.00*(denormVIBand - 1.8)
+    return corrected_IBand, sigma_2
+
+
+def Y19_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr):
+    partial_V = -0.182*(denormVIBand)-0.266
+    partial_I = 1
+    sigma_MI_2 = (partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*partial_I*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
+    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    corrected_IBand = denormIBand - 0.091*(denormVIBand - 1.5)**2 + 0.007*(denormVIBand - 1.5)
+    return corrected_IBand, sigma_2
+
+
+def NGC4258_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr):
+    partial_V = -0.182*(denormVIBand)-0.266
+    partial_I = 1
+    sigma_MI_2 = (partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*partial_I*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
+    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    corrected_IBand = denormIBand - 0.091*(denormVIBand - 1.5)**2 + 0.007*(denormVIBand - 1.5)
+    return corrected_IBand, sigma_2
+
+
+def wCen_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr):
+    partial_V = -2*(0.07/0.06*(denormIBand - 0.243*denormVIBand + 2.879))*0.243 - 0.15/0.04*(-0.243)
+    partial_I = -2*(0.07/0.06*(denormIBand - 0.243*denormVIBand + 2.879)) - 0.15/0.04
+    sigma_MI_2 = np.abs(partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*np.abs(partial_I)*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
+    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    corrected_IBand = denormIBand - 0.091*(denormVIBand - 1.5)**2 + 0.007*(denormVIBand - 1.5)
+    return corrected_IBand, sigma_2
+
+'''
+The rest is NF's code
+'''
 def logLikelihood(theta):
     '''
     likelihood function of a given point in the parameter space
@@ -150,18 +201,18 @@ def logLikelihood(theta):
     VI = VI + np.random.choice(VI_err)
     VIerr = VIerr + np.random.choice(VIerr_err)
 
-    # combine errors
-    # define partials with respect to V and I
-    partial_V = -0.182 * (VI) - 0.266
-    partial_I = 1
-
-    # compute the uncertainties
-    sigma_MI_2 = (partial_I**2)*(Ierr**2) + (partial_V**2)*(VIerr)**2 + 2*partial_I*partial_V*VIerr*Ierr*cov_I_VI
-    sigma_2 = (obsErr**2 + sigma_MI_2**2)
-    print(sigma_MI_2, sigma_2)
-    # compute the corrected IBand with the V-I correction
-    corrected_IBand = Iband - 0.091*(VI - 1.5)**2 + 0.007*(VI - 1.5)
-
+    # perform the V-I band corrections
+    if obs == 'NGC4258':
+        corrected_IBand, sigma_2 = NGC4258_Correction(Iband, Ierr, VI, VIerr, obsErr)
+    elif obs == 'LMC_F20':
+        corrected_IBand, sigma_2 = F20_Correction(Iband, Ierr, VI, VIerr, obsErr)
+    elif obs == 'LMC_Y19':
+        corrected_IBand, sigma_2 = Y19_Correction(Iband, Ierr, VI, VIerr, obsErr)
+    elif obs == 'OmegaCentauri':
+        corrected_IBand, sigma_2 = wCen_Correction(Iband, Ierr, VI, VIerr, obsErr)
+    else:
+        raise ValueError('Please enter a valid observational calibration: NGC4258, LMC_F20, LMC_Y19, or OmegaCentauri')
+    
     # find the maximum likelihood function
     likelihood = ((obsI - corrected_IBand)**2 / sigma_2) + np.log(2*np.pi*sigma_2)
     likelihood = -likelihood / 2
@@ -233,8 +284,9 @@ def main():
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--obsI', help='observed I-band value', type=float, default=None)
-    parser.add_argument('--Ierr', help='observed I-band value error', type=float, default=None)
+    #parser.add_argument('--obsI', help='observed I-band value', type=float, default=None)
+    #parser.add_argument('--Ierr', help='observed I-band value error', type=float, default=None)
+    parser.add_argument('--obs', help='observational calibration to use', type=str, default=None)
     parser.add_argument('--no-mu', dest='useMu', action='store_false')
     parser.add_argument('--gaussianPriors', dest='gaussianPriors', action='store_true')
     parser.set_defaults(useMu=True)
@@ -245,13 +297,28 @@ def main():
     global useMu
     global obsI
     global obsErr
+    global obs
     global gaussianPriors
     
     useMu = args.useMu
-    obsI = args.obsI
-    obsErr = args.Ierr
+    obs = args.obs
     gaussianPriors = args.gaussianPriors
 
+    if obs == 'NGC4258':
+        obsI = -4.027
+        obsErr = 0.055
+    elif obs == 'LMC_F20':
+        obsI = -4.047
+        obsErr = 0.045
+    elif obs == 'LMC_Y19':
+        obsI = -3.958
+        obsErr = 0.046
+    elif obs == 'OmegaCentauri':
+        obsI = -3.96
+        obsErr = 0.05
+    else:
+        raise ValueError('Please enter a valid observational calibration: NGC4258, LMC_F20, LMC_Y19, or OmegaCentauri')
+    
     io() # read in stuff we need
 
     nsteps = 500000
