@@ -40,6 +40,8 @@ obsErr = None
 # Get ML errors
 IbandErr = None
 IerrErr = None
+VI_err = None
+VIerr_err = None
 
 # get normalization constants
 const = pd.read_csv(os.path.join(cwd, 'norm_const.txt'), index_col=0)
@@ -55,8 +57,8 @@ def io():
     global regressor
     global IbandErr
     global IerrErr
-    global VIerr
-    global VIerrErr
+    global VI_err
+    global VIerr_err
     
     if useMu:
         classifier = load_model(os.path.join(cwd, 'classifier/classify_mesa.h5'))
@@ -149,7 +151,7 @@ def logLikelihood(theta):
     cov_I_VI = np.cov(Iband, VI)
 
     # define partials with respect to V and I
-    partial_V = -0.182 * (denormVIBand) - 0.266
+    partial_V = -0.182 * (VI) - 0.266
     partial_I = 1
 
     # compute the uncertainties
@@ -160,7 +162,7 @@ def logLikelihood(theta):
     corrected_IBand = Iband - 0.091*(VI - 1.5)**2 + 0.007*(VI - 1.5)
 
     # find the maximum likelihood function
-    likelihood += ((obsI - corrected_IBand)**2 / sigma_2) + np.log(2*np.pi*sigma_2)
+    likelihood = ((obsI - corrected_IBand)**2 / sigma_2) + np.log(2*np.pi*sigma_2)
     likelihood = -likelihood / 2
     
     # return the max likelihood function
