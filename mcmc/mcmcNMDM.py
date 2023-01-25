@@ -42,6 +42,7 @@ IbandErr = None
 IerrErr = None
 VI_err = None
 VIerr_err = None
+cov_I_VI = None
 
 # get normalization constants
 const = pd.read_csv(os.path.join(cwd, 'norm_const.txt'), index_col=0)
@@ -59,6 +60,7 @@ def io():
     global IerrErr
     global VI_err
     global VIerr_err
+    global cov_I_VI
     
     if useMu:
         classifier = load_model(os.path.join(cwd, 'classifier/classify_mesa.h5'))
@@ -67,7 +69,8 @@ def io():
         IerrErr = np.load(os.path.join(cwd, 'regressor/Ierr_error.npy'))
         VI_err = np.load(os.path.join(cwd, 'regressor/VI_error.npy'))
         VIerr_err = np.load(os.path.join(cwd, 'regressor/VIerr_error.npy')) 
-
+        cov_I_VI = np.cov(IbandErr, VI_err)[1,0] # select just cov(I, VI) and ignore variance
+        
     else:
         classifier = load_model(os.path.join(cwd, 'SM/classify_mesa_SM.h5'))
         regressor = load_model(os.path.join(cwd, 'SM/IBand_SM.h5'))
@@ -148,23 +151,21 @@ def logLikelihood(theta):
     VIerr = VIerr + np.random.choice(VIerr_err)
 
     # combine errors
-    cov_I_VI = np.cov(Iband, VI)
-
     # define partials with respect to V and I
     partial_V = -0.182 * (VI) - 0.266
     partial_I = 1
 
     # compute the uncertainties
-    sigma_MI_2 = (partial_I**2)*(IErr**2) + (partial_V**2)*(VIErr)**2 + 2*partial_I*partial_V*VIErr*IErr*cov_I_VI
+    sigma_MI_2 = (partial_I**2)*(Ierr**2) + (partial_V**2)*(VIerr)**2 + 2*partial_I*partial_V*VIerr*Ierr*cov_I_VI
     sigma_2 = (obsErr**2 + sigma_MI_2**2)
-
+    print(sigma_MI_2, sigma_2)
     # compute the corrected IBand with the V-I correction
     corrected_IBand = Iband - 0.091*(VI - 1.5)**2 + 0.007*(VI - 1.5)
 
     # find the maximum likelihood function
     likelihood = ((obsI - corrected_IBand)**2 / sigma_2) + np.log(2*np.pi*sigma_2)
     likelihood = -likelihood / 2
-    
+    print(likelihood)
     # return the max likelihood function
     return likelihood
 
