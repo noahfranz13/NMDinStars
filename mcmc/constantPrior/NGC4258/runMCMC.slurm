@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #SBATCH --job-name=NGC4258
 #SBATCH --partition=shared

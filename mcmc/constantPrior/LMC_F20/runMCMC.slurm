@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #SBATCH --job-name=LM_F20
 #SBATCH --partition=shared
