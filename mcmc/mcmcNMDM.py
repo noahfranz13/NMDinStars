@@ -152,7 +152,7 @@ def F20_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr):
     partial_I = 1
     sigma_MI_2 = (partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*partial_I*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
     sigma_2 = (yerr**2 + sigma_MI_2**2)
-    corrected_IBand = denormIBand - 0.00*(denormVIBand - 1.8)
+    corrected_IBand = denormIBand + 0.00*(denormVIBand - 1.8)
     return corrected_IBand, sigma_2
 
 
@@ -173,12 +173,13 @@ def NGC4258_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr)
     corrected_IBand = denormIBand - 0.091*(denormVIBand - 1.5)**2 + 0.007*(denormVIBand - 1.5)
     return corrected_IBand, sigma_2
 
+
 def wCen_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr):
-    partial_V = -2*(0.07/0.06*(denormIBand - 0.243*denormVIBand + 2.879))*0.243 - 0.15/0.04*(-0.243)
-    partial_I = -2*(0.07/0.06*(denormIBand - 0.243*denormVIBand + 2.879)) - 0.15/0.04 
+    partial_V = 0.16*denormVIBand - 0.046
+    partial_I = 1
     sigma_MI_2 = np.abs(partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*np.abs(partial_I)*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
     sigma_2 = (yerr**2 + sigma_MI_2**2)
-    corrected_IBand = 0.14*((denormIBand - 0.881-0.243*(denormVIBand)+3.76)/(-0.12))**2+0.45*((denormIBand - 0.881-0.243*(denormVIBand)+3.76)/(-0.12)) - 3.66
+    corrected_IBand = denormIBand - 0.046*denormVIBand - 0.08*denormVIBand**2
     return corrected_IBand, sigma_2
 
 '''
