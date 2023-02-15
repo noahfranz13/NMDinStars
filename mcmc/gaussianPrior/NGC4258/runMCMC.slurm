@@ -16,5 +16,5 @@
 
 module load lang/Anaconda3
 source activate useTf
-python3 ../../mcmcNMDM.py --obsI -4.027 --Ierr 0.055 --gaussianPriors
+python3 ../../mcmcNMDM.py --obs NGC4258 --gaussianPriors
 python3 ../../analyzeMCMC.py
