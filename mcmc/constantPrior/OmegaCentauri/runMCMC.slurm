@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=wCen
+#SBATCH --job-name=wCenC
 #SBATCH --partition=shared
 #SBATCH --time=0-14:00:00
 

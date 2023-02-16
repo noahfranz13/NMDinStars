@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=OmCent
+#SBATCH --job-name=OmCentG
 #SBATCH --partition=shared
 #SBATCH --time=0-14:00:00
 
