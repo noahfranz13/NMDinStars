@@ -179,7 +179,7 @@ def wCen_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr):
     partial_I = 1
     sigma_MI_2 = np.abs(partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*np.abs(partial_I)*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
     sigma_2 = (yerr**2 + sigma_MI_2**2)
-    corrected_IBand = denormIBand - 0.046*denormVIBand - 0.08*denormVIBand**2
+    corrected_IBand = denormIBand - 0.046*(denormVIBand-1.5) - 0.08*(denormVIBand-1.5)**2
     return corrected_IBand, sigma_2
 
 '''
