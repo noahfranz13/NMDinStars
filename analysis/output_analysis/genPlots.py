@@ -169,32 +169,56 @@ def plot4d(mags):
     fig.savefig('allParams.jpeg', transparent=False,
                 bbox_inches='tight')
 
-def Iband_vs_binned(df, obsErr, useAllMus=True):
+def Iband_vs_binned(df, obs, useAllMus=True):
     '''
     Plots M_I vs. binned version of other input params
     '''
     df = df[df.flag==0]
+    
+    if useAllMus:
+        mus = [allMus[1], allMus[-10], allMus[-1]]
+    else:
+        mus = [allMus[-1]]
+
+    if obs == 'NGC4258':
+        obsI = -4.027
+        obsErr = 0.055
+    elif obs == 'LMC_F20':
+        obsI = -4.047
+        obsErr = 0.045
+    elif obs == 'LMC_Y19':
+        obsI = -3.958
+        obsErr = 0.046
+    elif obs == 'OmegaCentauri':
+        obsI = -3.96
+        obsErr = 0.05
+    else:
+        raise ValueError('Please enter a valid observational calibration: NGC4258, LMC_F20, LMC_Y19, or OmegaCentauri')
+            
+    Iband = df.M_I.to_numpy()
+    VI = df.V_I.to_numpy()
+    Ierr = df.M_I_err.to_numpy()
+    VIerr = df.V_I_err.to_numpy()
+    cov_I_VI = np.cov(Ierr, VIerr)[1,0]
+    # NGC4258_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr, cov_I_VI)
+    if obs == 'NGC4258':
+        corrected_IBand, sigma_2 = NGC4258_Correction(Iband, Ierr, VI, VIerr, obsErr, cov_I_VI)
+    elif obs == 'LMC_F20':
+        corrected_IBand, sigma_2 = F20_Correction(Iband, Ierr, VI, VIerr, obsErr, cov_I_VI)
+    elif obs == 'LMC_Y19':
+        corrected_IBand, sigma_2 = Y19_Correction(Iband, Ierr, VI, VIerr, obsErr, cov_I_VI)
+    elif obs == 'OmegaCentauri':
+        corrected_IBand, sigma_2 = wCen_Correction(Iband, Ierr, VI, VIerr, obsErr, cov_I_VI)
+    else:
+        raise ValueError('Please enter a valid observational calibration: NGC4258, LMC_F20, LMC_Y19, or OmegaCentauri')
+
+    df['M_I_corrected'] = pd.Series(corrected_IBand, index=df.index)
     
     labels = [r'Mass [M$_\odot$]', 'Y', 'Z']
     keys = ['mass', 'y', 'z']
     tols = [0, 0, 0]
     locs = ['upper left', 'upper left', 'best']
     allMus = np.sort(df.mu.unique())
-    if useAllMus:
-        mus = [allMus[1], allMus[-10], allMus[-1]]
-    else:
-        mus = [allMus[-1]]
-
-    I = df.M_I.to_numpy()
-    VI = df.V_I.to_numpy()
-    Ierr = df.M_I_err.to_numpy()
-    VIerr = df.V_I_err.to_numpy()
-    cov_I_VI = np.cov(Ierr, VIerr)[1,0]
-    # NGC4258_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr, cov_I_VI)
-    corr, _ = NGC4258_Correction(I, Ierr, VI, VIerr, obsErr, cov_I_VI)
-    df['M_I_corrected'] = pd.Series(corr, index=df.index)
-
-    print(df)
     
     for key, label, tol, loc in zip(keys, labels, tols, locs):
 
@@ -215,33 +239,24 @@ def Iband_vs_binned(df, obsErr, useAllMus=True):
             x = group[key].to_numpy()
             y = group.M_I_corrected.to_numpy()
             err = std.M_I_corrected.to_numpy()
-            print(x,y)
+            #print(x,y)
             ax.plot(x, y, '-', label=cap)
             ax.fill_between(x, y-err, y+err, label=r'1$\sigma$ {}'.format(cap), alpha=0.5)
             if not useAllMus:
                 ax.fill_between(x, y-2*err, y+2*err, label=r'2$\sigma$ {}'.format(cap), alpha=0.25)
-            
-            #ax.errorbar(group[key], group.M_I, yerr=std.M_I, fmt='o', capsize=4, label=cap)
-
+                ax.fill_between(x, y-3*err, y+3*err, label=r'3$\sigma$ {}'.format(cap), alpha=0.25)
+                
         # Plot observational values
         a = 0.25
         xmin, xmax = ax.get_xlim()
         x = np.linspace(xmin, xmax+tol)
         
-        #ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'$\omega$ Centauri')
-        #ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
-        #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'NGC4258')
-        #ax.fill_between(x, -4.027-0.055, -4.027+0.055, color='orange', alpha=a)
-        #ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'LMC (F20)')
-        #ax.fill_between(x, -4.047-0.045, -4.047+0.045, color='royalblue', alpha=a)
-        ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='k', label=r'LMC (Y19)')
-        ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='k', alpha=a)
+        ax.plot(x, obsI*np.ones(len(x)), linestyle=':', color='k', label=obs)
+        ax.fill_between(x, obsI-obsErr, obsI+obsErr, color='k', alpha=a)
         
         ax.set_xlabel(label)
         ax.set_ylabel('I-Band Magnitude')
         ax.legend(prop={'size': 10}, loc=loc, ncol=2)
-        #if key == 'z':
-        #    ax.set_xscale('log')
         ax.set_xlim(xmin, xmax+tol)
 
         if useAllMus:
@@ -256,18 +271,16 @@ def main():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--infile', help='file to plot stuff from')
+    parser.add_argument('--obs', help='observational correction to use')
     args = parser.parse_args()
-
-    # just hard code this for now
-    obsErr = 0.055 # this is for NGC4258
     
     df = io(args.infile)
     plotMI(df)
     histFlags(df)
     plot4d(df)
     histAll(df)
-    Iband_vs_binned(df, obsErr)
-    Iband_vs_binned(df, obsErr, useAllMus=False)
+    Iband_vs_binned(df, args.obs)
+    Iband_vs_binned(df, args.obs, useAllMus=False)
     
 if __name__ == '__main__':
     sys.exit(main())
