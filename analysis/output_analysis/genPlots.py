@@ -8,8 +8,52 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sb
 
-#sb.set(context='paper', style='whitegrid', palette='Set1')
+'''
+The following 4 functions are from MD 
+They quantify the V-I band correction for each object
 
+denormIBand : the denormalized ML prediciton of the IBand
+denormIerr  : the denormalized ML prediction of the Ierr
+denormVIBand: The denormalized ML predication of the V-I band
+denormVIErr : The denormalized ML prediction on the V-I band error
+yerr        : The error on the observed value for the I-band magnitude
+'''
+def F20_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr, cov_I_VI):
+    partial_V = 0
+    partial_I = 1
+    sigma_MI_2 = (partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*partial_I*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
+    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    corrected_IBand = denormIBand + 0.00*(denormVIBand - 1.8)
+    return corrected_IBand, sigma_2
+
+def Y19_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr, cov_I_VI):
+    partial_V = -0.182*(denormVIBand)-0.266
+    partial_I = 1
+    sigma_MI_2 = (partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*partial_I*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
+    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    corrected_IBand = denormIBand - 0.091*(denormVIBand - 1.5)**2 + 0.007*(denormVIBand - 1.5)
+    return corrected_IBand, sigma_2
+
+def NGC4258_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr, cov_I_VI):
+    partial_V = -0.182*(denormVIBand)-0.266
+    partial_I = 1
+    sigma_MI_2 = (partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*partial_I*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
+    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    corrected_IBand = denormIBand - 0.091*(denormVIBand - 1.5)**2 + 0.007*(denormVIBand - 1.5)
+    return corrected_IBand, sigma_2
+
+def wCen_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr, cov_I_VI):
+    partial_V = 0.16*denormVIBand - 0.046
+    partial_I = 1
+    sigma_MI_2 = np.abs(partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*np.abs(partial_I)*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
+    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    corrected_IBand = denormIBand - 0.046*(denormVIBand-1.5) - 0.08*(denormVIBand-1.5)**2
+    return corrected_IBand, sigma_2
+
+#sb.set(context='paper', style='whitegrid', palette='Set1')
+'''
+The rest of this is my own plotting code
+'''
 def io(mesaOutFile):
 
     sb.set(style='white', context='talk', palette='Set1') # Dark2
@@ -22,7 +66,6 @@ def io(mesaOutFile):
     plt.rcParams['xtick.top'] = True
     plt.rcParams['ytick.direction'] = 'in'
     plt.rcParams['xtick.direction'] = 'in'
-
 
     df = pd.read_csv(mesaOutFile, index_col=0)
     return df
@@ -126,7 +169,7 @@ def plot4d(mags):
     fig.savefig('allParams.jpeg', transparent=False,
                 bbox_inches='tight')
 
-def Iband_vs_binned(df):
+def Iband_vs_binned(df, obsErr, useAllMus=True):
     '''
     Plots M_I vs. binned version of other input params
     '''
@@ -134,11 +177,25 @@ def Iband_vs_binned(df):
     
     labels = [r'Mass [M$_\odot$]', 'Y', 'Z']
     keys = ['mass', 'y', 'z']
-    tols = [0, 0, 0.01]
+    tols = [0, 0, 0]
     locs = ['upper left', 'upper left', 'best']
     allMus = np.sort(df.mu.unique())
-    mus = [allMus[1], allMus[-10], allMus[-1]]
+    if useAllMus:
+        mus = [allMus[1], allMus[-10], allMus[-1]]
+    else:
+        mus = [allMus[-1]]
 
+    I = df.M_I.to_numpy()
+    VI = df.V_I.to_numpy()
+    Ierr = df.M_I_err.to_numpy()
+    VIerr = df.V_I_err.to_numpy()
+    cov_I_VI = np.cov(Ierr, VIerr)[1,0]
+    # NGC4258_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr, cov_I_VI)
+    corr, _ = NGC4258_Correction(I, Ierr, VI, VIerr, obsErr, cov_I_VI)
+    df['M_I_corrected'] = pd.Series(corr, index=df.index)
+
+    print(df)
+    
     for key, label, tol, loc in zip(keys, labels, tols, locs):
 
         fig, ax = plt.subplots(1, figsize=(8,6))
@@ -149,20 +206,21 @@ def Iband_vs_binned(df):
 
             group = mags.groupby([key]).mean().reset_index()
             std = mags.groupby([key]).std().reset_index()
-
             
-            if mu == mus[0]:
+            if mu == allMus[0]:
                 cap = 'SM'
             else:
                 cap = r'$\mu_{12}=$'+str(round(mu, 3))
             
             x = group[key].to_numpy()
-            y = group.M_I.to_numpy()
-            err = std.M_I.to_numpy()
-                
+            y = group.M_I_corrected.to_numpy()
+            err = std.M_I_corrected.to_numpy()
+            print(x,y)
             ax.plot(x, y, '-', label=cap)
-            ax.fill_between(x, y-err, y+err, label=r'1$\sigma$ {}'.format(cap), alpha=0.25)
-
+            ax.fill_between(x, y-err, y+err, label=r'1$\sigma$ {}'.format(cap), alpha=0.5)
+            if not useAllMus:
+                ax.fill_between(x, y-2*err, y+2*err, label=r'2$\sigma$ {}'.format(cap), alpha=0.25)
+            
             #ax.errorbar(group[key], group.M_I, yerr=std.M_I, fmt='o', capsize=4, label=cap)
 
         # Plot observational values
@@ -182,10 +240,15 @@ def Iband_vs_binned(df):
         ax.set_xlabel(label)
         ax.set_ylabel('I-Band Magnitude')
         ax.legend(prop={'size': 10}, loc=loc, ncol=2)
-        if key == 'z':
-            ax.set_xscale('log')
+        #if key == 'z':
+        #    ax.set_xscale('log')
         ax.set_xlim(xmin, xmax+tol)
-        fig.savefig(f'M_I_vs_binned_{key}.jpeg', transparent=False,
+
+        if useAllMus:
+            figpath = f'M_I_vs_binned_{key}.jpeg'
+        else:
+            figpath = f'M_I_vs_binned_{key}_mu6.jpeg'
+        fig.savefig(figpath, transparent=False,
                     bbox_inches='tight')
     
 def main():
@@ -195,12 +258,16 @@ def main():
     parser.add_argument('--infile', help='file to plot stuff from')
     args = parser.parse_args()
 
+    # just hard code this for now
+    obsErr = 0.055 # this is for NGC4258
+    
     df = io(args.infile)
     plotMI(df)
     histFlags(df)
     plot4d(df)
     histAll(df)
-    Iband_vs_binned(df)
+    Iband_vs_binned(df, obsErr)
+    Iband_vs_binned(df, obsErr, useAllMus=False)
     
 if __name__ == '__main__':
     sys.exit(main())

@@ -24,7 +24,7 @@ plt.rcParams["font.family"] = "serif"
 os.environ["OMP_NUM_THREADS"] = "1"
 
 # define cwd
-cwd = '/home/nfranz/NMDinStars/ML_models'
+cwd = '/home/nfranz/research/NMDinStars/ML_models'
 
 # Declare ML models and any args as global variables
 # NOTE: This is a bad practice but necessary to reduce MCMC runtime

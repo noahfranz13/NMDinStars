@@ -7,18 +7,18 @@ import os, sys
 import pandas as pd
 import numpy as np
 
-sys.path.insert(0, '/home/ubuntu/Documents/NMDinStars/ML_models/SM/')
+sys.path.insert(0, '/home/nfranz/research/NMDinStars/ML_models/SM/')
 from MD_machineLearningFunctions import deNormalise
 
 # first read in both files
 myOutFile1 = 'postProcess_output_first.txt'
 myOutFile2 = 'postProcess_output_second.txt'
 myOutFile3 = 'postProcess_output_third.txt'
-myOutDir = '/home/ubuntu/Documents/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/'
+myOutDir = '~/research/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/'
 myOutPath1 = os.path.join(myOutDir, myOutFile1)
 myOutPath2 = os.path.join(myOutDir, myOutFile2)
 myOutPath3 = os.path.join(myOutDir, myOutFile3)
-smOutPath = '/home/ubuntu/Documents/NMDinStars/ML_models/fulldata.txt' 
+smOutPath = '~/research/NMDinStars/ML_models/fulldata.txt' 
 
 out1 = pd.read_csv(myOutPath1, index_col=0)
 out2 = pd.read_csv(myOutPath2, index_col=0)
@@ -28,7 +28,7 @@ sm = pd.read_csv(smOutPath)
 
 # denormalize using MD's denormalization algorithm
 keyOrder = ['mass', 'Y', 'Z', 'time', 'grav', 'Teff', 'FeH', 'logL', 'IBand', 'Ierr', 'VI', 'VIerr']
-constPath = '/home/ubuntu/Documents/NMDinStars/ML_models/normalisationConstants.txt'
+constPath = '/home/nfranz/research/NMDinStars/ML_models/normalisationConstants.txt'
 with open(constPath, 'r') as f:
     for line, key in zip(f, keyOrder):
         absMin, minVal, maxVal = line.split('\t')

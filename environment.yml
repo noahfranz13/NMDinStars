@@ -1,0 +1,22 @@
+name: useTf
+channels:
+   - defaults
+dependencies:
+   # Core requirements
+   - python=3.8
+   - pip
+   # Other packages
+   - pandas
+   - numpy
+   - scipy
+   - matplotlib
+   - tensorflow
+   - seaborn
+   - scikit-learn
+   - imbalanced-learn
+   # pip install
+   - pip:
+     - emcee
+     - corner
+     - tqdm
+     - cmasher
