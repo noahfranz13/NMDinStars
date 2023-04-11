@@ -174,6 +174,13 @@ def Iband_vs_binned(df, obs, useAllMus=True):
     Plots M_I vs. binned version of other input params
     '''
     df = df[df.flag==0]
+
+    labels = [r'Mass [M$_\odot$]', 'Y', 'Z']
+    keys = ['mass', 'y', 'z']
+    tols = [0, 0, 0]
+    locs = ['upper left', 'upper left', 'best']
+    allMus = np.sort(df.mu.unique())
+
     
     if useAllMus:
         mus = [allMus[1], allMus[-10], allMus[-1]]
@@ -214,12 +221,6 @@ def Iband_vs_binned(df, obs, useAllMus=True):
 
     df['M_I_corrected'] = pd.Series(corrected_IBand, index=df.index)
     
-    labels = [r'Mass [M$_\odot$]', 'Y', 'Z']
-    keys = ['mass', 'y', 'z']
-    tols = [0, 0, 0]
-    locs = ['upper left', 'upper left', 'best']
-    allMus = np.sort(df.mu.unique())
-    
     for key, label, tol, loc in zip(keys, labels, tols, locs):
 
         fig, ax = plt.subplots(1, figsize=(8,6))
@@ -245,6 +246,9 @@ def Iband_vs_binned(df, obs, useAllMus=True):
             if not useAllMus:
                 ax.fill_between(x, y-2*err, y+2*err, label=r'2$\sigma$ {}'.format(cap), alpha=0.25)
                 ax.fill_between(x, y-3*err, y+3*err, label=r'3$\sigma$ {}'.format(cap), alpha=0.25)
+                ax.fill_between(x, y-4*err, y+4*err, label=r'4$\sigma$ {}'.format(cap), alpha=0.25)
+                ax.fill_between(x, y-5*err, y+5*err, label=r'5$\sigma$ {}'.format(cap), alpha=0.25)
+
                 
         # Plot observational values
         a = 0.25
