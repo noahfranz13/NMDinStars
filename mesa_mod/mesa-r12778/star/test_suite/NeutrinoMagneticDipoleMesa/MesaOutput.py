@@ -16,8 +16,6 @@ class MesaOutput():
         self.terminalPaths = self.getTerminalOut()
         self.flags = np.zeros(len(self.dataPaths))
         self.index = self.getIndex()
-        print(len(self.index))
-        print(self.index[:10])
         
         if read:
             self.data = self.getData()
@@ -28,13 +26,13 @@ class MesaOutput():
         '''
         Get the data output files from dirPath
         '''
-        return glob.glob(os.path.join(self.dirPath, '*/*.data'))
+        return glob.glob(os.path.join(self.dirPath, '*.data'))
 
     def getTerminalOut(self):
         '''
         Get the terminal output files from dirPath
         '''
-        return glob.glob(os.path.join(self.dirPath, '*/*.txt'))
+        return glob.glob(os.path.join(self.dirPath, '*.txt'))
 
     def getIndex(self):
         '''
@@ -53,9 +51,9 @@ class MesaOutput():
         '''
         print('Reading in the data, this may take a while...')
 
-        with Pool() as p:
+        with Pool(4) as p:
             result = p.map(self.getDataHelper, self.dataPaths)
-        
+            
         return result
 
     def checkConverging(self):
@@ -208,3 +206,7 @@ class MesaOutput():
                 if (shellFlash and i > shellFlashIndex + 50):
                     #return True
                     self.flags[ii] == 2
+
+    def __iter__(self):
+        for d in self.data:
+            yield d
