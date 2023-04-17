@@ -21,7 +21,7 @@
 
 ## All options and environment variables found on schedMD site: http://slurm.schedmd.com/sbatch.html
 
-mass=2
+mass=1.2
 z=$1
 y=0.25
 mu=$2

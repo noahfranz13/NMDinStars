@@ -12,3 +12,6 @@ sbatch mesa-testing.slurm 0.03 6 --job-name=test3
 
 # z=0.02, mu=0
 sbatch mesa-testing.slurm 0.02 6 --job-name=test3
+
+# run plotting code
+python3 plot-testing.py
