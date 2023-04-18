@@ -49,7 +49,7 @@ def wCen_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr, co
     corrected_IBand = denormIBand - 0.046*(denormVIBand-1.5) - 0.08*(denormVIBand-1.5)**2
     return corrected_IBand, sigma_2
 
-def printIband(df, obs='NGC4258'):
+def printIband(df, mesaOut, obs='NGC4258'):
     '''
     print out Iband info
     '''
@@ -106,7 +106,10 @@ def printIband(df, obs='NGC4258'):
     df['Z'] = Zs
     df['mu12'] = Us
 
-    cols = ['M', 'Y', 'Z', 'mu12', 'M_I', 'M_I_corrected']
+    df.drop(columns=['worthey_lee_flag', 'M_I_err', 'V_I_err', 'flag'], inplace=True)
+
+    cols = ['M', 'Y', 'Z', 'mu12', 'M_I', 'V_I', 'M_I_corrected', 'surface_grav', 'Teff', 'feh', 'L']
+    
     print(df[cols])
     return df[cols]
     
@@ -122,15 +125,23 @@ def plot(m, ax, idx=0, **kwargs):
 
 def main():
 
-    #dirpath = '/home/nfranz/research/data/mesa-testing'
-    dirpath = '/home/nfranz/lus_scratch/mesa-testing/'
+    dirpath = '/home/nfranz/research/data/mesa-testing'
+    #dirpath = '/home/nfranz/lus_scratch/mesa-testing/'
 
-    mesa = MesaOutput(dirpath)
+    allMesa = MesaOutput(dirpath)
 
+    # print info on outputs
+    # filepath = '/home/nfranz/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/postProcess_output_mesa-testing.txt'
+    filepath = '/home/nfranz/research/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/postProcess_output_mesa-testing.txt'
+    df = pd.read_csv(filepath)
+    newDf = printIband(df, allMesa)
+    newDf.to_csv('mesa-testing-info.csv')
+
+    
     MtoFind = 2
-    masses = np.array([float(os.path.split(f)[-1].split('_')[1][1:]) for f in mesa.dataPaths])
+    masses = np.array([float(os.path.split(f)[-1].split('_')[1][1:]) for f in allMesa.dataPaths])
     whereM = np.where(masses == MtoFind)[0]
-    mesa = mesa[whereM]
+    mesa = allMesa[whereM]
                       
     mesa.data = [mesa.data[1], mesa.data[2], mesa.data[3], mesa.data[0]]
     
@@ -144,11 +155,6 @@ def main():
 
     ax.legend()
     fig.savefig('testing-plot.png', transparent=False, bbox_inches='tight')
-
-    # print info on outputs
-    df = pd.read_csv('/home/nfranz/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/postProcess_output_mesa-testing.txt')
-    newDf = printIband(df)
-    newDf.to_csv('mesa-testing-info.csv')
 
 if __name__ == '__main__':
     main()

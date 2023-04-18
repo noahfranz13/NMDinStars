@@ -17,7 +17,7 @@ class MesaOutput():
             self.terminalPaths = np.array(terminalPaths)
             self.flags = np.array(flags)
             self.index = np.array(index)
-            self.data = np.array(data)
+            self.data = data
             
         else:
             self.dirPath = dirPath

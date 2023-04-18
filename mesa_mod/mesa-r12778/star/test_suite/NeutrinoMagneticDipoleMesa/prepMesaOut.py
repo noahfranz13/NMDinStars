@@ -22,11 +22,15 @@ def convert(filepath):
     # These are from wikipedia, cite them later!!
     molarMassFE = 55.845
     molarMassH = 1.00784
+    #mH1 = 1.673e-27
+    #mFe56 = 9.285e-26
+    #atom_mass_ratio = mH1/mFe56
     
     # from: gs98
     solarFEH = -4.5
+    #solarAbundanceRatio = 0.00003/0.912
     
-    feh = np.log10((mFE/mH)*(molarMassH/molarMassFE)) - solarFEH 
+    feh = np.log((mFE/mH)*(molarMassH/molarMassFE)) - solarFEH
     
     return mesa.log_g[-1], mesa.effective_T[-1], feh, mesa.log_L[-1]
 
