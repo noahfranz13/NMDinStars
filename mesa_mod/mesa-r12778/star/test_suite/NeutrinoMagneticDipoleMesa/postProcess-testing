@@ -1,0 +1,22 @@
+#!/bin/bash
+# module load lang/Python/3.7.2-intel-2018.5.274
+
+# prep MESA's output to be passed into Worthey & Lee
+python3 prepMesaOut.py --dir $1 --noTimeCheck --noIndexSet
+
+# get number of files in directory
+# n=$(echo $1 | sed "s@.*/mesa-@@g" | sed "s@/@@g")
+cd WorthyLeeBC/
+n=$(cat iBandOutput.txt | wc -l)
+echo "Directory has $n files"
+
+# Run Worthey & Lee conversion code
+gfortran -o mash3NMD mash3NMD.f
+./mash3NMD $n iBandOutput.txt colorCorrections.txt
+
+# merge all output files into one large one with all the data
+python3 ../mergeFiles.py --dir $1 --skipGridFiles
+
+# delete intermediary files
+rm colorCorrections.txt
+rm iBandOutput.txt

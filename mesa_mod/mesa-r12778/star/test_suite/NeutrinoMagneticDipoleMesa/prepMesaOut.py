@@ -63,6 +63,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', help="mesa output file", default='/media/ubuntu/T7/mesa-1296')
     parser.add_argument('--noTimeCheck', dest='timeCheck', action='store_false')
+    parser.add_argument('--noIndexSet', dest='idxSet', action='store_true')
+    parser.set_defaults(idxSet=False)
     parser.set_defaults(useNMDM=True)
     args = parser.parse_args()
 
@@ -73,16 +75,18 @@ def main():
     print(m.flags)
     # Now write the output files
     outDict = {'flag':m.flags.astype(int), 'log_g': [],
-               'Teff': [], '[Fe/H]': [], 'log_L': []}
+               'Teff': [], '[Fe/H]': [], 'log_L': [], 'filepath':[]}
     for f in m.dataPaths:
         logg, Teff, feh, logL =  convert(f)
         outDict['log_g'].append(logg)
         outDict['Teff'].append(Teff)
         outDict['[Fe/H]'].append(feh)
         outDict['log_L'].append(logL)
+        outDict['filepath'].append(f)
     
     df = pd.DataFrame(outDict)
-    df.set_index(m.index, inplace=True)
+    if not args.idxSet:
+        df.set_index(m.index, inplace=True)
     df.to_csv("WorthyLeeBC/iBandOutput.txt", header=False,
               index=True, sep='\t')
 

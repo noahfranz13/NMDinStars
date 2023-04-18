@@ -9,30 +9,39 @@ from multiprocessing import Pool
 
 class MesaOutput():
 
-    def __init__(self, dirPath, read=True):        
+    def __init__(self, dirPath, dataPaths=None, terminalPaths=None, flags=None, index=None, data=None, read=True):
 
-        self.dirPath = dirPath
-        self.dataPaths = self.getDataFiles()
-        self.terminalPaths = self.getTerminalOut()
-        self.flags = np.zeros(len(self.dataPaths))
-        self.index = self.getIndex()
-        
-        if read:
-            self.data = self.getData()
+        if dataPaths is not None:
+            self.ditPath = dirPath
+            self.dataPaths = np.array(dataPaths)
+            self.terminalPaths = np.array(terminalPaths)
+            self.flags = np.array(flags)
+            self.index = np.array(index)
+            self.data = np.array(data)
+            
         else:
-            self.data = None
+            self.dirPath = dirPath
+            self.dataPaths = np.array(self.getDataFiles())
+            self.terminalPaths = np.array(self.getTerminalOut())
+            self.flags = np.zeros(len(self.dataPaths))
+            self.index = self.getIndex()
+            
+            if read:
+                self.data = np.array(self.getData())
+            else:
+                self.data = None
             
     def getDataFiles(self):
         '''
         Get the data output files from dirPath
         '''
-        return glob.glob(os.path.join(self.dirPath, '*.data'))
+        return glob.glob(os.path.join(self.dirPath, '*/*.data'))
 
     def getTerminalOut(self):
         '''
         Get the terminal output files from dirPath
         '''
-        return glob.glob(os.path.join(self.dirPath, '*.txt'))
+        return glob.glob(os.path.join(self.dirPath, '*/*.txt'))
 
     def getIndex(self):
         '''
@@ -210,3 +219,20 @@ class MesaOutput():
     def __iter__(self):
         for d in self.data:
             yield d
+
+    def __getitem__(self, idxSet):
+        '''
+        self.ditPath = dirPath
+        self.dataPaths = dataPaths
+        self.terminalPaths = terminalPaths
+        self.flags = flags
+        self.index = index
+        self.data = data
+        '''
+        return MesaOutput(self.dirPath,
+                          dataPaths = self.dataPaths[idxSet],
+                          terminalPaths = self.terminalPaths[idxSet],
+                          flags = self.flags[idxSet],
+                          index = self.index[idxSet],
+                          data = self.data[idxSet]
+                          )
