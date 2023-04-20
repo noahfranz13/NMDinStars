@@ -3,7 +3,7 @@
 
 #SBATCH --partition=shared
 ## 3 day max run time for public partitions, except 4 hour limit  in sandbox
-#SBATCH --time=0-04:30:00 ## time format is DD-HH:MM:SS
+#SBATCH --time=0-10:00:00 ## time format is DD-HH:MM:SS
 
 #SBATCH --nodes=1
 ##SBATCH --tasks-per-node=1
@@ -17,11 +17,11 @@
 
 ## Useful for remote notification
 #SBATCH --mail-type=BEGIN,END,FAIL,REQUEUE,TIME_LIMIT_80
-#SBATCH --mail-user=user@test.org
+#SBATCH --mail-user=nfranz@hawaii.edu
 
 ## All options and environment variables found on schedMD site: http://slurm.schedmd.com/sbatch.html
 
-mass=1.2
+mass=$3
 z=$1
 y=0.25
 mu=$2
@@ -30,7 +30,7 @@ uqCode="M${mass}_Y${y}_Z${z}_U${mu}"
 
 ## Make new inlist based on template
 inlist=inlist_temp_${uqCode}
-cp inlist_template $inlist
+cp inlist_template_test $inlist
 
 ## write variables to new inlist
 sed -i -e "48s/initial_mass =/initial_mass = ${mass}d0/g" $inlist
@@ -40,10 +40,10 @@ sed -i -e "51s/x_ctrl(1) =/x_ctrl(1) = ${mu}d0/g" $inlist
 sed -i -e "52s/Zbase =/zbase = ${z}d0/g" $inlist
 
 ## Give inlist a unique output name
-sed -i -e "88s/nmdm/nmdm_$uqCode/g" $inlist
+sed -i -e "91s/nmdm/nmdm_$uqCode/g" $inlist
 
 ## make output directory
-outpath=/home/nfranz/lus_scratch/mesa-testing
+outpath=/home/nfranz/lus_scratch/mesa-testing/MassOf${mass}
 mkdir $outpath
 
 ## Run MESA

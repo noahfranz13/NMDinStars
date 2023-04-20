@@ -1,17 +1,28 @@
 #!/bin/bash
 
-# run all 4 processes
+# run all 4 processes with M=1.2
 # z=0.03, mu=0
-sbatch mesa-testing.slurm 0.03 0 --job-name=test1
+#sbatch mesa-testing.slurm 0.03 0 1.2 --job-name=test1
 
 # z=0.02, mu=0
-sbatch mesa-testing.slurm 0.02 0 --job-name=test2
+#sbatch mesa-testing.slurm 0.02 0 1.2 --job-name=test2
 
 # z=0.03, mu=0
-sbatch mesa-testing.slurm 0.03 6 --job-name=test3
+sbatch mesa-testing.slurm 0.03 6 1.2 --job-name=test3
 
 # z=0.02, mu=0
-sbatch mesa-testing.slurm 0.02 6 --job-name=test3
+#sbatch mesa-testing.slurm 0.02 6 1.2 --job-name=test3
 
-# run plotting code
-python3 plot-testing.py
+
+# run all 4 processes with M=2
+# z=0.03, mu=0
+#sbatch mesa-testing.slurm 0.03 0 2 --job-name=test1
+
+# z=0.02, mu=0
+#sbatch mesa-testing.slurm 0.02 0 2 --job-name=test2
+
+# z=0.03, mu=0
+sbatch mesa-testing.slurm 0.03 6 2 --job-name=test3
+
+# z=0.02, mu=0
+#sbatch mesa-testing.slurm 0.02 6 2 --job-name=test3

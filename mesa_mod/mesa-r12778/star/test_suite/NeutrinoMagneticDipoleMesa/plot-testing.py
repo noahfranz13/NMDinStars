@@ -125,14 +125,14 @@ def plot(m, ax, idx=0, **kwargs):
 
 def main():
 
-    dirpath = '/home/nfranz/research/data/mesa-testing'
-    #dirpath = '/home/nfranz/lus_scratch/mesa-testing/'
+    #dirpath = '/home/nfranz/research/data/mesa-testing'
+    dirpath = '/home/nfranz/lus_scratch/mesa-testing/'
 
     allMesa = MesaOutput(dirpath)
 
     # print info on outputs
-    # filepath = '/home/nfranz/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/postProcess_output_mesa-testing.txt'
-    filepath = '/home/nfranz/research/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/postProcess_output_mesa-testing.txt'
+    filepath = '/home/nfranz/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/postProcess_output_mesa-testing.txt'
+    #filepath = '/home/nfranz/research/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/postProcess_output_mesa-testing.txt'
     df = pd.read_csv(filepath)
     newDf = printIband(df, allMesa)
     newDf.to_csv('mesa-testing-info.csv')

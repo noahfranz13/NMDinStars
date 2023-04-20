@@ -18,5 +18,5 @@ gfortran -o mash3NMD mash3NMD.f
 python3 ../mergeFiles.py --dir $1
 
 # delete intermediary files
-rm colorCorrections.txt
-rm iBandOutput.txt
+#rm colorCorrections.txt
+#rm iBandOutput.txt

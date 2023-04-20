@@ -30,7 +30,7 @@ def convert(filepath):
     solarFEH = -4.5
     #solarAbundanceRatio = 0.00003/0.912
     
-    feh = np.log((mFE/mH)*(molarMassH/molarMassFE)) - solarFEH
+    feh = np.log10((mFE/mH)*(molarMassH/molarMassFE)) - solarFEH
     
     return mesa.log_g[-1], mesa.effective_T[-1], feh, mesa.log_L[-1]
 
