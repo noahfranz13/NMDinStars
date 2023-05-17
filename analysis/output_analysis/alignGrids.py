@@ -1,5 +1,5 @@
 '''
-Script to align Mitchell Dennis's SM grid with my own to get values
+Script to combine SM grid with my own to get values
 with mu_12=0
 '''
 # imports
@@ -8,24 +8,29 @@ import pandas as pd
 import numpy as np
 
 sys.path.insert(0, '/home/nfranz/research/NMDinStars/ML_models/SM/')
-from MD_machineLearningFunctions import deNormalise
 
 # first read in both files
 myOutFile1 = 'postProcess_output_first.txt'
 myOutFile2 = 'postProcess_output_second.txt'
 myOutFile3 = 'postProcess_output_third.txt'
-myOutDir = '~/research/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/'
+smOutFile = 'postProcess_output_sm.txt'
+myOutDir = '/home/nfranz/NMDinStars/mesa_mod/mesa-r12778/star/test_suite/NeutrinoMagneticDipoleMesa/WorthyLeeBC/'
 myOutPath1 = os.path.join(myOutDir, myOutFile1)
 myOutPath2 = os.path.join(myOutDir, myOutFile2)
 myOutPath3 = os.path.join(myOutDir, myOutFile3)
-smOutPath = '~/research/NMDinStars/ML_models/fulldata.txt' 
+smOutPath = os.path.join(myOutDir, smOutFile) 
 
 out1 = pd.read_csv(myOutPath1, index_col=0)
 out2 = pd.read_csv(myOutPath2, index_col=0)
 out3 = pd.read_csv(myOutPath3, index_col=0)
-out = pd.concat([out1, out2, out3])
 sm = pd.read_csv(smOutPath)
 
+sm['index'] = -1*np.arange(1, len(sm)+1, 1)
+sm.set_index('index', inplace=True)
+
+out = pd.concat([out1, out2, out3, sm])
+
+'''
 # denormalize using MD's denormalization algorithm
 keyOrder = ['mass', 'Y', 'Z', 'time', 'grav', 'Teff', 'FeH', 'logL', 'IBand', 'Ierr', 'VI', 'VIerr']
 constPath = '/home/nfranz/research/NMDinStars/ML_models/normalisationConstants.txt'
@@ -92,4 +97,5 @@ print(f'columns in one and not the other: {outDf.columns.difference(out.columns)
 
 totGrid = pd.concat([out, outDf], axis=0)
 print(totGrid)
-totGrid.to_csv('allData.csv')
+'''
+out.to_csv('allData.csv')

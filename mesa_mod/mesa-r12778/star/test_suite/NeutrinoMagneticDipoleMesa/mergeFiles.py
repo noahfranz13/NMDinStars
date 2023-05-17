@@ -5,6 +5,7 @@
 
 import sys, os, glob
 import pandas as pd
+import numpy as np
 
 def main():
 
@@ -12,9 +13,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', help="mesa output file", default='/media/ubuntu/T7/mesa-1296')
     parser.add_argument('--skipGridFiles', dest='skipGridFiles', action='store_true') 
+    parser.add_argument('--sm', dest='sm', action='store_true')
+    parser.set_defaults(sm=False)
     parser.set_defaults(skipGridFiles=False)
     args = parser.parse_args()
-
+    sm = args.sm
     if args.dir[-1] == '/':
         key = args.dir[:-1].split('/')[-1]
     else:
@@ -25,10 +28,13 @@ def main():
     outData = pd.read_csv('iBandOutput.txt', sep='\t', index_col=0, header=None)
     outData.columns = ['flag', 'surface_grav', 'Teff', 'feh', 'L', 'filepath']
 
-    onMana = False
+    onMana = True
     if not args.skipGridFiles:
         if onMana:
-            gridFiles = glob.glob(os.path.join(os.getenv('HOME'), 'NMDinStars', 'makeGrids', f'*.txt'))
+            if sm:
+                gridFiles = glob.glob(os.path.join(os.getenv('HOME'), 'NMDinStars', 'makeGrids', f'SM*.txt'))
+            else:
+                gridFiles = glob.glob(os.path.join(os.getenv('HOME'), 'NMDinStars', 'makeGrids', f'*.txt'))
         else:
             gridFiles = glob.glob(os.path.join(os.getenv('HOME'), 'Documents', 'NMDinStars', 'makeGrids', f'*.txt'))
 
@@ -36,12 +42,18 @@ def main():
         for gg in gridFiles:
             df = pd.read_csv(gg, header=None, index_col=0, sep='\t')
             grid.append(df)
-            grid = pd.concat(grid)
+        grid = pd.concat(grid)
+        if sm:
+            grid.columns = ['mass_index', 'y_index', 'z_index', 'mass', 'y', 'z']
+            grid['mu'] = np.zeros(len(grid), dtype=int)
+            grid['mu_index'] = np.zeros(len(grid), dtype=int)-1
+        else:
             grid.columns = ['mass_index', 'y_index', 'z_index', 'mu_index', 'mass', 'y', 'z', 'mu']            
             
     if args.skipGridFiles:
         allData = pd.concat([outData, color], axis=1)
     else:
+        print(grid)
         allData = pd.concat([grid, outData, color], axis=1)
         allData.drop(columns='filepath', inplace=True) # we don't need this info because it can be derived
 

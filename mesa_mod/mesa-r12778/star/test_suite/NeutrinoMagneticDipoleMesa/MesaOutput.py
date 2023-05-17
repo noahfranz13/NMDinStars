@@ -12,7 +12,7 @@ class MesaOutput():
     def __init__(self, dirPath, dataPaths=None, terminalPaths=None, flags=None, index=None, data=None, read=True):
 
         if dataPaths is not None:
-            self.ditPath = dirPath
+            self.dirPath = dirPath
             self.dataPaths = np.array(dataPaths)
             self.terminalPaths = np.array(terminalPaths)
             self.flags = np.array(flags)
@@ -30,7 +30,21 @@ class MesaOutput():
                 self.data = np.array(self.getData())
             else:
                 self.data = None
-            
+
+        print(len(self.dataPaths), len(self.terminalPaths))
+        if len(self.dataPaths) != len(self.terminalPaths):
+            dataIdxs = np.array([dd.split('i')[-1].split('.')[0] for dd in self.dataPaths])
+            terminalIdxs = np.array([dd.split('i')[-1].split('.')[0] for dd in self.terminalPaths])
+
+            I = np.isin(dataIdxs, terminalIdxs)
+            if len(dataIdxs[~I]) == 0:
+                I = np.isin(terminalIdxs, dataIdxs)
+                print(f'Missing: {terminalIdxs[~I]}')
+                raise ValueError
+
+            print(f'Missing: {dataIdxs[~I]}')            
+            raise ValueError
+                        
     def getDataFiles(self):
         '''
         Get the data output files from dirPath
@@ -87,8 +101,8 @@ class MesaOutput():
         goodIdxs = []
         tp = np.array(self.terminalPaths)
         print(f'Length of grep: {len(good)-1}\nLength of terminal paths: {len(tp)}')
-        #print(tp)
-        #print(good)
+        print(len(tp))
+        print(len(good), good[-1])
         for f in good[:-1]: # the last element of stdout is always empty
             idx = np.where(f == tp)[0]
             if len(idx > 0):
@@ -97,7 +111,9 @@ class MesaOutput():
                 print("No file found for: ", f)
             
         indexes = np.array(goodIdxs)
+        print(len(indexes), indexes)
         goodData = np.array(self.dataPaths)[indexes]
+        print(len(goodData), goodData)
         oppMask = np.ones(len(self.dataPaths), dtype=bool)
         oppMask[indexes] = 0
         self.flags[oppMask] = 1 # give a flag of 1 without convergence
@@ -151,8 +167,15 @@ class MesaOutput():
         checks the age of the outputs and flags anything 
         older than 13.77 byo with 3
         '''
-
-        age = np.array([max(d.star_age) for d in self.data])
+        ageList = []
+        for ii,d in enumerate(self.data):
+            try:
+                ageList.append(max(d.star_age))
+            except:
+                print(self.dataPaths[ii])
+                raise Exception
+            
+        age = np.array(ageList)#np.array([max(d.star_age) for d in self.data])
         whereOld = np.where((age > 13.77e9) * (self.flags == 0))[0]
         self.flags[whereOld] = 3
         print(f'WARNING : {len(whereOld)} models are being flagged for age > 13.77 byo')

@@ -188,21 +188,21 @@ def Iband_vs_binned(df, obs, useAllMus=True, restrictY=False):
         mus = [allMus[-1]]
 
     if obs == 'NGC4258':
-        obsI = [-4.027]
-        obsErr = [0.055]
-        obsNew = [obs]
+        obsI = -4.027
+        obsErr = 0.055
+        obsNew = obs
     elif obs == 'LMC_F20':
-        obsI = [-4.047]
-        obsErr = [0.045]
-        obsNew = [obs]
+        obsI = -4.047
+        obsErr = 0.045
+        obsNew = obs
     elif obs == 'LMC_Y19':
-        obsI = [-3.958]
-        obsErr = [0.046]
-        obsNew = [obs]
+        obsI = -3.958
+        obsErr = 0.046
+        obsNew = obs
     elif obs == 'OmegaCentauri':
-        obsI = [-3.96]
-        obsErr = [0.05]
-        obsNew = [obs]
+        obsI = -3.96
+        obsErr = 0.05
+        obsNew = obs
     elif obs == 'uncorrected':
         obsI = [-4.027, -4.047, -3.958, -3.96]
         obsErr = [0.055, 0.045, 0.046, 0.05]
@@ -258,8 +258,7 @@ def Iband_vs_binned(df, obs, useAllMus=True, restrictY=False):
                 ax.fill_between(x, y-2*err, y+2*err, label=r'2$\sigma$ {}'.format(cap), alpha=0.25)
                 ax.fill_between(x, y-3*err, y+3*err, label=r'3$\sigma$ {}'.format(cap), alpha=0.25)
                 ax.fill_between(x, y-4*err, y+4*err, label=r'4$\sigma$ {}'.format(cap), alpha=0.25)
-                ax.fill_between(x, y-5*err, y+5*err, label=r'5$\sigma$ {}'.format(cap), alpha=0.25)
-            
+                ax.fill_between(x, y-5*err, y+5*err, label=r'5$\sigma$ {}'.format(cap), alpha=0.25)            
                 
         # Plot observational values
         a = 0.25
@@ -267,9 +266,13 @@ def Iband_vs_binned(df, obs, useAllMus=True, restrictY=False):
         x = np.linspace(xmin, xmax+tol)
 
         colors = ['k', 'orange', 'yellow', 'pink']
-        for I, err, L, c in zip(obsI, obsErr, obsNew, colors):
-            ax.plot(x, I*np.ones(len(x)), linestyle=':', color=c, label=L)
-            ax.fill_between(x, I-err, I+err, color=c, alpha=a)
+        if isinstance(obsI, list):
+            for I, err, L, c in zip(obsI, obsErr, obsNew, colors):
+                ax.plot(x, I*np.ones(len(x)), linestyle=':', color=c, label=L)
+                ax.fill_between(x, I-err, I+err, color=c, alpha=a)
+        else:
+            ax.plot(x, obsI*np.ones(len(x)), linestyle=':', color=colors[0], label=obsNew)
+            ax.fill_between(x, obsI-obsErr, obsI+obsErr, color=colors[0], alpha=a)
         
         ax.set_xlabel(label)
         ax.set_ylabel('I-Band Magnitude')

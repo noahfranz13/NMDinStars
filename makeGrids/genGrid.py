@@ -26,9 +26,16 @@ def computeGrids(useNMDM):
         grid = np.array([np.array([ii, jj, kk, tt, mm, yy, zz, mu]) for ii, mm in enumerate(m) for jj, yy in enumerate(y) for kk, zz in enumerate(z) for tt, mu in enumerate(mu12)])
 
     # split grid based on even and odd indices
-    gridDf = pd.DataFrame(grid, columns=['m_idx', 'y_idx', 'z_idx', 'u_idx', 'm', 'y', 'z', 'mu'])
+    if not useNMDM:
+        cols = ['m_idx', 'y_idx', 'z_idx', 'm', 'y', 'z']
+    else:
+        cols = ['m_idx', 'y_idx', 'z_idx', 'u_idx', 'm', 'y', 'z', 'mu']
+    gridDf = pd.DataFrame(grid, columns=cols)
 
-    gridDf = gridDf.astype({'m_idx': int, 'y_idx': int, 'z_idx': int, 'u_idx': int})
+    if not useNMDM:
+        gridDf = gridDf.astype({'m_idx': int, 'y_idx': int, 'z_idx': int})
+    else:
+        gridDf = gridDf.astype({'m_idx': int, 'y_idx': int, 'z_idx': int, 'u_idx': int})
     
     evenGrid = gridDf.iloc[::2]
     oddGrid = gridDf.iloc[1::2]
@@ -62,13 +69,19 @@ def main():
     parser.set_defaults(useNMDM=True)
     args = parser.parse_args()
     grids = computeGrids(args.useNMDM)
-    
-    labels = ['first', 'second']
-    for grid, L in zip(grids, labels):    
-        # write file(s) with these grids
-        for ii, gg in enumerate(grid):         
-            gg.to_csv(f'{L}-gridFile-{ii}.txt', header=None, sep='\t', float_format='%.15f')
-
+    #print(grids)
+    if args.useNMDM:
+        labels = ['first', 'second']
+        for grid, L in zip(grids, labels):    
+            # write file(s) with these grids
+            for ii, gg in enumerate(grid):         
+                gg.to_csv(f'{L}-gridFile-{ii}.txt', header=None, sep='\t', float_format='%.15f')
+    else:
+        for ii, grid in enumerate(grids):
+            filename = f'SM-gridFile-{ii}.txt'
+            #print(filename, grid)
+            grid[0].to_csv(filename, header=None, sep='\t', float_format='%.15f')
+                
 if __name__ == '__main__':
     sys.exit(main())
 
