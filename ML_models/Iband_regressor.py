@@ -22,7 +22,7 @@ sb.set(context='talk', style='whitegrid', palette='Set1')
 plt.rcParams["font.family"] = "serif"
 
 # read in the data using pandas
-datadir = '/home/ubuntu/Documents/NMDinStars/analysis/output_analysis/'
+datadir = '/home/nfranz/research/NMDinStars/analysis/output_analysis/'
 infile = os.path.join(datadir, 'allData.csv')
 allData = pd.read_csv(infile) # time is in minutes
 # cut out too old, he flash, and didn't converge
