@@ -70,12 +70,36 @@ def io(mesaOutFile):
     df = pd.read_csv(mesaOutFile, index_col=0)
     return df
 
-def plotMI(mags):
+def plotMI(mags, obs='OmegaCentauri'):
     '''
     Plot mu_12 vs. I-band magnitude
 
     mags [DataFrame] : pandas dataframe of output file
     '''
+
+    if obs == 'NGC4258':
+        obsI = -4.027
+        obsErr = 0.055
+        obsNew = obs
+    elif obs == 'LMC_F20':
+        obsI = -4.047
+        obsErr = 0.045
+        obsNew = obs
+    elif obs == 'LMC_Y19':
+        obsI = -3.958
+        obsErr = 0.046
+        obsNew = obs
+    elif obs == 'OmegaCentauri':
+        obsI = -3.96
+        obsErr = 0.05
+        obsNew = obs
+    elif obs == 'uncorrected':
+        obsI = [-4.027, -4.047, -3.958, -3.96]
+        obsErr = [0.055, 0.045, 0.046, 0.05]
+        obsNew = ['NGC4258', 'LMC F20', 'LMC Y19', 'Omega Centauri']
+    else:
+        raise ValueError('Please enter a valid observational calibration: NGC4258, LMC_F20, LMC_Y19, or OmegaCentauri')
+
     
     magsGood = mags[mags['flag'] == 0]
 
@@ -86,24 +110,44 @@ def plotMI(mags):
     std = magsGood.groupby(magsGood.mu).std()
 
     x = group.mu.to_numpy()
-    y = group.M_I.to_numpy()
-    err = std.M_I.to_numpy()
+
+    Iband = group.M_I.to_numpy()
+    VI = group.V_I.to_numpy()
+    Ierr = group.M_I_err.to_numpy()
+    VIerr = group.V_I_err.to_numpy()
+    cov_I_VI = np.cov(Ierr, VIerr)[1,0]
+    # NGC4258_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr, cov_I_VI)
+    if obs == 'NGC4258':
+        corrected_IBand, sigma_2 = NGC4258_Correction(Iband, Ierr, VI, VIerr, obsErr, cov_I_VI)
+    elif obs == 'LMC_F20':
+        corrected_IBand, sigma_2 = F20_Correction(Iband, Ierr, VI, VIerr, obsErr, cov_I_VI)
+    elif obs == 'LMC_Y19':
+        corrected_IBand, sigma_2 = Y19_Correction(Iband, Ierr, VI, VIerr, obsErr, cov_I_VI)
+    elif obs == 'OmegaCentauri':
+        corrected_IBand, sigma_2 = wCen_Correction(Iband, Ierr, VI, VIerr, obsErr, cov_I_VI)
+    elif obs == 'uncorrected':
+        corrected_IBand = Iband
+        sigma_2 = None
+    else:
+        raise ValueError('Please enter a valid observational calibration: NGC4258, LMC_F20, LMC_Y19, or OmegaCentauri')
+    err = np.std(corrected_IBand)
+    y = corrected_IBand
     
     ax.plot(x, y, '-', label=r'Average M$_I$')
-    ax.fill_between(x, y-err, y+err, label=r'1$\sigma$ M$_I$', alpha=0.25)
+    ax.fill_between(x, y-err, y+err, label=r'1$\sigma$ M$_I$', alpha=0.5)
     #ax.errorbar(magsGood.mu, magsGood.M_I, yerr=magsGood.M_I_err, fmt='.', label=r'M$_I$')
 
     xmin, xmax = ax.get_xlim()
     x = np.linspace(xmin, xmax+0.5)
     
-    #ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'$\omega$ Centauri')
-    #ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
+    ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'$\omega$ Centauri')
+    ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
     #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'NGC4258')
     #ax.fill_between(x, -4.027-0.055, -4.027+0.055, color='orange', alpha=a)
     #ax.plot(x, -4.047*np.ones(len(x)), linestyle=':', color='royalblue', label=r'LMC (F20)')
     #ax.fill_between(x, -4.047-0.045, -4.047+0.045, color='royalblue', alpha=a)
-    ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='k', label=r'LMC (Y19)')
-    ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='k', alpha=a)
+    #ax.plot(x, -3.958*np.ones(len(x)), linestyle=':', color='k', label=r'LMC (Y19)')
+    #ax.fill_between(x, -3.958-0.046, -3.958+0.046, color='k', alpha=a)
 
     
     ax.set_xlabel(r'$\mu_{12}$')

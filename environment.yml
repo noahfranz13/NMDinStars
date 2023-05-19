@@ -6,12 +6,12 @@ dependencies:
    - python=3.8
    - pip
    # Other packages
-   - pandas
-   - numpy
+   - pandas=1.4.3
+   - numpy=1.22.3
    - scipy
    - matplotlib
    - tensorflow=2.4.1
-   - seaborn
+   - seaborn=0.11.2
    - scikit-learn
    - imbalanced-learn
    # pip install

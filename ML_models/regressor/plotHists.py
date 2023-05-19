@@ -14,7 +14,6 @@ plt.rcParams['xtick.top'] = False
 plt.rcParams['ytick.direction'] = 'in'
 plt.rcParams['xtick.direction'] = 'in'
 
-
 # read in the two error files
 Iband = np.load('Iband_error.npy')
 Ierr = np.load('Ierr_error.npy')
@@ -26,18 +25,17 @@ VIerr = np.load('VIerr_error.npy')
 def pltHist(err, xlabel):
     
     fig = sb.displot(kind='kde', data=err, color='cornflowerblue')
-    
-    
+        
     #fig, ax = plt.subplots(1, figsize=(8,6))
     #ax.hist(err, bins=25, color='cornflowerblue')
-    fig.set_ylabels('N')
-    fig.set_xlabels(xlabel)
+    fig.set_ylabels('Number of Predictions', fontsize=12)
+    fig.set_xlabels(xlabel, fontsize=12)
     
     fig.savefig(f'{xlabel}_hist.jpeg', transparent=False,
                 bbox_inches='tight')
     
-pltHist(Iband, 'Error on I-Band Regression Prediction')
-pltHist(Ierr, 'Error on I-Band Error Regression Prediction')
+pltHist(Iband, r'Error on I-Band Regression Prediction')
+pltHist(Ierr, r'Error on I-Band Error Regression Prediction')
 pltHist(VI, 'Error on V-I Regression Prediction')
 pltHist(VIerr, 'Error on V-I Error Regression Prediction')
 
