@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 import emcee
 import corner
-from multiprocessing import Pool
+from multiprocessing import Pool, cpu_count
 from tensorflow.keras.models import load_model
 import scipy
 
@@ -24,7 +24,7 @@ plt.rcParams["font.family"] = "serif"
 os.environ["OMP_NUM_THREADS"] = "1"
 
 # define cwd
-cwd = '/home/nfranz/research/NMDinStars/ML_models'
+cwd = '/home/nfranz/NMDinStars/ML_models'
 
 # Declare ML models and any args as global variables
 # NOTE: This is a bad practice but necessary to reduce MCMC runtime
@@ -50,6 +50,11 @@ const = pd.read_csv(os.path.join(cwd, 'norm_const.txt'), index_col=0)
 
 # constant boolean to know which parts of the script to run
 useMu = None
+
+denormIBand = None
+denormIErr = None
+denormVIBand = None
+denormVIErr = None
 
 def io():
     '''
@@ -143,42 +148,42 @@ denormIBand : the denormalized ML prediciton of the IBand
 denormIerr  : the denormalized ML prediction of the Ierr
 denormVIBand: The denormalized ML predication of the V-I band
 denormVIErr : The denormalized ML prediction on the V-I band error
-yerr        : The error on the observed value for the I-band magnitude
+obsErr      : The error on the observed value for the I-band magnitude
 
-Note: cov_I_VI is defined globally to reduce runtime
+Note: all of these are defined globally to reduce runtime
 '''
-def F20_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr):
+def F20_Correction():
     partial_V = 0
     partial_I = 1
     sigma_MI_2 = (partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*partial_I*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
-    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    sigma_2 = (obsErr**2 + sigma_MI_2**2)
     corrected_IBand = denormIBand + 0.00*(denormVIBand - 1.8)
     return corrected_IBand, sigma_2
 
 
-def Y19_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr):
+def Y19_Correction():
     partial_V = -0.182*(denormVIBand)-0.266
     partial_I = 1
     sigma_MI_2 = (partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*partial_I*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
-    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    sigma_2 = (obsErr**2 + sigma_MI_2**2)
     corrected_IBand = denormIBand - 0.091*(denormVIBand - 1.5)**2 + 0.007*(denormVIBand - 1.5)
     return corrected_IBand, sigma_2
 
 
-def NGC4258_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr):
+def NGC4258_Correction():
     partial_V = -0.182*(denormVIBand)-0.266
     partial_I = 1
     sigma_MI_2 = (partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*partial_I*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
-    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    sigma_2 = (obsErr**2 + sigma_MI_2**2)
     corrected_IBand = denormIBand - 0.091*(denormVIBand - 1.5)**2 + 0.007*(denormVIBand - 1.5)
     return corrected_IBand, sigma_2
 
 
-def wCen_Correction(denormIBand, denormIErr, denormVIBand, denormVIErr, yerr):
+def wCen_Correction():
     partial_V = 0.16*denormVIBand - 0.046
     partial_I = 1
     sigma_MI_2 = np.abs(partial_I**2)*(denormIErr**2) + (np.abs(partial_V**2))*(denormVIErr)**2 + 2*np.abs(partial_I)*np.abs(partial_V)*denormVIErr*denormIErr*cov_I_VI
-    sigma_2 = (yerr**2 + sigma_MI_2**2)
+    sigma_2 = (obsErr**2 + sigma_MI_2**2)
     corrected_IBand = denormIBand - 0.046*(denormVIBand-1.5) - 0.08*(denormVIBand-1.5)**2
     return corrected_IBand, sigma_2
 
@@ -200,23 +205,33 @@ def logLikelihood(theta):
     Ierr = Ierr + np.random.choice(IerrErr)
     VI = VI + np.random.choice(VI_err)
     VIerr = VIerr + np.random.choice(VIerr_err)
+    
+    global denormIBand
+    global denormIErr
+    global denormVIBand
+    global denormVIErr
+
+    denormIBand = Iband
+    denormIErr = Ierr
+    denormVIBand = VI
+    denormVIErr = VIerr
 
     # perform the V-I band corrections
     if obs == 'NGC4258':
-        corrected_IBand, sigma_2 = NGC4258_Correction(Iband, Ierr, VI, VIerr, obsErr)
+        corrected_IBand, sigma_2 = NGC4258_Correction()
     elif obs == 'LMC_F20':
-        corrected_IBand, sigma_2 = F20_Correction(Iband, Ierr, VI, VIerr, obsErr)
+        corrected_IBand, sigma_2 = F20_Correction()
     elif obs == 'LMC_Y19':
-        corrected_IBand, sigma_2 = Y19_Correction(Iband, Ierr, VI, VIerr, obsErr)
+        corrected_IBand, sigma_2 = Y19_Correction()
     elif obs == 'OmegaCentauri':
-        corrected_IBand, sigma_2 = wCen_Correction(Iband, Ierr, VI, VIerr, obsErr)
+        corrected_IBand, sigma_2 = wCen_Correction()
     else:
         raise ValueError('Please enter a valid observational calibration: NGC4258, LMC_F20, LMC_Y19, or OmegaCentauri')
     
     # find the maximum likelihood function
     likelihood = ((obsI - corrected_IBand)**2 / sigma_2) + np.log(2*np.pi*sigma_2)
     likelihood = -likelihood / 2
-    print(likelihood)
+    #print(likelihood)
     # return the max likelihood function
     return likelihood
 
@@ -321,7 +336,7 @@ def main():
     
     io() # read in stuff we need
 
-    nsteps = 500000
+    nsteps = 5000 #500000
     nwalkers = 32
     
     if useMu:
@@ -348,7 +363,8 @@ def main():
     mod = nsteps/100
     
     # Run the MCMC
-    with Pool() as p:
+    print(f'Running with {nwalkers//2} cpus, {cpu_count()} cpus available')
+    with Pool(nwalkers//2) as p:
         es = emcee.EnsembleSampler(nwalkers,
                                    ndim,
                                    logProb,

@@ -10,7 +10,7 @@ dependencies:
    - numpy
    - scipy
    - matplotlib
-   - tensorflow
+   - tensorflow=2.4.1
    - seaborn
    - scikit-learn
    - imbalanced-learn
