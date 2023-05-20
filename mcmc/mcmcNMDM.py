@@ -336,7 +336,7 @@ def main():
     
     io() # read in stuff we need
 
-    nsteps = 5000 #500000
+    nsteps = 500000
     nwalkers = 32
     
     if useMu:

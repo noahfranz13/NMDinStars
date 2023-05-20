@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=wCenC
 #SBATCH --partition=shared
-#SBATCH --time=0-14:00:00
+#SBATCH --time=0-20:00:00
 
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=18
