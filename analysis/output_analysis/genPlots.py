@@ -140,7 +140,7 @@ def plotMI(mags, obs='OmegaCentauri'):
     xmin, xmax = ax.get_xlim()
     x = np.linspace(xmin, xmax+0.5)
     
-    ax.plot(x, -3.96*np.ones(len(x)), linestyle='--', color='k', label=r'$\omega$ Centauri')
+    ax.plot(x, -3.96*np.ones(len(x)), linestyle=':', color='k', label=r'$\omega$ Centauri')
     ax.fill_between(x, -3.96-0.05, -3.96+0.05, color='k', alpha=a)
     #ax.plot(x, -4.027*np.ones(len(x)), linestyle='--', color='orange', label=r'NGC4258')
     #ax.fill_between(x, -4.027-0.055, -4.027+0.055, color='orange', alpha=a)
@@ -246,7 +246,7 @@ def Iband_vs_binned(df, obs, useAllMus=True, restrictY=False):
     elif obs == 'OmegaCentauri':
         obsI = -3.96
         obsErr = 0.05
-        obsNew = obs
+        obsNew = r'$\omega$ Centauri'
     elif obs == 'uncorrected':
         obsI = [-4.027, -4.047, -3.958, -3.96]
         obsErr = [0.055, 0.045, 0.046, 0.05]
